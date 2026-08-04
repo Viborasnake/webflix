@@ -1,24 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
   const slides = document.querySelectorAll('.slide');
   const progressBar = document.getElementById('progress-bar');
+  const slideCounter = document.getElementById('slide-counter');
+  const deckLogo = document.getElementById('deck-logo');
   const demoLevels = document.querySelectorAll('[data-demo-level]');
   let currentSlide = 0;
   let currentDemoLevel = 1;
 
-  // Portada = 0 · Demo = 7 (con portada incluida)
   const DEMO_SLIDE_INDEX = 7;
+  const total = slides.length;
+
+  function pad(n) {
+    return String(n).padStart(2, '0');
+  }
 
   function updateSlides() {
     slides.forEach((slide, index) => {
       slide.classList.toggle('active', index === currentSlide);
     });
 
-    const progress = ((currentSlide + 1) / slides.length) * 100;
-    progressBar.style.width = `${progress}%`;
+    const progress = ((currentSlide + 1) / total) * 100;
+    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (slideCounter) {
+      slideCounter.textContent = `${pad(currentSlide + 1)} / ${pad(total)}`;
+    }
+    // Logo global solo fuera de portada
+    if (deckLogo) {
+      deckLogo.hidden = currentSlide === 0;
+    }
   }
 
   function nextSlide() {
-    if (currentSlide < slides.length - 1) {
+    if (currentSlide < total - 1) {
       currentSlide++;
       updateSlides();
     }
@@ -32,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function goToSlide(index) {
-    if (index >= 0 && index < slides.length) {
+    if (index >= 0 && index < total) {
       currentSlide = index;
       updateSlides();
     }
@@ -41,8 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function setDemoLevel(level) {
     currentDemoLevel = level;
     demoLevels.forEach((el) => {
-      const isActive = Number(el.dataset.demoLevel) === level;
-      el.classList.toggle('is-active', isActive);
+      el.classList.toggle('is-active', Number(el.dataset.demoLevel) === level);
     });
   }
 
@@ -61,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return tag === 'a' || tag === 'button' || tag === 'input' || tag === 'textarea' || tag === 'iframe';
   }
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     switch (e.key) {
       case 'ArrowRight':
@@ -84,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
       case 'End':
         e.preventDefault();
-        goToSlide(slides.length - 1);
+        goToSlide(total - 1);
         break;
       case 'd':
       case 'D':
@@ -94,9 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       case '2':
       case '3':
         setDemoLevel(Number(e.key));
-        if (currentSlide !== DEMO_SLIDE_INDEX) {
-          goToSlide(DEMO_SLIDE_INDEX);
-        }
+        if (currentSlide !== DEMO_SLIDE_INDEX) goToSlide(DEMO_SLIDE_INDEX);
         break;
       case 'f':
       case 'F':
@@ -107,16 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Left click advances (skip interactive targets and mockup area)
   document.addEventListener('mousedown', (e) => {
     if (isInteractiveTarget(e.target)) return;
     if (e.target.closest && e.target.closest('#demo-mockup')) return;
-    if (e.button === 0) {
-      nextSlide();
-    }
+    if (e.button === 0) nextSlide();
   });
 
-  // Touch swipe
   let touchstartX = 0;
   let touchendX = 0;
 

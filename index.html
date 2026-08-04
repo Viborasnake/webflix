@@ -17,86 +17,114 @@
             <div class="bg-orb bg-orb--cyan"></div>
             <div class="bg-orb bg-orb--deep"></div>
             <div class="bg-sheen"></div>
+            <div class="bg-curve"></div>
             <div class="bg-vignette"></div>
         </div>
 
-        <!-- 0 · Portada -->
-        <div class="slide">
-            <div class="glass-card cover-card">
+        <!-- Logo global (content slides) -->
+        <div class="deck-logo" id="deck-logo" hidden>
+            <span class="logo-mark">W</span>
+            <span class="logo-word">WebFlix</span>
+        </div>
+
+        <!-- 0 · Portada (estilo mockup premium) -->
+        <div class="slide slide-cover">
+            <div class="cover-left">
                 <div class="cover-brand stagger d-1">
                     <span class="logo-mark">W</span>
                     <span class="logo-word">WebFlix</span>
                 </div>
 
-                <p class="cover-kicker stagger d-1">Pitch Shark Tank · Grupo 5 · 10 minutos</p>
-                <h1 class="cover-title stagger d-2">Antes de automatizar el motor, validamos si 3 preferencias tempranas activan valor</h1>
+                <p class="cover-kicker stagger d-1">Pitch Shark Tank · Grupo 5</p>
+                <h1 class="cover-title stagger d-2">
+                    El primer momento<br>
+                    de valor está <span class="grad">fallando</span>
+                </h1>
                 <p class="cover-subtitle stagger d-2">
-                    Problema observable de descubrimiento → hipótesis única → Wizard of Oz con control → decisión de automatizar, iterar o abandonar.
+                    Validación de onboarding con preferencias tempranas · Caso Streaming
                 </p>
 
-                <div class="cover-pill-row stagger d-3">
-                    <span class="pill">Day-7 42% → 29%</span>
-                    <span class="pill">Onboarding móvil &lt; 30s</span>
-                    <span class="pill">Wizard of Oz</span>
-                    <span class="pill">n = 30–50</span>
+                <div class="meta-bar stagger d-3">
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c1.5 1.5 4.5 3 6 3s4.5-1.5 6-3v-5"/></svg>
+                        </div>
+                        <div>
+                            <span class="meta-label">Curso</span>
+                            <span class="meta-value">Experimentación, IA y Validación de Producto</span>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon cyan">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="12" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg>
+                        </div>
+                        <div>
+                            <span class="meta-label">Programa</span>
+                            <span class="meta-value">Diplomado en Estrategia y Experiencia de Productos en la Era de la IA</span>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M6 21V9l6-4 6 4v12"/><path d="M9 21v-5h6v5"/><path d="M10 12h4"/></svg>
+                        </div>
+                        <div>
+                            <span class="meta-label">Institución</span>
+                            <span class="meta-value">FEN</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="cover-meta stagger d-3">
-                    <div class="cover-meta-block">
-                        <span class="cover-meta-label">Curso</span>
-                        <span class="cover-meta-value">Experimentación, IA y Validación de Producto</span>
-                    </div>
-                    <div class="cover-meta-block">
-                        <span class="cover-meta-label">Programa</span>
-                        <span class="cover-meta-value">Diplomado en Estrategia y Experiencia de Productos en la Era de la IA</span>
-                    </div>
-                    <div class="cover-meta-block">
-                        <span class="cover-meta-label">Institución</span>
-                        <span class="cover-meta-value">FEN</span>
-                    </div>
-                </div>
-
-                <div class="team-grid stagger d-4">
-                    <div class="team-member">
+                <p class="presentan-label stagger d-3">Presentan</p>
+                <div class="team-row stagger d-4">
+                    <div class="team-chip" data-accent="purple">
                         <div class="team-avatar">EF</div>
                         <div>
                             <div class="team-name">Erick Fuentealba</div>
-                            <div class="team-role">Problema · Datos · Usuario</div>
+                            <div class="team-role">Abre el pitch</div>
                         </div>
                     </div>
-                    <div class="team-member">
+                    <div class="team-chip" data-accent="cyan">
                         <div class="team-avatar">TV</div>
                         <div>
                             <div class="team-name">Tamara Valdivia</div>
-                            <div class="team-role">Cadena de impacto · Hipótesis</div>
+                            <div class="team-role">Estrategia e hipótesis</div>
                         </div>
                     </div>
-                    <div class="team-member">
+                    <div class="team-chip" data-accent="purple">
                         <div class="team-avatar">VN</div>
                         <div>
                             <div class="team-name">Valeria Nieto</div>
-                            <div class="team-role">Experimento · Instrumentación</div>
+                            <div class="team-role">Metodología y métricas</div>
                         </div>
                     </div>
-                    <div class="team-member">
+                    <div class="team-chip" data-accent="cyan">
                         <div class="team-avatar">CP</div>
                         <div>
                             <div class="team-name">Cristian Pizarro</div>
-                            <div class="team-role">Demo · Criterios · Decisión</div>
+                            <div class="team-role">Demo y decisión</div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="cover-right stagger d-3" aria-hidden="true">
+                <div class="glass-stack">
+                    <div class="glass-panel p4"></div>
+                    <div class="glass-panel p3"></div>
+                    <div class="glass-panel p2"></div>
+                    <div class="glass-panel p1"><span class="w-letter">W</span></div>
                 </div>
             </div>
         </div>
 
         <!-- 1 · Problema -->
         <div class="slide">
-            <div class="glass-card">
+            <div class="slide-inner">
                 <div class="slide-head stagger d-1">
                     <span class="badge">01 · Problema observable</span>
                     <span class="slide-kicker">Conducta · No causa asumida</span>
                 </div>
-                <h1 class="h1-tight stagger d-1">El descubrimiento de valor no ocurre a tiempo</h1>
+                <h1 class="h1-tight stagger d-1">El descubrimiento de valor <span class="grad">no ocurre a tiempo</span></h1>
                 <p class="lead stagger d-2">
                     Un usuario no se suscribe para recorrer un catálogo interminable: se suscribe para
                     <strong>encontrar rápido algo que quiera ver</strong>. En WebFlix, los nuevos usuarios consumen poco
@@ -134,12 +162,12 @@
 
         <!-- 2 · Datos + Usuario -->
         <div class="slide">
-            <div class="glass-card">
+            <div class="slide-inner">
                 <div class="slide-head stagger d-1">
                     <span class="badge">02 · Datos y usuario</span>
                     <span class="slide-kicker">Escala del caso · Segmento del experimento</span>
                 </div>
-                <h2 class="stagger d-1">La caída ya es visible — y tiene dueño</h2>
+                <h2 class="stagger d-1">La caída ya es visible — y tiene <span class="grad">dueño</span></h2>
 
                 <div class="kpi-strip stagger d-2">
                     <div class="kpi">
@@ -196,12 +224,12 @@
 
         <!-- 3 · Cadena de impacto -->
         <div class="slide">
-            <div class="glass-card">
+            <div class="slide-inner">
                 <div class="slide-head stagger d-1">
                     <span class="badge">03 · Cadena de impacto</span>
                     <span class="slide-kicker">Qué validamos hoy vs. qué queda para después</span>
                 </div>
-                <h2 class="stagger d-1">Mecanismo de valor, no promesa de retención</h2>
+                <h2 class="stagger d-1">Mecanismo de valor, no promesa de <span class="grad">retención</span></h2>
                 <p class="lead compact stagger d-2">
                     Tres preferencias → señales iniciales → portada más relevante → menor tiempo a reproducir →
                     mayor activación → mayor probabilidad de retorno → <strong>potencial</strong> impacto en Day-7.
@@ -273,12 +301,12 @@
 
         <!-- 4 · Hipótesis -->
         <div class="slide">
-            <div class="glass-card">
+            <div class="slide-inner">
                 <div class="slide-head stagger d-1">
                     <span class="badge">04 · Hipótesis activa</span>
                     <span class="slide-kicker">Una sola · P1 · Wizard of Oz</span>
                 </div>
-                <h2 class="stagger d-1">Qué creemos — y por qué en móvil</h2>
+                <h2 class="stagger d-1">Qué creemos — y por qué en <span class="grad">móvil</span></h2>
 
                 <div class="hypothesis-box stagger d-2">
                     <p>
@@ -342,12 +370,12 @@
 
         <!-- 5 · Experimento -->
         <div class="slide">
-            <div class="glass-card">
+            <div class="slide-inner">
                 <div class="slide-head stagger d-1">
                     <span class="badge">05 · Experimento</span>
                     <span class="slide-kicker">Deseabilidad + usabilidad · No factibilidad del motor</span>
                 </div>
-                <h2 class="stagger d-1">Wizard of Oz mínimo, con comparación real</h2>
+                <h2 class="stagger d-1">Wizard of Oz mínimo, con <span class="grad">comparación real</span></h2>
                 <p class="lead compact stagger d-2">
                     Primero validamos que la <strong>señal explícita produce valor</strong>.
                     Todavía no construimos el sistema que la automatiza.
@@ -417,12 +445,12 @@
 
         <!-- 6 · Operación e instrumentación -->
         <div class="slide">
-            <div class="glass-card">
+            <div class="slide-inner">
                 <div class="slide-head stagger d-1">
                     <span class="badge">06 · Operación</span>
                     <span class="slide-kicker">Cómo simula el WoZ · Qué medimos · Cómo se construyó</span>
                 </div>
-                <h2 class="stagger d-1">Detrás del velo y delante del evento</h2>
+                <h2 class="stagger d-1">Detrás del velo y delante del <span class="grad">evento</span></h2>
 
                 <div class="grid-2 stagger d-2 gap-md align-start">
                     <div class="card-box">
@@ -491,13 +519,13 @@
 
         <!-- 7 · Demo -->
         <div class="slide">
-            <div class="glass-card grid-2 gap-lg align-center">
+            <div class="slide-inner grid-2 gap-lg align-center">
                 <div class="stagger d-1">
                     <div class="slide-head">
                         <span class="badge">07 · Artefacto</span>
                         <span class="slide-kicker">Flujo crítico a demostrar</span>
                     </div>
-                    <h2>Del perfil vacío al primer play</h2>
+                    <h2>Del perfil vacío al <span class="grad">primer play</span></h2>
                     <p class="lead compact">
                         El prototipo solo necesita representar con claridad el tramo que prueba la hipótesis — no un app completo.
                     </p>
@@ -565,12 +593,12 @@
 
         <!-- 8 · Decisión -->
         <div class="slide slide-scrollable">
-            <div class="glass-card">
+            <div class="slide-inner">
                 <div class="slide-head stagger d-1">
                     <span class="badge">08 · Decisión</span>
                     <span class="slide-kicker">Criterios · Escenarios · Confiabilidad · Cierre</span>
                 </div>
-                <h2 class="stagger d-1">Cómo sabremos si avanzar</h2>
+                <h2 class="stagger d-1">Cómo sabremos si <span class="grad">avanzar</span></h2>
                 <p class="lead compact stagger d-1">
                     Aprendemos si los usuarios aceptan declarar preferencias sin fricción y si eso construye
                     una experiencia <strong>más relevante y accionable</strong> en la primera sesión.
@@ -633,7 +661,10 @@
             </div>
         </div>
 
-        <div class="progress-bar" id="progress-bar"></div>
+        <div class="progress-track">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="slide-counter" id="slide-counter">01 / 09</div>
         <div class="nav-hint">Clic / Flechas · (D) Demo · (1–3) Fallback · (F) Fullscreen · (Home) Inicio</div>
     </div>
 
