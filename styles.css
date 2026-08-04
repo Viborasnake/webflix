@@ -551,85 +551,51 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Arte: stack glass W */
+/* Arte: mockups de teléfono (capa principal a la derecha) */
 .home-art {
   position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 320px;
+  min-height: min(58vh, 520px);
   pointer-events: none;
 }
 
-.glass-stack {
-  position: relative;
-  width: min(300px, 28vw);
-  height: min(300px, 28vw);
-  perspective: 1000px;
+.home-phones {
+  width: min(100%, 520px);
+  max-height: min(62vh, 560px);
+  height: auto;
+  object-fit: contain;
+  object-position: center right;
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 40px rgba(139, 92, 246, 0.25));
+  animation: phones-float 8s var(--ease-in-out) infinite alternate;
+  will-change: transform;
 }
 
-.glass-panel {
+/* Capa de fondo de la portada: mismos mockups, difusos */
+.home-phones-back {
   position: absolute;
   inset: 0;
-  border-radius: 28px;
+  z-index: 0;
+  pointer-events: none;
   background:
-    linear-gradient(145deg, rgba(167, 139, 250, 0.14) 0%, rgba(30, 20, 60, 0.28) 42%, rgba(10, 10, 20, 0.4) 100%);
-  border: 1.5px solid rgba(167, 139, 250, 0.45);
-  box-shadow:
-    0 0 48px rgba(139, 92, 246, 0.28),
-    0 28px 56px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    url('assets/home-phones.jpg') 88% 55% / min(70vw, 820px) auto no-repeat;
+  opacity: 0.22;
+  filter: blur(18px) saturate(1.15);
+  transform: scale(1.12);
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 35%, rgba(0,0,0,0.6) 55%, black 75%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 35%, rgba(0,0,0,0.6) 55%, black 75%);
 }
 
-.glass-panel .w-letter {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(5rem, 9vw, 7rem);
-  line-height: 1;
-  background: linear-gradient(180deg, #e0e7ff 0%, #a78bfa 42%, #6366f1 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 28px rgba(139, 92, 246, 0.45));
-}
-
-.glass-panel.p1 {
-  z-index: 4;
-  transform: translate(0, 0) rotateY(-10deg) rotateX(5deg);
-  animation: float-panel 9s var(--ease-in-out) infinite alternate;
-}
-.glass-panel.p2 {
-  z-index: 3;
-  transform: translate(26px, 14px) scale(0.94) rotateY(-10deg);
-  opacity: 0.5;
-  border-color: rgba(139, 92, 246, 0.28);
-}
-.glass-panel.p3 {
+.slide-cover .home-canvas {
+  position: relative;
   z-index: 2;
-  transform: translate(52px, 28px) scale(0.88) rotateY(-10deg);
-  opacity: 0.28;
-  border-color: rgba(139, 92, 246, 0.16);
-}
-.glass-panel.p4 {
-  z-index: 1;
-  transform: translate(78px, 42px) scale(0.82) rotateY(-10deg);
-  opacity: 0.14;
-  border-color: rgba(139, 92, 246, 0.1);
 }
 
-.glass-panel.p2 .w-letter,
-.glass-panel.p3 .w-letter,
-.glass-panel.p4 .w-letter {
-  display: none;
-}
-
-@keyframes float-panel {
-  from { transform: translate(0, 0) rotateY(-10deg) rotateX(5deg); }
-  to { transform: translate(0, -12px) rotateY(-7deg) rotateX(2deg); }
+@keyframes phones-float {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, -10px, 0); }
 }
 
 /* ---------- Slide final · Muchas gracias ---------- */
@@ -1365,7 +1331,20 @@ ol.steps li::before {
   }
 
   .home-art {
-    display: none;
+    min-height: 240px;
+    order: -1;
+  }
+
+  .home-phones {
+    max-height: 280px;
+    width: min(100%, 400px);
+  }
+
+  .home-phones-back {
+    opacity: 0.14;
+    background-position: center 20%;
+    mask-image: linear-gradient(180deg, black 0%, transparent 70%);
+    -webkit-mask-image: linear-gradient(180deg, black 0%, transparent 70%);
   }
 
   .home-chips {
@@ -1399,11 +1378,12 @@ ol.steps li::before {
 
 @media (prefers-reduced-motion: reduce) {
   .slide, .slide .stagger, .progress-bar,
-  .bg-photo, .bg-photo-glow, .glass-panel.p1 {
+  .bg-photo, .bg-photo-glow, .home-phones {
     animation: none !important;
     transition: none !important;
   }
   .slide .stagger { opacity: 1; transform: none; }
   .slide.active { transform: none; }
   .bg-photo { transform: scale(1.03); }
+  .home-phones { transform: none; }
 }
