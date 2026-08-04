@@ -555,26 +555,25 @@ html, body {
 .team-chip[data-accent="cyan"] { --chip-accent: var(--cyan-400); }
 
 .team-avatar {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.78rem;
-  color: var(--white);
+  object-fit: cover;
+  object-position: center 12%;
+  display: block;
+  background: linear-gradient(145deg, #1a1a28, #0c0c14);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
 .team-chip[data-accent="purple"] .team-avatar {
-  background: linear-gradient(145deg, #a78bfa, #7c3aed);
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+  border-color: rgba(167, 139, 250, 0.55);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
 }
 .team-chip[data-accent="cyan"] .team-avatar {
-  background: linear-gradient(145deg, #67e8f9, #06b6d4);
-  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
 }
 
 .team-name {
@@ -1307,18 +1306,15 @@ ol.steps li::before {
 .slide-cover .speaker-tag { display: none; }
 
 .speaker-avatar {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.72rem;
-  color: var(--white);
-  background: linear-gradient(135deg, var(--purple-500), var(--cyan-400));
-  box-shadow: 0 4px 14px rgba(34, 211, 238, 0.25);
+  object-fit: cover;
+  object-position: center 12%;
+  display: block;
+  background: linear-gradient(145deg, #1a1a28, #0c0c14);
+  border: 2px solid rgba(167, 139, 250, 0.45);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
   flex-shrink: 0;
 }
 .speaker-name {
