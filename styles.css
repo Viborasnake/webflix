@@ -212,6 +212,89 @@ html, body {
   text-align: right;
 }
 
+/* Timer de pitch: 0–8 ok · 8–10 warn · 10+ danger */
+.pitch-timer {
+  position: absolute;
+  top: var(--slide-pad-y);
+  right: var(--slide-pad-x);
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+  padding: 0.55rem 0.9rem 0.5rem;
+  border-radius: 14px;
+  background: rgba(8, 8, 16, 0.72);
+  border: 1px solid rgba(34, 211, 238, 0.28);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  min-width: 7.5rem;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+}
+
+.pitch-timer-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.pitch-timer-time {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  color: var(--cyan-400);
+  transition: color 0.35s ease;
+}
+
+.pitch-timer-meta {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.pitch-timer[data-state="ok"] {
+  border-color: rgba(34, 211, 238, 0.3);
+}
+.pitch-timer[data-state="ok"] .pitch-timer-time {
+  color: var(--cyan-400);
+}
+
+.pitch-timer[data-state="warn"] {
+  border-color: rgba(251, 191, 36, 0.45);
+  background: rgba(40, 28, 8, 0.78);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), 0 0 24px rgba(251, 191, 36, 0.12);
+}
+.pitch-timer[data-state="warn"] .pitch-timer-time {
+  color: var(--warning-400);
+}
+.pitch-timer[data-state="warn"] .pitch-timer-label {
+  color: rgba(251, 191, 36, 0.7);
+}
+
+.pitch-timer[data-state="danger"] {
+  border-color: rgba(248, 113, 113, 0.55);
+  background: rgba(40, 10, 12, 0.82);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 28px rgba(239, 68, 68, 0.2);
+  animation: timer-pulse 1.2s ease-in-out infinite;
+}
+.pitch-timer[data-state="danger"] .pitch-timer-time {
+  color: var(--error-400);
+}
+.pitch-timer[data-state="danger"] .pitch-timer-label {
+  color: rgba(248, 113, 113, 0.8);
+}
+
+@keyframes timer-pulse {
+  0%, 100% { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 18px rgba(239, 68, 68, 0.15); }
+  50% { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 32px rgba(239, 68, 68, 0.35); }
+}
+
 /* ---------- Slides ---------- */
 .slide {
   position: absolute;

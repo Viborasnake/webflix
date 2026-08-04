@@ -4,14 +4,95 @@ document.addEventListener('DOMContentLoaded', () => {
   const slideCounter = document.getElementById('slide-counter');
   const deckLogo = document.getElementById('deck-logo');
   const demoLevels = document.querySelectorAll('[data-demo-level]');
+  const timerEl = document.getElementById('pitch-timer');
+  const timerTimeEl = document.getElementById('pitch-timer-time');
+
   let currentSlide = 0;
   let currentDemoLevel = 1;
 
   const DEMO_SLIDE_INDEX = 7;
   const total = slides.length;
 
+  // Timer: meta 8 min, máximo 10 min
+  const WARN_MS = 8 * 60 * 1000;
+  const DANGER_MS = 10 * 60 * 1000;
+  let timerStartedAt = null;
+  let timerAccumulatedMs = 0;
+  let timerRunning = false;
+  let timerRaf = null;
+
   function pad(n) {
     return String(n).padStart(2, '0');
+  }
+
+  function formatMs(ms) {
+    const totalSec = Math.floor(ms / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${pad(m)}:${pad(s)}`;
+  }
+
+  function getElapsedMs() {
+    if (!timerRunning || timerStartedAt == null) return timerAccumulatedMs;
+    return timerAccumulatedMs + (Date.now() - timerStartedAt);
+  }
+
+  function timerState(ms) {
+    if (ms >= DANGER_MS) return 'danger';
+    if (ms >= WARN_MS) return 'warn';
+    return 'ok';
+  }
+
+  function renderTimer() {
+    const elapsed = getElapsedMs();
+    if (timerTimeEl) timerTimeEl.textContent = formatMs(elapsed);
+    if (timerEl) timerEl.dataset.state = timerState(elapsed);
+  }
+
+  function tickTimer() {
+    renderTimer();
+    if (timerRunning) {
+      timerRaf = requestAnimationFrame(tickTimer);
+    }
+  }
+
+  function startTimer() {
+    if (timerRunning) return;
+    timerRunning = true;
+    timerStartedAt = Date.now();
+    if (timerRaf) cancelAnimationFrame(timerRaf);
+    timerRaf = requestAnimationFrame(tickTimer);
+  }
+
+  function pauseTimer() {
+    if (!timerRunning) return;
+    timerAccumulatedMs = getElapsedMs();
+    timerRunning = false;
+    timerStartedAt = null;
+    if (timerRaf) cancelAnimationFrame(timerRaf);
+    timerRaf = null;
+    renderTimer();
+  }
+
+  function toggleTimer() {
+    if (timerRunning) pauseTimer();
+    else startTimer();
+  }
+
+  function resetTimer() {
+    timerRunning = false;
+    timerStartedAt = null;
+    timerAccumulatedMs = 0;
+    if (timerRaf) cancelAnimationFrame(timerRaf);
+    timerRaf = null;
+    renderTimer();
+  }
+
+  /** Arranca el timer al salir de la portada (primera vez) */
+  function maybeAutoStartTimer() {
+    if (currentSlide > 0 && timerAccumulatedMs === 0 && !timerRunning && timerStartedAt == null) {
+      startTimer();
+    }
   }
 
   function updateSlides() {
@@ -24,10 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slideCounter) {
       slideCounter.textContent = `${pad(currentSlide + 1)} / ${pad(total)}`;
     }
-    // Logo global solo fuera de portada
     if (deckLogo) {
       deckLogo.hidden = currentSlide === 0;
     }
+    maybeAutoStartTimer();
   }
 
   function nextSlide() {
@@ -111,6 +192,16 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'F':
         toggleFullScreen();
         break;
+      case 't':
+      case 'T':
+        e.preventDefault();
+        toggleTimer();
+        break;
+      case 'r':
+      case 'R':
+        e.preventDefault();
+        resetTimer();
+        break;
       default:
         break;
     }
@@ -119,6 +210,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('mousedown', (e) => {
     if (isInteractiveTarget(e.target)) return;
     if (e.target.closest && e.target.closest('#demo-mockup')) return;
+    if (e.target.closest && e.target.closest('#pitch-timer')) {
+      // Clic en timer: pause/play
+      toggleTimer();
+      return;
+    }
     if (e.button === 0) nextSlide();
   });
 
@@ -136,5 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   setDemoLevel(currentDemoLevel);
+  renderTimer();
   updateSlides();
 });
