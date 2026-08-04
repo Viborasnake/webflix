@@ -593,6 +593,83 @@ html, body {
   flex-shrink: 0;
 }
 
+/* ---------- Slide final · Muchas gracias ---------- */
+.slide-thanks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  padding: 3rem clamp(1.75rem, 4.5vw, 4rem) 4rem;
+}
+
+.thanks-stage {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.thanks-brand {
+  margin-bottom: 1.25rem;
+}
+
+.thanks-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3.2rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  margin: 0 0 0.75rem;
+  padding-left: 1.15rem;
+  border-left: 4px solid transparent;
+  border-image: linear-gradient(180deg, var(--cyan-400), var(--purple-500)) 1;
+  text-transform: none;
+}
+
+.thanks-title .grad {
+  background: linear-gradient(100deg, #c4b5fd 0%, #8b5cf6 45%, #6366f1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.thanks-sub {
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  color: var(--text-secondary);
+  margin: 0 0 2.5rem;
+  padding-left: 1.2rem;
+  font-weight: 400;
+}
+
+.thanks-roster {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.thanks-avatar {
+  width: clamp(120px, 14vw, 168px) !important;
+  height: clamp(120px, 14vw, 168px) !important;
+}
+
+.thanks-roster .cast-name {
+  font-size: 1.12rem;
+}
+
+.thanks-roster .cast-role {
+  font-size: 0.88rem;
+}
+
+.thanks-foot {
+  margin-top: 0.25rem;
+}
+
+.slide-thanks .speaker-tag {
+  display: none;
+}
+
 /* ---------- Content slides ---------- */
 .slide-inner {
   width: 100%;
