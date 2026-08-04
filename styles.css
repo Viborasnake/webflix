@@ -429,44 +429,55 @@ html, body {
   font-weight: 400;
 }
 
-/* Pills meta compactas */
+/* Meta académica — prioridad baja (secundaria al pitch) */
 .cover-pills {
   display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.65rem;
   width: 100%;
-  max-width: 520px;
+  max-width: 42ch;
+  margin-top: 0.25rem;
+  opacity: 0.55;
 }
 
 .cover-pill {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  padding: 0.85rem 1.1rem;
-  border-radius: 14px;
-  background: rgba(14, 14, 22, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
+  display: inline;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-tertiary);
 }
 
 .cover-pill-label {
   font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--purple-400);
+  color: rgba(255, 255, 255, 0.28);
+  margin-right: 0.3rem;
 }
 
 .cover-pill:nth-child(2) .cover-pill-label {
-  color: var(--cyan-400);
+  color: rgba(255, 255, 255, 0.28);
 }
 
 .cover-pill-value {
-  font-size: 0.95rem;
-  font-weight: 500;
-  line-height: 1.35;
-  color: var(--white);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.cover-pill + .cover-pill::before {
+  content: '·';
+  margin-right: 0.65rem;
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: 400;
 }
 
 /* Cast — avatares grandes */
