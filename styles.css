@@ -121,8 +121,9 @@ html, body {
   pointer-events: none;
 }
 
-/* display:flex pisa el atributo hidden — forzar ocultar en portada */
-.deck-logo[hidden] {
+/* display:flex pisa el atributo hidden — forzar ocultar */
+.deck-logo[hidden],
+body:has(.slide.active[data-no-deck-logo]) .deck-logo {
   display: none !important;
 }
 
@@ -419,41 +420,30 @@ html, body {
   display: none;
 }
 
-/* ---------- Portada de presentación (post-teaser, estilo mockup) ---------- */
+/* ---------- Portada de presentación (limpia, post-teaser) ---------- */
 .slide-cover {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: left;
-  padding: 2.5rem clamp(1.75rem, 4vw, 3.5rem) 3.75rem;
+  padding: 2.75rem clamp(2rem, 4.5vw, 3.75rem) 3.5rem;
   position: relative;
   overflow: hidden;
 }
 
-.cover-layout {
+.cover-shell {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1320px;
+  max-width: 1180px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.95fr);
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  align-items: center;
-}
-
-.cover-left {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .cover-brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.75rem;
 }
 
 .cover-brand .logo-mark {
@@ -465,6 +455,17 @@ html, body {
 
 .cover-brand .logo-word {
   font-size: 1.4rem;
+}
+
+.cover-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.95fr);
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+  align-items: center;
+}
+
+.cover-copy {
+  min-width: 0;
 }
 
 .cover-kicker {
@@ -479,7 +480,7 @@ html, body {
 .cover-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.4rem, 4.5vw, 3.85rem);
+  font-size: clamp(2.5rem, 4.6vw, 3.75rem);
   line-height: 1.08;
   letter-spacing: -0.035em;
   color: var(--white);
@@ -487,7 +488,7 @@ html, body {
   padding-left: 1.15rem;
   border-left: 4px solid transparent;
   border-image: linear-gradient(180deg, var(--cyan-400), var(--purple-500)) 1;
-  max-width: 14ch;
+  max-width: 13ch;
 }
 
 .cover-title .grad {
@@ -499,106 +500,17 @@ html, body {
 }
 
 .cover-subtitle {
-  font-size: clamp(1rem, 1.35vw, 1.15rem);
-  line-height: 1.5;
+  font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+  line-height: 1.55;
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  max-width: 40ch;
+  margin-bottom: 1.75rem;
+  max-width: 34ch;
   font-weight: 400;
 }
 
-/* Meta bar curso / programa / institución */
-.cover-meta {
-  display: grid;
-  grid-template-columns: 1.1fr 1.45fr 0.95fr;
-  width: 100%;
-  max-width: 640px;
-  padding: 0.95rem 1rem;
-  margin-bottom: 1.5rem;
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(18, 18, 30, 0.82), rgba(10, 10, 18, 0.88));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px);
-}
-
-.cover-meta-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
-  padding: 0.2rem 0.65rem;
-  position: relative;
-}
-
-.cover-meta-item:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 12%;
-  bottom: 12%;
-  width: 1px;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.cover-meta-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  background: rgba(139, 92, 246, 0.1);
-  color: var(--purple-400);
-}
-
-.cover-meta-icon.cyan {
-  border-color: rgba(34, 211, 238, 0.35);
-  background: rgba(34, 211, 238, 0.1);
-  color: var(--cyan-400);
-}
-
-.cover-meta-icon svg {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.cover-meta-icon svg rect {
-  fill: none;
-  stroke: currentColor;
-}
-
-.cover-meta-label {
-  display: block;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--purple-400);
-  margin-bottom: 0.2rem;
-}
-
-.cover-meta-item:nth-child(2) .cover-meta-label {
-  color: var(--cyan-400);
-}
-
-.cover-meta-value {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 500;
-  line-height: 1.35;
-  color: var(--white);
-}
-
-/* Presentan + chips en fila */
 .cover-team {
   width: 100%;
+  max-width: 560px;
 }
 
 .presentan-row {
@@ -621,7 +533,7 @@ html, body {
 .presentan-line {
   display: block;
   height: 2px;
-  width: 48px;
+  width: 56px;
   border-radius: 2px;
   background: linear-gradient(90deg, var(--cyan-400), transparent);
 }
@@ -631,24 +543,23 @@ html, body {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.55rem;
-  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
 }
 
 .home-chip {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.7rem;
   margin: 0;
-  padding: 0.55rem 0.7rem 0.55rem 0.55rem;
-  border-radius: 14px;
-  background: rgba(12, 12, 20, 0.75);
+  padding: 0.6rem 0.85rem 0.6rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(10, 10, 18, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
   min-width: 0;
 }
 
@@ -659,8 +570,8 @@ html, body {
 .home-chip::after {
   content: '';
   position: absolute;
-  left: 14%;
-  right: 14%;
+  left: 18%;
+  right: 18%;
   bottom: 0;
   height: 2px;
   border-radius: 2px;
@@ -671,8 +582,8 @@ html, body {
 .home-chip[data-accent="cyan"] { --chip-accent: var(--cyan-400); }
 
 .home-chip-photo {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   object-fit: cover;
   object-position: center 10%;
@@ -701,7 +612,7 @@ html, body {
 
 .cast-name {
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--white);
   letter-spacing: -0.02em;
@@ -709,67 +620,57 @@ html, body {
   border: none;
   padding: 0;
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .cast-role {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: var(--text-tertiary);
   margin: 0;
   line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-/* Visual derecho: teléfonos + play */
+.cover-academic {
+  margin: 1.35rem 0 0;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.02em;
+}
+
+/* Mockups: sin caja gris, integrados al fondo */
 .cover-visual {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: min(56vh, 500px);
+  min-height: min(52vh, 460px);
   pointer-events: none;
 }
 
+.cover-phones-wrap {
+  position: relative;
+  width: min(100%, 480px);
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  background: transparent;
+}
+
 .home-phones {
-  width: min(100%, 560px);
-  max-height: min(64vh, 580px);
+  display: block;
+  width: 100%;
   height: auto;
   object-fit: contain;
-  object-position: center;
-  filter: drop-shadow(0 28px 50px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 48px rgba(139, 92, 246, 0.28));
+  /* Integra el fondo gris del render con el púrpura del deck */
+  mix-blend-mode: screen;
+  opacity: 0.98;
+  filter: contrast(1.05) saturate(1.08) drop-shadow(0 20px 40px rgba(0, 0, 0, 0.35));
   animation: phones-float 8s var(--ease-in-out) infinite alternate;
   will-change: transform;
 }
 
-.cover-play {
-  position: absolute;
-  right: 6%;
-  bottom: 18%;
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-  background: linear-gradient(145deg, #a78bfa, #6366f1);
-  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.45), 0 0 24px rgba(139, 92, 246, 0.35);
-  animation: phones-float 8s var(--ease-in-out) infinite alternate;
-}
-
-.cover-play svg {
-  width: 28px;
-  height: 28px;
-  margin-left: 3px;
-}
-
 @keyframes phones-float {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(0, -10px, 0); }
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(0, -8px, 0) scale(1.01); }
 }
 
 /* Compat footer gracias */
@@ -1518,38 +1419,19 @@ ol.steps li::before {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
-  .cover-layout {
+  .cover-body {
     grid-template-columns: 1fr;
-    max-width: 780px;
+    max-width: 640px;
   }
 
   .cover-visual {
-    min-height: 260px;
+    min-height: 240px;
     order: -1;
   }
 
-  .home-phones {
-    max-height: 300px;
-    width: min(100%, 420px);
-  }
-
-  .cover-play {
-    width: 48px;
-    height: 48px;
-    bottom: 12%;
-  }
-
-  .cover-team-row {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .cover-meta {
-    grid-template-columns: 1fr;
-    max-width: none;
-  }
-
-  .cover-meta-item:not(:last-child)::after {
-    display: none;
+  .cover-phones-wrap {
+    width: min(100%, 400px);
+    margin: 0 auto;
   }
 
   .kpi-strip, .grid-4, .criteria-grid, .var-row {
