@@ -1,0 +1,15 @@
+Basado en el documento que compartiste (el Experiment Canvas y las hipótesis del Grupo 5) y en las tendencias globales de streaming, te recomiendo enfáticamente que realices el experimento en dispositivos móviles.
+Aquí tienes el razonamiento fundamentado para defender esta decisión en tu Pitch de Shark Tank:
+1. Es el contexto real del problema (El "Buyer Persona")
+En el documento, definen claramente al "Nuevo usuario frustrado" que experimenta una mala experiencia de descubrimiento. A nivel global, los dispositivos móviles son los más utilizados para el consumo de streaming, especialmente para el descubrimiento y registro inicial.
+Si el onboarding y la pantalla de inicio son los puntos de dolor, debes probar la solución exactamente donde ocurre la fricción principal. Siendo un mercado masivo (310 millones de suscriptores), la mayoría de las interacciones iniciales (como registrar gustos o explorar el catálogo desde la App) ocurren en smartphones.
+2. Cumple con tus restricciones (Tiempo y Capacidad)
+El documento menciona en la sección de Restricciones que tienen "Poco tiempo", "Capacidad del equipo" y que el alcance debe ser limitado ("utilizaremos la infraestructura y las señales disponibles... en mercados y plataformas seleccionadas").
+Hacer el experimento en escritorio (Desktop) implicaría un desarrollo más complejo (navegador, mouse, pantallas grandes) y probablemente no es el flujo principal de adopción de nuevos usuarios. En móvil, la interacción es táctil, rápida y directa, alineándose con la métrica de éxito del Experiment Canvas: "La mayoría completa la selección en menos de 30 segundos".
+3. Alineación con la hipótesis de Onboarding
+La hipótesis seleccionada es: "Creemos que incorporar una selección breve de gustos y géneros para los usuarios nuevos, cuando completan el onboarding...".
+En un entorno móvil, este flujo de onboarding rápido y minimalista (taps rápidos para elegir 3 géneros) es la norma de la industria y donde más impacta la fricción. En desktop, los usuarios son más propensos a tolerar recorridos más largos por el catálogo, lo que sesgaría tus datos experimentales.
+Cómo presentarlo en el Pitch:
+Cuando les pregunten por qué eligieron móvil, pueden responder:
+
+"Elegimos la plataforma móvil para el Experiment Canvas porque es el primer punto de contacto donde nuestros nuevos usuarios experimentan el problema del descubrimiento. Dado que nuestros nuevos usuarios globales acceden principalmente vía App, y que nuestra hipótesis busca reducir la fricción del onboarding a menos de 30 segundos, el entorno móvil es el que mejor valida nuestra métrica de éxito. Además, se alinea con nuestras restricciones de recursos, permitiéndonos un alcance técnico del MVP mucho más ágil que una solución de escritorio."

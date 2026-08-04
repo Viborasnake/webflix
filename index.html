@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pitch Shark Tank · WebFlix · Experimentación, IA y Validación de Producto · FEN">
+    <title>WebFlix · Pitch Shark Tank | Grupo 5 · FEN</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="presentation">
+        <!-- Atmósfera DS: gradientes de fondo suaves (Purple / Cyan controlados) -->
+        <div class="bg-atmosphere" aria-hidden="true">
+            <div class="bg-base"></div>
+            <div class="bg-mesh"></div>
+            <div class="bg-orb bg-orb--purple"></div>
+            <div class="bg-orb bg-orb--cyan"></div>
+            <div class="bg-orb bg-orb--deep"></div>
+            <div class="bg-sheen"></div>
+            <div class="bg-vignette"></div>
+        </div>
+
+        <!-- Slide 0: Portada -->
+        <div class="slide">
+            <div class="glass-card cover-card">
+                <div class="cover-brand stagger d-1">
+                    <span class="logo-mark">W</span>
+                    <span class="logo-word">WebFlix</span>
+                </div>
+
+                <p class="cover-kicker stagger d-1">Pitch Shark Tank · Grupo 5</p>
+                <h1 class="cover-title stagger d-2">El primer momento de valor está fallando</h1>
+                <p class="cover-subtitle stagger d-2">Validación de onboarding con preferencias tempranas · Caso Streaming</p>
+
+                <div class="cover-meta stagger d-3">
+                    <div class="cover-meta-block">
+                        <span class="cover-meta-label">Curso</span>
+                        <span class="cover-meta-value">Experimentación, IA y Validación de Producto</span>
+                    </div>
+                    <div class="cover-meta-block">
+                        <span class="cover-meta-label">Programa</span>
+                        <span class="cover-meta-value">Diplomado en Estrategia y Experiencia de Productos en la Era de la IA</span>
+                    </div>
+                    <div class="cover-meta-block">
+                        <span class="cover-meta-label">Institución</span>
+                        <span class="cover-meta-value">FEN</span>
+                    </div>
+                </div>
+
+                <div class="team-grid stagger d-4">
+                    <div class="team-member">
+                        <div class="team-avatar">EF</div>
+                        <div>
+                            <div class="team-name">Erick Fuentealba</div>
+                            <div class="team-role">Abre el pitch</div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">TV</div>
+                        <div>
+                            <div class="team-name">Tamara Valdivia</div>
+                            <div class="team-role">Estrategia e hipótesis</div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">VN</div>
+                        <div>
+                            <div class="team-name">Valeria Nieto</div>
+                            <div class="team-role">Metodología y métricas</div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">CP</div>
+                        <div>
+                            <div class="team-name">Cristian Pizarro</div>
+                            <div class="team-role">Demo y decisión</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 1: Erick -->
+        <div class="slide">
+            <div class="glass-card">
+                <span class="badge stagger d-1">Problema</span>
+                <h1 class="stagger d-2">El primer momento de valor está fallando</h1>
+                <p class="stagger d-3" style="max-width: 800px;">Un usuario no se suscribe a una plataforma de streaming para recorrer un catálogo interminable. Se suscribe para encontrar rápidamente algo que realmente quiera ver.</p>
+                <p class="stagger d-4" style="max-width: 800px; color: var(--purple-400);">Actualmente, nuestros nuevos usuarios experimentan una mala experiencia de descubrimiento inicial.</p>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">EF</div>
+                <div class="speaker-name">Erick Fuentealba</div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Erick -->
+        <div class="slide">
+            <div class="glass-card grid-2">
+                <div class="stagger d-1">
+                    <span class="badge">Datos y Contexto</span>
+                    <h2>La caída ya es visible</h2>
+                    <p>Aunque somos una plataforma global con <strong>310 millones de suscriptores</strong> y 18 años de experiencia, nuestro crecimiento anual se desacelera. El problema ya impacta métricas clave:</p>
+                </div>
+                <div class="stagger d-2">
+                    <div class="card-box" style="margin-bottom: 1.5rem;">
+                        <div class="huge-number">42% → 29%</div>
+                        <h3 style="color: var(--white); margin-bottom: 0.5rem;">Caída drástica de Day-7 Retention</h3>
+                        <p style="margin: 0; font-size: 1rem;">La consecuencia directa de que el usuario asuma tempranamente que "no hay nada para él".</p>
+                    </div>
+                    <ul class="stagger d-3">
+                        <li>Menor <strong>Watch Time promedio</strong>.</li>
+                        <li>Menos <strong>sesiones</strong> por usuario.</li>
+                        <li>Aumento del <strong>churn</strong> en el primer mes.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">EF</div>
+                <div class="speaker-name">Erick Fuentealba</div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Tamara -->
+        <div class="slide">
+            <div class="glass-card stagger d-1">
+                <span class="badge">Estrategia</span>
+                <h2>La cadena de impacto que queremos validar</h2>
+
+                <div class="impact-chain stagger d-2">
+                    Preferencias <span>→</span> Relevancia <span>→</span> Reproducción <span>→</span> Activación <span>→</span> Retorno
+                </div>
+
+                <div class="grid-2 stagger d-3" style="gap: 2rem; align-items: start;">
+                    <div class="card-box">
+                        <h3 style="color: var(--cyan-400);">Riesgo de Causalidad</h3>
+                        <p style="margin:0; font-size: 1rem;">Asumir que el motor de recomendaciones es el único driver del abandono.</p>
+                    </div>
+                    <div class="card-box">
+                        <h3 style="color: var(--purple-500);">Riesgo de Fricción</h3>
+                        <p style="margin:0; font-size: 1rem;">Alargar el onboarding podría aumentar el abandono temprano.</p>
+                    </div>
+                </div>
+
+                <div class="footer-note stagger d-4">
+                    *El impacto final en Churn, CAC y LTV se evaluará posteriormente mediante un A/B test a escala.
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">TV</div>
+                <div class="speaker-name">Tamara Valdivia</div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Tamara -->
+        <div class="slide">
+            <div class="glass-card stagger d-1">
+                <span class="badge">Nuestra Hipótesis</span>
+                <h2>Una sola hipótesis en contexto móvil</h2>
+
+                <div class="card-box stagger d-2" style="background: rgba(139, 92, 246, 0.05); border-left: 4px solid var(--purple-500);">
+                    <p style="font-size: 1.4rem; color: var(--white); margin: 0; line-height: 1.5;">
+                        <strong>Creemos que</strong> solicitar a los usuarios nuevos la selección de 3 preferencias durante un onboarding rediseñado permitirá generar recomendaciones iniciales percibidas como más relevantes, sin agregar fricción significativa.
+                    </p>
+                </div>
+
+                <div class="stagger d-3" style="margin-top: 3rem;">
+                    <h3>¿Por qué Móvil?</h3>
+                    <p>Seleccionamos móvil porque permite probar el flujo en un contexto de interacción breve y directa, con gestos simples y una restricción explícita de menos de 30 segundos. Para reducir sesgos, ambos grupos utilizarán el mismo dispositivo y las mismas condiciones.</p>
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">TV</div>
+                <div class="speaker-name">Tamara Valdivia</div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Valeria -->
+        <div class="slide">
+            <div class="glass-card grid-2">
+                <div class="stagger d-1">
+                    <span class="badge">Metodología</span>
+                    <h2>El Experimento Mínimo</h2>
+                    <p>Validaremos <strong>deseabilidad y usabilidad</strong> mediante un prototipo móvil interactivo sin invertir prematuramente en infraestructura.</p>
+                </div>
+                <div class="stagger d-2">
+                    <div class="card-box">
+                        <h3 style="margin-bottom: 1rem;">Configuración: Wizard of Oz</h3>
+                        <ul>
+                            <li><strong>Muestra:</strong> 30–50 usuarios nuevos.</li>
+                            <li><strong>Distribución:</strong> ~20 Control vs ~20 Experimental.</li>
+                            <li><strong>Duración:</strong> Primera sesión observada y seguimiento 7 días.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">VN</div>
+                <div class="speaker-name">Valeria Nieto</div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Valeria -->
+        <div class="slide">
+            <div class="glass-card stagger d-1">
+                <span class="badge">Operación</span>
+                <h2>Qué ocurre detrás y qué observaremos</h2>
+                <div class="grid-2" style="align-items: stretch; gap: 2rem;">
+                    <div class="card-box stagger d-2">
+                        <h3 style="color: var(--cyan-400);">Magia (Wizard of Oz)</h3>
+                        <p style="font-size: 1rem; margin-bottom: 1rem;">El usuario percibe una recomendación automática, pero hacemos:</p>
+                        <ul style="font-size: 0.95rem;">
+                            <li>Preferencias seleccionadas capturadas.</li>
+                            <li>Asignación manual a un perfil predefinido.</li>
+                            <li>Portada curada manualmente en base al perfil.</li>
+                        </ul>
+                    </div>
+                    <div class="card-box stagger d-3">
+                        <h3 style="color: var(--purple-500);">Instrumentación (Eventos)</h3>
+                        <ul class="metrics-list" style="font-size: 0.95rem;">
+                            <li><code>preference_selection_started</code></li>
+                            <li><code>preference_selection_completed</code></li>
+                            <li><code>onboarding_abandoned</code></li>
+                            <li><code>content_selected</code></li>
+                            <li><code>valid_play_started</code></li>
+                            <li><code>watch_time</code> y <code>day_return</code></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-note stagger d-4">
+                    *Prototipo construido con Figma Make mediante prompts de contexto, interfaz y nuestro Design System de WebFlix.
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">VN</div>
+                <div class="speaker-name">Valeria Nieto</div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Cristian — Demo -->
+        <div class="slide">
+            <div class="glass-card grid-2" style="align-items: center;">
+                <div class="stagger d-1">
+                    <span class="badge">El Artefacto</span>
+                    <h2>Demostración del Flujo Crítico</h2>
+                    <p style="font-size: 1.4rem; color: var(--white); line-height: 1.6;">Perfil <br><span style="color: var(--cyan-400);">→ tres preferencias</span> <br>→ portada curada <br><span style="color: var(--purple-500);">→ reproducción.</span></p>
+                    <p style="font-size: 0.9rem; margin-top: 2rem; color: var(--text-tertiary);">*Contamos con respaldo local en caso de falla de internet. Atajos: (1) Iframe · (2) Video · (3) Imágenes</p>
+                </div>
+                <div class="stagger d-2">
+                    <div class="mobile-mockup" id="demo-mockup">
+                        <div class="mockup-label">[ SIMULACIÓN WIZARD OF OZ ]</div>
+                        <div class="mockup-content level-1 is-active" data-demo-level="1">
+                            <p class="mockup-placeholder">[ Iframe Figma Make / Lovable ]</p>
+                        </div>
+                        <div class="mockup-content level-2" data-demo-level="2">
+                            <p class="mockup-placeholder">[ GIF / Video Local ]</p>
+                        </div>
+                        <div class="mockup-content level-3" data-demo-level="3">
+                            <p class="mockup-placeholder">[ Imágenes Estáticas ]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">CP</div>
+                <div class="speaker-name">Cristian Pizarro</div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Cristian — Decisión -->
+        <div class="slide slide-scrollable">
+            <div class="glass-card stagger d-1">
+                <span class="badge">Conclusión</span>
+                <h2>Cómo Decidiremos</h2>
+                <p>Aprenderemos si los usuarios aceptan declarar preferencias sin fricción y si perciben la experiencia como más relevante.</p>
+                <div class="section-label">[ CRITERIOS DE ÉXITO ESPERADOS ]</div>
+
+                <div class="grid-3 stagger d-2" style="margin-bottom: 2.5rem; gap: 1rem;">
+                    <div class="card-box">
+                        <h4 style="color: var(--cyan-400);">Guardrails</h4>
+                        <ul style="font-size: 0.95rem; margin:0;">
+                            <li>≥80% completa selección.</li>
+                            <li>Mediana de tiempo ≤ 30s.</li>
+                            <li>No aumenta abandono vs Control.</li>
+                        </ul>
+                    </div>
+                    <div class="card-box card-box-highlight">
+                        <h4 style="color: var(--purple-500);">Señal Principal</h4>
+                        <ul style="font-size: 0.95rem; margin:0;">
+                            <li>La reproducción válida mejora <strong style="color: var(--white); font-size: 1.1em;">al menos 15%</strong> frente al control.</li>
+                        </ul>
+                    </div>
+                    <div class="card-box">
+                        <h4 style="color: var(--zinc-400);">Señales Secundarias</h4>
+                        <ul style="font-size: 0.95rem; margin:0;">
+                            <li>Menor tiempo a 1ra reproducción.</li>
+                            <li>Mayor relevancia percibida.</li>
+                            <li>Watch Time inicial superior.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid-3 stagger d-3 decision-grid">
+                    <div class="decision-card decision-confirm">
+                        <strong>✅ Confirma</strong>
+                        <span>Automatizar versión mínima y ejecutar A/B a escala.</span>
+                    </div>
+                    <div class="decision-card decision-inconclusive">
+                        <strong>⚠️ Inconcluso</strong>
+                        <span>Iterar preferencias, perfiles o portada. Repetir prueba.</span>
+                    </div>
+                    <div class="decision-card decision-refute">
+                        <strong>❌ Refuta</strong>
+                        <span>Abandonar la selección explícita y probar otra palanca.</span>
+                    </div>
+                </div>
+
+                <div class="footer-note stagger d-4">
+                    *Confiabilidad: Finalización/Fricción (Moderada), Reproducción/Watch Time (Direccional), Day-7 (No concluyente en esta fase). En paralelo: Spike técnico de viabilidad.
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">CP</div>
+                <div class="speaker-name">Cristian Pizarro</div>
+            </div>
+        </div>
+
+        <div class="progress-bar" id="progress-bar"></div>
+        <div class="nav-hint">Clic / Flechas · (D) Demo · (1–3) Fallback · (F) Fullscreen · (Home) Inicio</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

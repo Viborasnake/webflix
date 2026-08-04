@@ -1,0 +1,122 @@
+Experimetación, IA y validación y decisiones de producto con IA
+Estructura del Módulo
+Módulo 6: cuatro clases aplicadas sobre experimentación, IA y validación de producto
+
+Clases 2, 3 y 4 son prácticas: cada entregable alimenta la siguiente clase
+
+Objetivo: reducir incertidumbre antes de construir, usando IA como acelerador
+
+Idea → Hipótesis → Experimento: El Orden Importa
+Idea, hipótesis y experimento son la base; evidencia, decisión y producto son su consecuencia
+
+Si la base está bien estructurada, las tres fases siguientes se generan de forma mucho más simple
+
+La velocidad de construcción ya no es la ventaja competitiva: la IA la resuelve
+
+El valor está en la definición de oportunidad, el ICP y el entendimiento del problema
+
+Construir es casi una consecuencia hoy con IA
+
+Por Qué Validar (y el Costo de No Hacerlo)
+No validar tiene cuatro costos concretos:
+
+Costo financiero: sprints gastados, tecnología contratada, features poco validadas con impacto en negocio
+
+Costo de oportunidad: elegir A significa dejar B; sin evidencia, esa elección es ciega
+
+Costo para las personas: rollback de funcionalidades, retroceso en desarrollo
+
+Costo estratégico: decisiones con exceso de confianza y poca evidencia; indicadores que no se mueven
+
+Patrón frecuente: avanzar tres, retroceder dos; mejor avanzar uno consistentemente
+
+La incertidumbre no desaparece: se paga más tarde, con tiempo y recursos
+
+No Tener Miedo a Validar
+La validación es el antídoto contra el exceso de confianza
+
+A medida que se avanza en la carrera, menos se quiere validar: ese es el riesgo
+
+En productos de millones de usuarios, una feature mal validada tiene impacto masivo
+
+Las validaciones hoy pueden correrse en horas gracias a la IA
+
+Antes tomaban semanas; ahora el mismo día se puede dejar algo en producción
+
+El verdadero activo de un equipo de producto no es el software que entrega, sino el conocimiento que acumula
+
+Desarrollar el músculo de validación hace mejor profesional
+
+Riesgos de Construir Sin Evidencia
+Tres riesgos principales si no se valida:
+
+Construir lo incorrecto: lo que el usuario no necesita
+
+Perder oportunidades: se elige un camino sin evidencia suficiente
+
+Erosionar la confianza del cliente: cada mala decisión aleja a las personas de la marca
+
+Intuición vs. evidencia:
+
+La intuición es rápida pero no da certeza; puede llevar a construir lo incorrecto más rápido
+
+La evidencia toma más tiempo pero reduce la incertidumbre y entrega decisiones, no suposiciones
+
+Gran Tarea: Propuesta de Valor del Producto
+Todo el backlog y las funcionalidades deben estar conectados a la propuesta de valor del producto
+
+No al revés: sacar features mediocres tratando de construir propuesta de valor no funciona
+
+Preguntas clave a mantener sobre la mesa:
+
+¿Qué estamos midiendo realmente?
+
+¿Qué fuerzas externas podrían explicarlo?
+
+¿Qué tan conectada está esta verdad con el problema que queremos resolver para el usuario?
+
+Los experimentos son un lenguaje transversal: diseño, producto, legal, finanzas, ventas deben hablar el mismo idioma
+
+Menos opiniones, más evidencia
+
+IA Como Acelerador de Experimentación
+La IA no toma decisiones de producto: multiplica la velocidad para encontrar la decisión correcta
+
+Mientras más contexto se le entrega a la IA, mejor es el output
+
+Inputs útiles: entrevistas, analytics, reviews, scripts de call center, datos de comportamiento
+
+Si falta contexto, la IA lo inventa: usar prompts como “pregúntame los gaps antes de proceder”
+
+Cita de Andrej Karpathy (ex OpenAI, Anthropic): “You can outsource your thinking, but you can’t outsource understanding”
+
+El criterio y el entendimiento de lo que se quiere impactar no se delegan a la IA
+
+Demo en Figma Make: prototipo funcional de dashboard de asistencia generado con un prompt básico
+
+Herramientas como Stitch, Figma Make y Lovable permiten prototipar en minutos
+
+Heurísticas de Usuario y de Equipo
+Sesgos de usuario que afectan el diseño de experimentos:
+
+Anclaje: una referencia inicial altera evaluaciones posteriores
+
+Aversión a la pérdida: perder duele más que ganar lo equivalente
+
+Disponibilidad: se sobrepone lo que es fácil de recordar
+
+Framing: la misma información produce decisiones distintas según cómo se presenta
+
+Efecto default: la opción predeterminada modifica la conducta (dejar descuentos habilitados por defecto)
+
+Prueba social: las decisiones se influyen por lo que hacen los otros
+
+Sesgos de equipo que distorsionan la interpretación:
+
+Sesgo de confirmación y de supervivencia: los más complejos de controlar
+
+Correlación vs. causalidad: confundir relaciones con causa-efecto real
+
+Lectura prematura: interpretar resultados antes de tener suficiente evidencia
+
+Al lanzar a producción: conectar analytics desde el día uno; data de la primera semana no se recupera después

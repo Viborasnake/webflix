@@ -1,0 +1,1060 @@
+Actúa como Lead Product Designer, Design Systems Designer y especialista en accesibilidad digital. Crea en Figma Make un sistema de diseño móvil completo, profesional, escalable y documentado para una plataforma ficticia de streaming llamada **Webflix**.
+
+No diseñes solamente pantallas independientes. Construye una biblioteca visual coherente basada en variables, estilos, componentes reutilizables, propiedades, variantes y patrones de interfaz.
+
+El sistema debe estar preparado para diseñar posteriormente un experimento Wizard of Oz que busca validar si una selección breve de gustos durante el onboarding permite entregar recomendaciones iniciales más relevantes a usuarios nuevos.
+
+## 1. Objetivo del sistema
+
+Crear un Design System que permita construir de manera consistente:
+
+* Onboarding de personalización.
+* Selección de preferencias mediante swipe.
+* Confirmación de gustos.
+* Transición de procesamiento.
+* Inicio personalizado de streaming.
+* Filas horizontales de contenido.
+* Vista de detalle.
+* Reproductor simulado.
+* Encuestas y mensajes posteriores a la reproducción.
+
+El sistema debe sentirse:
+
+* Cinematográfico.
+* Inmersivo.
+* Futurista.
+* Tecnológico.
+* Premium.
+* Accesible.
+* Claro y fácil de usar.
+* Diferente de Netflix y de otras plataformas existentes.
+
+No copies la marca, el color rojo, la “N”, la tipografía, las tarjetas ni las composiciones exactas de Netflix.
+
+## 2. Configuración general
+
+Diseña el sistema principalmente para aplicaciones móviles.
+
+Frame principal:
+
+* Ancho: 390 px.
+* Alto: 844 px.
+* Diseño adaptable a otros tamaños móviles.
+* Considerar safe areas superiores e inferiores.
+* Usar Auto Layout en todos los componentes.
+* Usar constraints y tamaños adaptables.
+* Priorizar estructuras fluidas en lugar de posiciones absolutas.
+
+Crea una página principal llamada:
+
+**Webflix Design System**
+
+Organízala en las siguientes secciones:
+
+1. Overview.
+2. Brand.
+3. Foundations.
+4. Variables.
+5. Components.
+6. Patterns.
+7. Templates.
+8. Accessibility.
+9. Documentation.
+
+## 3. Identidad de marca
+
+Crea una identidad propia para Webflix.
+
+### Logotipo
+
+Diseña un wordmark sencillo con el texto:
+
+**Webflix**
+
+Incluye un símbolo abstracto inspirado en una letra “W” construida mediante haces de luz, planos geométricos o fragmentos digitales.
+
+Características:
+
+* Geométrico.
+* Minimalista.
+* Tecnológico.
+* Reconocible en tamaños pequeños.
+* Morado eléctrico sobre fondo oscuro.
+* Sin usar rojo.
+* Sin imitar el símbolo de Netflix.
+* Sin efectos 3D excesivos.
+
+Genera las siguientes variantes:
+
+* Logo principal horizontal.
+* Isotipo.
+* Logo monocromático claro.
+* Logo monocromático oscuro.
+* Logo compacto para encabezados.
+* Versión para fondos fotográficos.
+
+Define área de seguridad y tamaños mínimos.
+
+## 4. Variables de color
+
+Crea una colección de variables llamada:
+
+**Webflix / Color**
+
+Organiza los colores mediante tokens semánticos, no solo por nombres visuales.
+
+### Colores primitivos
+
+* Neutral 950: `#07070B`
+* Neutral 900: `#12121A`
+* Purple 500: `#8B5CF6`
+* Purple 700: `#5B21B6`
+* Cyan 400: `#22D3EE`
+* White: `#FFFFFF`
+* Slate 50: `#F8FAFC`
+* Zinc 400: `#A1A1AA`
+
+Crea escalas adicionales coherentes para:
+
+* Neutral.
+* Purple.
+* Cyan.
+* Success.
+* Warning.
+* Error.
+
+### Tokens semánticos
+
+Define como mínimo:
+
+* Background / Primary.
+* Background / Secondary.
+* Background / Elevated.
+* Background / Scrim.
+* Background / Selected.
+* Surface / Default.
+* Surface / Raised.
+* Surface / Interactive.
+* Surface / Disabled.
+* Text / Primary.
+* Text / Secondary.
+* Text / Tertiary.
+* Text / Inverse.
+* Text / Disabled.
+* Border / Subtle.
+* Border / Default.
+* Border / Focus.
+* Border / Selected.
+* Action / Primary.
+* Action / Primary Hover.
+* Action / Primary Pressed.
+* Action / Secondary.
+* Action / Disabled.
+* Feedback / Success.
+* Feedback / Warning.
+* Feedback / Error.
+
+El fondo principal debe ser `#07070B`.
+
+La superficie elevada debe partir de `#12121A`.
+
+El morado eléctrico `#8B5CF6` debe reservarse principalmente para:
+
+* CTA principal.
+* Selecciones activas.
+* Progreso.
+* Focus.
+* Indicadores importantes.
+* Microinteracciones.
+
+El acento cian `#22D3EE` debe utilizarse de manera secundaria y controlada.
+
+No llenar toda la interfaz con colores neón. Evitar glows intensos y permanentes.
+
+## 5. Tipografía
+
+Crea una colección llamada:
+
+**Webflix / Typography**
+
+Usa:
+
+* Space Grotesk para títulos.
+* Inter para textos, etiquetas, controles y botones.
+
+Define los siguientes estilos:
+
+### Display
+
+* Display Large.
+* Display Medium.
+
+### Heading
+
+* Heading 1.
+* Heading 2.
+* Heading 3.
+* Heading 4.
+
+### Body
+
+* Body Large.
+* Body Medium.
+* Body Small.
+
+### UI
+
+* Label Large.
+* Label Medium.
+* Label Small.
+* Button Large.
+* Button Medium.
+* Caption.
+* Overline.
+
+Todos los estilos deben tener:
+
+* Familia.
+* Peso.
+* Tamaño.
+* Altura de línea.
+* Letter spacing.
+* Uso recomendado.
+
+Reglas:
+
+* Títulos grandes, breves y de alto contraste.
+* No usar más de tres tamaños tipográficos en una misma pantalla.
+* Evitar textos inferiores a 12 px.
+* Usar un mínimo recomendado de 16 px para textos principales.
+* Mantener una altura de línea cómoda para lectura móvil.
+* No usar mayúsculas sostenidas en párrafos o botones largos.
+
+## 6. Espaciado y layout
+
+Crea una colección de variables llamada:
+
+**Webflix / Spacing**
+
+Usa una escala base de 4 px:
+
+* 0.
+* 4.
+* 8.
+* 12.
+* 16.
+* 20.
+* 24.
+* 32.
+* 40.
+* 48.
+* 64.
+* 80.
+
+Define:
+
+* Margen móvil estándar: 20 px.
+* Separación mínima entre controles: 8 px.
+* Separación habitual entre bloques: 24 px.
+* Separación entre secciones: 32 o 40 px.
+* Ancho máximo interno para contenidos de lectura.
+* Espaciado para safe area inferior.
+
+Crea grids móviles para:
+
+* 390 px.
+* 375 px.
+* 360 px.
+* 430 px.
+
+Usa principalmente:
+
+* Cuatro columnas.
+* Márgenes de 20 px.
+* Gutter de 12 px.
+
+## 7. Radios, bordes y elevación
+
+Crea variables para radios:
+
+* Radius 0.
+* Radius 4.
+* Radius 8.
+* Radius 12.
+* Radius Full.
+
+Reglas:
+
+* Radio máximo habitual: 12 px.
+* No utilizar tarjetas excesivamente redondeadas.
+* Radius Full solo para avatares, indicadores y controles circulares.
+
+Crea variables para bordes:
+
+* Border Subtle: blanco al 10% de opacidad.
+* Border Default: blanco al 16%.
+* Border Strong: blanco al 28%.
+* Border Selected: morado eléctrico.
+* Border Focus: cian o morado con contraste AA.
+
+Crea estilos de elevación sutiles:
+
+* Elevation 0.
+* Elevation 1.
+* Elevation 2.
+* Elevation Overlay.
+
+Las sombras deben ser discretas y adaptadas a fondos oscuros.
+
+## 8. Iconografía
+
+Crea una guía de iconografía consistente.
+
+Características:
+
+* Trazos simples.
+* Geometría limpia.
+* Grosor uniforme.
+* Esquinas moderadamente redondeadas.
+* Tamaños de 16, 20, 24 y 32 px.
+
+Incluye iconos para:
+
+* Reproducir.
+* Pausar.
+* Volver.
+* Cerrar.
+* Información.
+* Deshacer.
+* Me gusta.
+* Pasar.
+* Volumen.
+* Pantalla completa.
+* Perfil.
+* Check.
+* Flecha derecha.
+* Navegación horizontal.
+
+No utilizar únicamente iconos en acciones críticas. Combinar icono y etiqueta cuando la acción pueda resultar ambigua.
+
+## 9. Motion tokens
+
+Crea una sección de documentación llamada:
+
+**Motion**
+
+Define los siguientes tokens:
+
+* Instant: 100 ms.
+* Fast: 180 ms.
+* Standard: 280 ms.
+* Emphasized: 400 ms.
+* Transition Screen: 500 ms.
+
+Curvas:
+
+* Ease Out.
+* Ease In Out.
+* Spring Soft.
+* Spring Swipe.
+
+Reglas de movimiento:
+
+* Las transiciones deben sentirse fluidas y cinematográficas.
+* La animación nunca debe impedir la interacción.
+* La rotación máxima de una tarjeta durante el swipe debe ser de 4 grados.
+* El umbral visual de swipe debe representar 120 px.
+* Las interfaces deben tener una alternativa sin movimiento.
+* Documentar comportamiento para `prefers-reduced-motion`.
+* Evitar animaciones decorativas continuas.
+
+## 10. Componentes básicos
+
+Construye los componentes como component sets con propiedades y variantes.
+
+### Botones
+
+Crear:
+
+* Button / Primary.
+* Button / Secondary.
+* Button / Tertiary.
+* Button / Destructive.
+* Button / Text.
+* Button / Icon + Label.
+* Icon Button.
+
+Propiedades:
+
+* Size: Small, Medium, Large.
+* State: Default, Hover, Pressed, Focus, Disabled, Loading.
+* Width: Hug, Fill.
+* Icon: None, Leading, Trailing.
+* Theme: Default, On Image.
+
+Reglas:
+
+* Altura táctil mínima de 44 px.
+* CTA principal ancho y de alto contraste.
+* Radio máximo de 12 px.
+* Focus visible.
+* No comunicar el estado únicamente mediante color.
+
+### Enlaces y acciones secundarias
+
+Crear:
+
+* Text Link.
+* Inline Link.
+* Skip Action.
+* Back Action.
+
+Estados:
+
+* Default.
+* Hover.
+* Pressed.
+* Focus.
+* Disabled.
+
+### Chips y etiquetas
+
+Crear:
+
+* Genre Chip.
+* Preference Chip.
+* Metadata Chip.
+* Affinity Badge.
+* Classification Badge.
+* Status Badge.
+
+Variantes:
+
+* Default.
+* Selected.
+* Disabled.
+* On Image.
+* Compact.
+
+Crear ejemplos como:
+
+* Comedia.
+* Ciencia ficción.
+* 94% para ti.
+* +13.
+* 42 min.
+
+### Campos y controles
+
+Aunque el experimento no necesita formularios complejos, incluye:
+
+* Checkbox.
+* Radio.
+* Toggle.
+* Text area para encuesta.
+* Escala de valoración.
+* Selector de respuesta.
+
+Todos deben cumplir WCAG 2.2 AA.
+
+## 11. Componentes de navegación y estructura
+
+Crear:
+
+### Mobile App Header
+
+Propiedades:
+
+* Logo visible.
+* Botón volver.
+* Avatar.
+* Acción secundaria.
+* Fondo transparente o sólido.
+* Variante sobre imagen.
+* Variante compacta.
+
+### Progress Header
+
+Debe soportar:
+
+* Logo pequeño.
+* Progreso textual: “1 de 12”.
+* Contador: “0 de 5 elegidos”.
+* Barra de progreso.
+* Acción “Omitir por ahora”.
+
+### Progress Bar
+
+Variantes:
+
+* Determinada.
+* Indeterminada.
+* Completa.
+* Reducida.
+
+### Bottom Action Area
+
+Área fija inferior para:
+
+* CTA principal.
+* CTA secundario.
+* Mensaje de ayuda.
+* Safe area.
+
+## 12. Tarjeta de preferencia con swipe
+
+Crea un componente principal llamado:
+
+**Preference Swipe Card**
+
+Debe ser una tarjeta cinematográfica de gran formato, pensada para ocupar aproximadamente el 65% de la pantalla móvil.
+
+Estructura:
+
+* Imagen a sangre.
+* Degradado inferior.
+* Etiqueta de género.
+* Nombre emocional.
+* Frase descriptiva.
+* Indicador “Me gusta”.
+* Indicador “Pasar”.
+* Capa de contraste.
+* Estado de selección.
+
+Propiedades:
+
+* Preference.
+* Genre.
+* Description.
+* Image.
+* Swipe Direction.
+* Position.
+* State.
+* Overlay.
+* Reduced Motion.
+
+Variantes de estado:
+
+* Default.
+* Drag Right.
+* Drag Left.
+* Selected.
+* Passed.
+* Returning.
+* Disabled.
+* Loading Image.
+
+Variantes de posición:
+
+* Front.
+* Back.
+* Preview.
+
+La tarjeta trasera debe quedar parcialmente visible para comunicar continuidad.
+
+Incluye ejemplos:
+
+* Reírme — Comedia.
+* Sentir adrenalina — Acción.
+* Resolver un misterio — Suspenso y crimen.
+* Imaginar otros mundos — Ciencia ficción y fantasía.
+* Emocionarme — Drama.
+* Enamorarme — Romance.
+* Descubrir historias reales — Documentales.
+* Ver algo en familia — Familiar.
+* Explorar anime.
+* Ver competencias y realities.
+* Conocer otras culturas — Contenido internacional.
+* Sentir miedo — Terror.
+
+Ejemplo de descripción:
+
+“Historias ligeras para desconectarte y pasarlo bien”.
+
+No repitas la misma fotografía con filtros diferentes.
+
+## 13. Controles de selección
+
+Crear un componente:
+
+**Swipe Controls**
+
+Debe contener:
+
+* Botón secundario “Pasar”.
+* Botón principal “Me gusta”.
+* Acción “Deshacer”.
+
+Propiedades:
+
+* Undo visible.
+* Selection limit reached.
+* Disabled.
+* Layout.
+* Reduced motion.
+
+Estados especiales:
+
+* Menos de 3 gustos elegidos.
+* Entre 3 y 4 gustos elegidos.
+* 5 gustos elegidos.
+* Sin acciones disponibles.
+
+Crear también un componente:
+
+**Selection Counter**
+
+Ejemplos:
+
+* “0 de 5 elegidos”.
+* “3 de 5 elegidos”.
+* “5 de 5 elegidos”.
+
+Debe utilizar texto, iconografía y color para comunicar el estado.
+
+## 14. Componentes de contenido audiovisual
+
+### Hero de contenido
+
+Crear:
+
+**Content Hero**
+
+Estructura:
+
+* Imagen o arte cinematográfico.
+* Logo o título.
+* Afinidad.
+* Sinopsis breve.
+* Metadatos.
+* CTA “Reproducir”.
+* CTA “Más información”.
+* Degradado inferior.
+* Variante con navegación superior.
+
+Variantes:
+
+* Full screen.
+* Compact.
+* Personalized.
+* Detail.
+* Loading.
+
+### Tarjetas de contenido
+
+Crear component sets diferenciados:
+
+* Poster Card / Portrait.
+* Poster Card / Landscape.
+* Poster Card / Editorial.
+* Poster Card / Compact.
+* Continue Watching Card.
+
+Propiedades:
+
+* Image.
+* Title.
+* Affinity.
+* Duration.
+* Progress.
+* Badge.
+* Selected.
+* Loading.
+* Error.
+
+Estados:
+
+* Default.
+* Focus.
+* Pressed.
+* Watched.
+* Loading.
+* Image unavailable.
+
+No usar una única proporción para todas las tarjetas. El sistema debe tener una apariencia editorial propia.
+
+### Content Row
+
+Crear un patrón reutilizable con:
+
+* Título de sección.
+* Acción opcional.
+* Scroll horizontal.
+* Diferentes proporciones de tarjetas.
+* Indicadores de continuidad.
+* Skeleton loading.
+
+Ejemplos de títulos:
+
+* Tu selección para comenzar.
+* Porque elegiste [preferencia principal].
+* Historias que combinan tus gustos.
+* Popular en Chile.
+* Para una sesión rápida.
+
+## 15. Componentes de confirmación
+
+Crear:
+
+### Selected Preference Thumbnail
+
+Miniatura cinematográfica que represente un gusto elegido.
+
+Propiedades:
+
+* Image.
+* Label.
+* Genre.
+* Selected.
+* Editable.
+
+### Preference Summary
+
+Debe mostrar entre 3 y 5 preferencias sin convertirse en una lista extensa.
+
+Incluye:
+
+* Título.
+* Texto explicativo.
+* Grupo de miniaturas.
+* CTA “Preparar mi inicio”.
+* Acción “Editar selección”.
+
+### Toast o Snackbar
+
+Crear variantes para:
+
+* Selección deshecha.
+* Preferencia seleccionada.
+* Límite máximo alcanzado.
+* Error de carga.
+* Evento registrado.
+
+Debe incluir texto accesible y acción opcional.
+
+## 16. Carga y transición
+
+Crear un componente:
+
+**Webflix Loader**
+
+No utilizar un spinner genérico.
+
+Basar la animación en el símbolo “W” formado mediante haces de luz.
+
+Variantes:
+
+* Processing.
+* Preparing Recommendations.
+* Loading Content.
+* Reduced Motion.
+
+Ejemplo de mensaje:
+
+**Preparando algo para ti…**
+
+La transición completa no debe superar visualmente 1,5 segundos en el prototipo.
+
+Crear también:
+
+* Skeleton / Hero.
+* Skeleton / Poster.
+* Skeleton / Content Row.
+* Skeleton / Text.
+
+## 17. Vista de detalle
+
+Crear un template reutilizable:
+
+**Content Detail**
+
+Debe incluir:
+
+* Imagen cinematográfica.
+* Título ficticio.
+* Afinidad.
+* Año.
+* Duración.
+* Clasificación.
+* Sinopsis.
+* Géneros.
+* CTA “Reproducir”.
+* Acción “Volver”.
+
+Crear variantes:
+
+* Standard.
+* Featured.
+* Compact.
+* Loading.
+* Error.
+
+## 18. Reproductor
+
+Crear un componente visual:
+
+**Simulated Player**
+
+Elementos:
+
+* Video placeholder.
+* Play y pausa.
+* Barra de progreso.
+* Tiempo transcurrido.
+* Tiempo total.
+* Volumen.
+* Volver.
+* Pantalla completa.
+* Estado de reproducción válida.
+* Overlay de controles.
+
+Variantes:
+
+* Idle.
+* Playing.
+* Paused.
+* Controls visible.
+* Controls hidden.
+* Completed.
+* Error.
+
+Garantizar áreas táctiles mínimas de 44 × 44 px.
+
+## 19. Feedback y encuestas
+
+Crear:
+
+* Survey Card.
+* Rating Scale.
+* Multiple Choice Item.
+* Success State.
+* Empty State.
+* Error State.
+* Offline State.
+
+El lenguaje debe ser claro, breve y en español.
+
+Ejemplo:
+
+**¿Qué tan acertadas fueron estas recomendaciones?**
+
+## 20. Patrones de interfaz
+
+Documenta los siguientes patrones:
+
+### Onboarding inmersivo
+
+* Imagen de fondo.
+* Degradado inferior.
+* Logo superior.
+* Indicador contextual.
+* Título breve.
+* Descripción.
+* CTA principal.
+* Acción secundaria.
+
+### Instrucciones de gesto
+
+* Explicación breve.
+* Animación de tarjeta.
+* Lista de instrucciones.
+* CTA de confirmación.
+
+### Selección mediante swipe
+
+* Encabezado de progreso.
+* Tarjeta principal.
+* Tarjeta trasera.
+* Botones accesibles.
+* Contador.
+* CTA progresivo.
+* Acción de omitir.
+
+### Confirmación de preferencias
+
+* Título.
+* Texto de apoyo.
+* Miniaturas.
+* CTA.
+* Edición.
+
+### Home personalizado
+
+* Hero.
+* Filas editoriales.
+* Afinidad.
+* Reproducción.
+* Detalle.
+
+### Estados vacíos y errores
+
+Crear patrones para:
+
+* Sin recomendaciones disponibles.
+* Error al cargar imágenes.
+* Selección insuficiente.
+* Conexión interrumpida.
+* Evento no registrado.
+* Reintentar.
+
+## 21. Templates móviles
+
+Crea templates de referencia utilizando únicamente componentes del sistema.
+
+Templates requeridos:
+
+1. Bienvenida.
+2. Instrucciones.
+3. Swipe de preferencias.
+4. Confirmación.
+5. Transición.
+6. Inicio personalizado.
+7. Detalle de contenido.
+8. Reproductor.
+9. Encuesta posterior.
+
+Estos templates deben demostrar que el sistema funciona de extremo a extremo, pero la prioridad sigue siendo la creación de componentes y no el diseño de pantallas aisladas.
+
+## 22. Accesibilidad
+
+Crea una sección específica llamada:
+
+**Accessibility Guidelines**
+
+El sistema debe cumplir WCAG 2.2 nivel AA.
+
+Documenta:
+
+* Contraste mínimo de texto.
+* Contraste de componentes.
+* Focus visible.
+* Orden de navegación.
+* Áreas táctiles mínimas de 44 × 44 px.
+* Uso de etiquetas accesibles.
+* Texto alternativo para imágenes.
+* Uso correcto de encabezados.
+* Alternativas a gestos.
+* Estados no dependientes exclusivamente del color.
+* Compatibilidad con `prefers-reduced-motion`.
+* Legibilidad sobre fotografías.
+* Uso de scrims y degradados.
+* Tamaños mínimos de texto.
+* Mensajes de error comprensibles.
+
+El swipe nunca debe ser la única forma de seleccionar o descartar una preferencia.
+
+Los botones “Pasar” y “Me gusta” deben estar siempre disponibles como alternativa accesible.
+
+## 23. Dirección fotográfica
+
+Documenta el estilo fotográfico por categoría:
+
+* Comedia: expresiones alegres, escenas espontáneas y luz vibrante.
+* Acción: movimiento, velocidad y alto contraste.
+* Misterio: iluminación noir, sombras y ambientes urbanos.
+* Ciencia ficción: tecnología, paisajes espaciales y luces frías.
+* Drama: primeros planos emocionales e iluminación íntima.
+* Romance: tonos cálidos y escenas cercanas.
+* Documentales: imágenes auténticas, personas reales y naturaleza.
+* Familiar: escenas luminosas, acogedoras y coloridas.
+* Anime: ilustración dinámica y estilizada.
+* Reality: escenarios llamativos y energía visual.
+* Internacional: ciudades, culturas y ambientes reconocibles.
+* Terror: tensión y atmósferas oscuras sin contenido explícito.
+
+Usa fotografías distintas para cada preferencia.
+
+No utilices la misma imagen cambiando únicamente el filtro.
+
+## 24. Nomenclatura
+
+Usa una arquitectura clara para componentes.
+
+Ejemplos:
+
+* Button / Primary / Large.
+* Button / Secondary / Medium.
+* Card / Preference / Default.
+* Card / Content / Portrait.
+* Navigation / Header / On Image.
+* Feedback / Snackbar / Success.
+* Progress / Selection / Three of Five.
+* Template / Onboarding / Welcome.
+
+Variables:
+
+* Color / Background / Primary.
+* Color / Text / Secondary.
+* Spacing / 24.
+* Radius / 12.
+* Motion / Standard.
+* Typography / Heading / H1.
+
+Utiliza nombres comprensibles y escalables. Evita nombres como “Frame 23”, “Purple 2” o “Button Copy”.
+
+## 25. Documentación de componentes
+
+Para cada componente principal muestra:
+
+* Nombre.
+* Propósito.
+* Anatomía.
+* Propiedades.
+* Variantes.
+* Estados.
+* Uso correcto.
+* Uso incorrecto.
+* Reglas de accesibilidad.
+* Espaciado.
+* Ejemplo aplicado.
+
+Incluye secciones de “Do” y “Don’t”.
+
+Ejemplos de errores a evitar:
+
+* Abusar del glow.
+* Colocar texto sin contraste sobre imágenes.
+* Utilizar iconos sin etiquetas en acciones críticas.
+* Usar bordes excesivamente redondeados.
+* Saturar una pantalla con demasiados elementos.
+* Usar morado eléctrico en todas las superficies.
+* Copiar patrones visuales exactos de Netflix.
+* Crear componentes sin Auto Layout.
+* Crear variantes duplicadas sin necesidad.
+
+## 26. Calidad final
+
+El resultado debe parecer un sistema de diseño real preparado para un equipo de producto.
+
+Debe incluir:
+
+* Variables coherentes.
+* Tokens semánticos.
+* Auto Layout.
+* Component properties.
+* Variants.
+* Boolean properties.
+* Text properties.
+* Instance swap.
+* Estados interactivos.
+* Documentación.
+* Ejemplos de accesibilidad.
+* Templates de validación.
+
+Asegúrate de que todos los templates utilicen instancias de los componentes maestros.
+
+No dejes elementos sueltos sin nombrar.
+
+No dupliques componentes innecesariamente.
+
+No agregues funcionalidades ajenas al experimento, como:
+
+* Registro.
+* Pagos.
+* Planes.
+* Buscador.
+* Descargas.
+* Perfiles múltiples.
+* Configuración avanzada.
+
+Entrega un Design System visualmente consistente, editable, escalable y preparado para construir el prototipo completo de Webflix en Figma.
