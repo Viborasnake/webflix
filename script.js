@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSlide = 0;
   let currentDemoLevel = 1;
 
-  const DEMO_SLIDE_INDEX = 7;
+  // 0 teaser · 1 portada · … · demo = 8
+  const DEMO_SLIDE_INDEX = 8;
+  const COVER_SLIDE_INDEX = 1;
   const total = slides.length;
 
   // Timer: meta 8 min, máximo 10 min
@@ -88,9 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTimer();
   }
 
-  /** Arranca el timer al salir de la portada (primera vez) */
+  /** Arranca el timer al salir del teaser + portada (primera vez) */
   function maybeAutoStartTimer() {
-    if (currentSlide > 0 && timerAccumulatedMs === 0 && !timerRunning && timerStartedAt == null) {
+    if (
+      currentSlide > COVER_SLIDE_INDEX &&
+      timerAccumulatedMs === 0 &&
+      !timerRunning &&
+      timerStartedAt == null
+    ) {
       startTimer();
     }
   }
@@ -105,8 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slideCounter) {
       slideCounter.textContent = `${pad(currentSlide + 1)} / ${pad(total)}`;
     }
+    // Logo global solo en slides de contenido (después de teaser + portada)
     if (deckLogo) {
-      deckLogo.hidden = currentSlide === 0;
+      deckLogo.hidden = currentSlide <= COVER_SLIDE_INDEX;
     }
     maybeAutoStartTimer();
   }

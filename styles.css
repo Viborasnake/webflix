@@ -337,6 +337,88 @@ html, body {
 .slide.active .d-3 { transition-delay: 0.32s; }
 .slide.active .d-4 { transition-delay: 0.42s; }
 
+/* ---------- Teaser — pregunta fuerza ---------- */
+.slide-teaser {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  padding: 3rem clamp(2rem, 6vw, 5rem) 4rem;
+}
+
+.teaser-stage {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.teaser-brand {
+  margin-bottom: 2.5rem;
+  opacity: 0.92;
+}
+
+.teaser-eyebrow {
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan-400);
+  margin: 0 0 1.5rem;
+}
+
+.teaser-question {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.15rem, 4.6vw, 3.65rem);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  color: var(--white);
+  margin: 0 0 2rem;
+  padding-left: 1.2rem;
+  border-left: 4px solid transparent;
+  border-image: linear-gradient(180deg, var(--cyan-400), var(--purple-500)) 1;
+  max-width: 18ch;
+}
+
+.teaser-question .grad {
+  background: linear-gradient(100deg, #c4b5fd 0%, #8b5cf6 45%, #6366f1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.teaser-hold {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0 0 2.5rem;
+  max-width: 28ch;
+  line-height: 1.5;
+  padding-left: 1.25rem;
+}
+
+.teaser-hint {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  margin: 0;
+  padding-left: 1.25rem;
+  animation: teaser-hint-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes teaser-hint-pulse {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.55; }
+}
+
+.slide-teaser .speaker-tag {
+  display: none;
+}
+
 /* ---------- Home / Portada (mockup premium + avatares reales) ---------- */
 .slide-cover {
   display: flex;
@@ -1378,7 +1460,7 @@ ol.steps li::before {
 
 @media (prefers-reduced-motion: reduce) {
   .slide, .slide .stagger, .progress-bar,
-  .bg-photo, .bg-photo-glow, .home-phones {
+  .bg-photo, .bg-photo-glow, .home-phones, .teaser-hint {
     animation: none !important;
     transition: none !important;
   }
@@ -1386,4 +1468,5 @@ ol.steps li::before {
   .slide.active { transform: none; }
   .bg-photo { transform: scale(1.03); }
   .home-phones { transform: none; }
+  .teaser-hint { opacity: 0.4; }
 }
