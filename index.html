@@ -10,7 +10,6 @@
 <body>
 
     <div id="presentation">
-        <!-- Atmósfera DS: gradientes de fondo suaves (Purple / Cyan controlados) -->
         <div class="bg-atmosphere" aria-hidden="true">
             <div class="bg-base"></div>
             <div class="bg-mesh"></div>
@@ -21,7 +20,7 @@
             <div class="bg-vignette"></div>
         </div>
 
-        <!-- Slide 0: Portada -->
+        <!-- 0 · Portada -->
         <div class="slide">
             <div class="glass-card cover-card">
                 <div class="cover-brand stagger d-1">
@@ -29,9 +28,18 @@
                     <span class="logo-word">WebFlix</span>
                 </div>
 
-                <p class="cover-kicker stagger d-1">Pitch Shark Tank · Grupo 5</p>
-                <h1 class="cover-title stagger d-2">El primer momento de valor está fallando</h1>
-                <p class="cover-subtitle stagger d-2">Validación de onboarding con preferencias tempranas · Caso Streaming</p>
+                <p class="cover-kicker stagger d-1">Pitch Shark Tank · Grupo 5 · 10 minutos</p>
+                <h1 class="cover-title stagger d-2">Antes de automatizar el motor, validamos si 3 preferencias tempranas activan valor</h1>
+                <p class="cover-subtitle stagger d-2">
+                    Problema observable de descubrimiento → hipótesis única → Wizard of Oz con control → decisión de automatizar, iterar o abandonar.
+                </p>
+
+                <div class="cover-pill-row stagger d-3">
+                    <span class="pill">Day-7 42% → 29%</span>
+                    <span class="pill">Onboarding móvil &lt; 30s</span>
+                    <span class="pill">Wizard of Oz</span>
+                    <span class="pill">n = 30–50</span>
+                </div>
 
                 <div class="cover-meta stagger d-3">
                     <div class="cover-meta-block">
@@ -53,41 +61,70 @@
                         <div class="team-avatar">EF</div>
                         <div>
                             <div class="team-name">Erick Fuentealba</div>
-                            <div class="team-role">Abre el pitch</div>
+                            <div class="team-role">Problema · Datos · Usuario</div>
                         </div>
                     </div>
                     <div class="team-member">
                         <div class="team-avatar">TV</div>
                         <div>
                             <div class="team-name">Tamara Valdivia</div>
-                            <div class="team-role">Estrategia e hipótesis</div>
+                            <div class="team-role">Cadena de impacto · Hipótesis</div>
                         </div>
                     </div>
                     <div class="team-member">
                         <div class="team-avatar">VN</div>
                         <div>
                             <div class="team-name">Valeria Nieto</div>
-                            <div class="team-role">Metodología y métricas</div>
+                            <div class="team-role">Experimento · Instrumentación</div>
                         </div>
                     </div>
                     <div class="team-member">
                         <div class="team-avatar">CP</div>
                         <div>
                             <div class="team-name">Cristian Pizarro</div>
-                            <div class="team-role">Demo y decisión</div>
+                            <div class="team-role">Demo · Criterios · Decisión</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 1: Erick -->
+        <!-- 1 · Problema -->
         <div class="slide">
             <div class="glass-card">
-                <span class="badge stagger d-1">Problema</span>
-                <h1 class="stagger d-2">El primer momento de valor está fallando</h1>
-                <p class="stagger d-3" style="max-width: 800px;">Un usuario no se suscribe a una plataforma de streaming para recorrer un catálogo interminable. Se suscribe para encontrar rápidamente algo que realmente quiera ver.</p>
-                <p class="stagger d-4" style="max-width: 800px; color: var(--purple-400);">Actualmente, nuestros nuevos usuarios experimentan una mala experiencia de descubrimiento inicial.</p>
+                <div class="slide-head stagger d-1">
+                    <span class="badge">01 · Problema observable</span>
+                    <span class="slide-kicker">Conducta · No causa asumida</span>
+                </div>
+                <h1 class="h1-tight stagger d-1">El descubrimiento de valor no ocurre a tiempo</h1>
+                <p class="lead stagger d-2">
+                    Un usuario no se suscribe para recorrer un catálogo interminable: se suscribe para
+                    <strong>encontrar rápido algo que quiera ver</strong>. En WebFlix, los nuevos usuarios consumen poco
+                    durante la primera semana y muchos abandonan <em>antes</em> de experimentar el valor del catálogo.
+                </p>
+
+                <div class="grid-3 stagger d-3 gap-md">
+                    <div class="card-box">
+                        <div class="card-icon">🎯</div>
+                        <h4>Momento de fricción</h4>
+                        <p class="compact">Inmediatamente después del registro o al crear un perfil <strong>sin historial</strong>: la plataforma aún no tiene señales individuales útiles.</p>
+                    </div>
+                    <div class="card-box">
+                        <div class="card-icon">🧭</div>
+                        <h4>Conducta observable</h4>
+                        <p class="compact">Sesiones cortas, bajo Watch Time, poca exploración efectiva y búsquedas o recorridos largos por categorías antes de reproducir.</p>
+                    </div>
+                    <div class="card-box">
+                        <div class="card-icon">⚠️</div>
+                        <h4>Sospecha (no conclusión)</h4>
+                        <p class="compact">El motor tarda en personalizar. Es un <strong>supuesto causal</strong> a validar — no lo presentamos como causa ya demostrada.</p>
+                    </div>
+                </div>
+
+                <div class="callout stagger d-4">
+                    <strong>Formulación defendible:</strong>
+                    el problema es que el <em>primer momento de valor</em> falla; la falta de señales explícitas es la hipótesis de trabajo, no un veredicto.
+                </div>
             </div>
             <div class="speaker-tag">
                 <div class="speaker-avatar">EF</div>
@@ -95,56 +132,137 @@
             </div>
         </div>
 
-        <!-- Slide 2: Erick -->
+        <!-- 2 · Datos + Usuario -->
         <div class="slide">
-            <div class="glass-card grid-2">
-                <div class="stagger d-1">
-                    <span class="badge">Datos y Contexto</span>
-                    <h2>La caída ya es visible</h2>
-                    <p>Aunque somos una plataforma global con <strong>310 millones de suscriptores</strong> y 18 años de experiencia, nuestro crecimiento anual se desacelera. El problema ya impacta métricas clave:</p>
+            <div class="glass-card">
+                <div class="slide-head stagger d-1">
+                    <span class="badge">02 · Datos y usuario</span>
+                    <span class="slide-kicker">Escala del caso · Segmento del experimento</span>
                 </div>
-                <div class="stagger d-2">
-                    <div class="card-box" style="margin-bottom: 1.5rem;">
-                        <div class="huge-number">42% → 29%</div>
-                        <h3 style="color: var(--white); margin-bottom: 0.5rem;">Caída drástica de Day-7 Retention</h3>
-                        <p style="margin: 0; font-size: 1rem;">La consecuencia directa de que el usuario asuma tempranamente que "no hay nada para él".</p>
+                <h2 class="stagger d-1">La caída ya es visible — y tiene dueño</h2>
+
+                <div class="kpi-strip stagger d-2">
+                    <div class="kpi">
+                        <div class="kpi-value accent-gradient">42% → 29%</div>
+                        <div class="kpi-label">Day-7 Retention</div>
+                        <div class="kpi-note">−13 pp · ≈ 31% caída relativa</div>
                     </div>
-                    <ul class="stagger d-3">
-                        <li>Menor <strong>Watch Time promedio</strong>.</li>
-                        <li>Menos <strong>sesiones</strong> por usuario.</li>
-                        <li>Aumento del <strong>churn</strong> en el primer mes.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <div class="speaker-avatar">EF</div>
-                <div class="speaker-name">Erick Fuentealba</div>
-            </div>
-        </div>
-
-        <!-- Slide 3: Tamara -->
-        <div class="slide">
-            <div class="glass-card stagger d-1">
-                <span class="badge">Estrategia</span>
-                <h2>La cadena de impacto que queremos validar</h2>
-
-                <div class="impact-chain stagger d-2">
-                    Preferencias <span>→</span> Relevancia <span>→</span> Reproducción <span>→</span> Activación <span>→</span> Retorno
+                    <div class="kpi">
+                        <div class="kpi-value">310 M</div>
+                        <div class="kpi-label">Suscriptores</div>
+                        <div class="kpi-note">~360 M MAU con perfiles</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-value">18 años</div>
+                        <div class="kpi-label">En la industria</div>
+                        <div class="kpi-note">~11% crecimiento anual histórico</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-value warn">↑ Churn</div>
+                        <div class="kpi-label">Primer mes</div>
+                        <div class="kpi-note">+ menor Watch Time y sesiones</div>
+                    </div>
                 </div>
 
-                <div class="grid-2 stagger d-3" style="gap: 2rem; align-items: start;">
-                    <div class="card-box">
-                        <h3 style="color: var(--cyan-400);">Riesgo de Causalidad</h3>
-                        <p style="margin:0; font-size: 1rem;">Asumir que el motor de recomendaciones es el único driver del abandono.</p>
+                <div class="grid-2 stagger d-3 gap-md align-start">
+                    <div class="card-box persona-card">
+                        <h4>Buyer persona · Nuevo usuario frustrado</h4>
+                        <ul class="dense">
+                            <li><strong>Comportamiento:</strong> sesiones cortas, bajo consumo y baja exploración en la primera semana.</li>
+                            <li><strong>Frustración:</strong> entra esperando “algo para mí” y recibe recomendaciones genéricas.</li>
+                            <li><strong>Riesgo:</strong> abandona antes del día 7 o cancela en el mes 1 sin confirmar valor.</li>
+                        </ul>
                     </div>
                     <div class="card-box">
-                        <h3 style="color: var(--purple-500);">Riesgo de Fricción</h3>
-                        <p style="margin:0; font-size: 1rem;">Alargar el onboarding podría aumentar el abandono temprano.</p>
+                        <h4>Segmentación del experimento</h4>
+                        <ul class="dense">
+                            <li><strong>Primario:</strong> recién suscritos con primer perfil y sin historial.</li>
+                            <li><strong>Secundario:</strong> perfiles nuevos en cuentas familiares — se reportan aparte.</li>
+                            <li><strong>Exclusión:</strong> historial previo, reactivados o quienes ya conocen el prototipo.</li>
+                        </ul>
+                        <p class="micro-note">Los 310 M dimensionan impacto potencial; <em>no</em> son el tamaño de la muestra.</p>
                     </div>
                 </div>
 
                 <div class="footer-note stagger d-4">
-                    *El impacto final en Churn, CAC y LTV se evaluará posteriormente mediante un A/B test a escala.
+                    *Cifras del caso. En el pitch no afirmamos causalidad motor → Day-7 hasta tener experimentos controlados. Si no resolvemos, en 6 meses el crecimiento orgánico se debilita y sube el costo de adquirir y retener.
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">EF</div>
+                <div class="speaker-name">Erick Fuentealba</div>
+            </div>
+        </div>
+
+        <!-- 3 · Cadena de impacto -->
+        <div class="slide">
+            <div class="glass-card">
+                <div class="slide-head stagger d-1">
+                    <span class="badge">03 · Cadena de impacto</span>
+                    <span class="slide-kicker">Qué validamos hoy vs. qué queda para después</span>
+                </div>
+                <h2 class="stagger d-1">Mecanismo de valor, no promesa de retención</h2>
+                <p class="lead compact stagger d-2">
+                    Tres preferencias → señales iniciales → portada más relevante → menor tiempo a reproducir →
+                    mayor activación → mayor probabilidad de retorno → <strong>potencial</strong> impacto en Day-7.
+                </p>
+
+                <div class="impact-chain stagger d-2">
+                    <span class="chain-step">Preferencias</span>
+                    <span class="chain-arrow">→</span>
+                    <span class="chain-step">Relevancia</span>
+                    <span class="chain-arrow">→</span>
+                    <span class="chain-step">Reproducción</span>
+                    <span class="chain-arrow">→</span>
+                    <span class="chain-step">Activación</span>
+                    <span class="chain-arrow">→</span>
+                    <span class="chain-step">Retorno</span>
+                    <span class="chain-arrow">→</span>
+                    <span class="chain-step muted">Day-7*</span>
+                </div>
+
+                <div class="evidence-table stagger d-3">
+                    <div class="ev-row ev-head">
+                        <span>Eslabón</span>
+                        <span>Qué observa el experimento</span>
+                        <span>Evidencia</span>
+                    </div>
+                    <div class="ev-row">
+                        <span>Selección</span>
+                        <span>Finalización y tiempo de selección</span>
+                        <span class="tag tag-mod">Moderada</span>
+                    </div>
+                    <div class="ev-row">
+                        <span>Relevancia</span>
+                        <span>Score 4–5/5 y elección de contenido recomendado</span>
+                        <span class="tag tag-mod">Moderada</span>
+                    </div>
+                    <div class="ev-row">
+                        <span>Activación</span>
+                        <span>Reproducción válida, tiempo a 1ª play, Watch Time</span>
+                        <span class="tag tag-dir">Direccional</span>
+                    </div>
+                    <div class="ev-row">
+                        <span>Retorno 7d</span>
+                        <span>Retorno observado y sesiones en la semana</span>
+                        <span class="tag tag-exp">Exploratorio</span>
+                    </div>
+                    <div class="ev-row">
+                        <span>Day-7</span>
+                        <span>Se registra como señal; sin inferencia estadística</span>
+                        <span class="tag tag-low">No concluyente</span>
+                    </div>
+                </div>
+
+                <div class="grid-2 stagger d-4 gap-sm">
+                    <div class="risk-card">
+                        <h4>Riesgo de causalidad</h4>
+                        <p class="compact">El motor puede no ser el único driver (onboarding, catálogo, adquisición, región, competencia).</p>
+                    </div>
+                    <div class="risk-card risk-purple">
+                        <h4>Riesgo de fricción</h4>
+                        <p class="compact">Agregar un paso puede alargar el onboarding. Por eso la fricción es <strong>guardrail y criterio de refutación</strong>.</p>
+                    </div>
                 </div>
             </div>
             <div class="speaker-tag">
@@ -153,21 +271,67 @@
             </div>
         </div>
 
-        <!-- Slide 4: Tamara -->
+        <!-- 4 · Hipótesis -->
         <div class="slide">
-            <div class="glass-card stagger d-1">
-                <span class="badge">Nuestra Hipótesis</span>
-                <h2>Una sola hipótesis en contexto móvil</h2>
+            <div class="glass-card">
+                <div class="slide-head stagger d-1">
+                    <span class="badge">04 · Hipótesis activa</span>
+                    <span class="slide-kicker">Una sola · P1 · Wizard of Oz</span>
+                </div>
+                <h2 class="stagger d-1">Qué creemos — y por qué en móvil</h2>
 
-                <div class="card-box stagger d-2" style="background: rgba(139, 92, 246, 0.05); border-left: 4px solid var(--purple-500);">
-                    <p style="font-size: 1.4rem; color: var(--white); margin: 0; line-height: 1.5;">
-                        <strong>Creemos que</strong> solicitar a los usuarios nuevos la selección de 3 preferencias durante un onboarding rediseñado permitirá generar recomendaciones iniciales percibidas como más relevantes, sin agregar fricción significativa.
+                <div class="hypothesis-box stagger d-2">
+                    <p>
+                        <strong>Creemos que</strong> solicitar a usuarios nuevos la selección de
+                        <strong>tres preferencias</strong> durante un <strong>onboarding rediseñado</strong>
+                        generará recomendaciones iniciales percibidas como más relevantes y mejorará la
+                        <strong>activación de reproducción</strong>, <strong>sin agregar fricción significativa</strong>,
+                        porque la plataforma obtendrá señales explícitas <em>antes</em> de tener historial de visualización.
                     </p>
                 </div>
 
-                <div class="stagger d-3" style="margin-top: 3rem;">
-                    <h3>¿Por qué Móvil?</h3>
-                    <p>Seleccionamos móvil porque permite probar el flujo en un contexto de interacción breve y directa, con gestos simples y una restricción explícita de menos de 30 segundos. Para reducir sesgos, ambos grupos utilizarán el mismo dispositivo y las mismas condiciones.</p>
+                <div class="grid-4 stagger d-3">
+                    <div class="mini-card">
+                        <span class="mini-label">Intervención</span>
+                        <strong>3 preferencias</strong>
+                        <span class="mini-desc">Géneros o títulos en onboarding</span>
+                    </div>
+                    <div class="mini-card">
+                        <span class="mini-label">Mecanismo</span>
+                        <strong>Señales iniciales</strong>
+                        <span class="mini-desc">Antes del cold start del motor</span>
+                    </div>
+                    <div class="mini-card">
+                        <span class="mini-label">Resultado</span>
+                        <strong>Relevancia + play</strong>
+                        <span class="mini-desc">Activación en sesión 1</span>
+                    </div>
+                    <div class="mini-card">
+                        <span class="mini-label">Guardrail</span>
+                        <strong>Sin fricción</strong>
+                        <span class="mini-desc">≤30s · ≥80% completa</span>
+                    </div>
+                </div>
+
+                <div class="grid-2 stagger d-4 gap-md align-start">
+                    <div class="card-box">
+                        <h4>¿Por qué móvil?</h4>
+                        <ul class="dense">
+                            <li>Es el contexto real de descubrimiento y registro para la mayoría de usuarios nuevos.</li>
+                            <li>Interacción breve y táctil: alinea con el umbral de <strong>&lt; 30 segundos</strong>.</li>
+                            <li>Alcance técnico del MVP más ágil que desktop bajo restricciones de tiempo del equipo.</li>
+                            <li><strong>Misma condición:</strong> control y experimental usan el mismo dispositivo para no sesgar.</li>
+                        </ul>
+                    </div>
+                    <div class="card-box">
+                        <h4>Qué queda fuera de esta hipótesis</h4>
+                        <ul class="dense">
+                            <li><strong>H2</strong> Patrones de usuarios similares → señal exploratoria vía perfiles predefinidos.</li>
+                            <li><strong>H3</strong> Procesamiento en tiempo real → spike técnico (latencia, p95, errores).</li>
+                            <li><strong>H4–H7</strong> Tendencias regionales, metadatos, UX de home, viabilidad económica → backlog / fase 2.</li>
+                        </ul>
+                        <p class="micro-note">No mostramos 3 hipótesis de onboarding casi idénticas: una activa, el resto en roadmap.</p>
+                    </div>
                 </div>
             </div>
             <div class="speaker-tag">
@@ -176,60 +340,147 @@
             </div>
         </div>
 
-        <!-- Slide 5: Valeria -->
+        <!-- 5 · Experimento -->
         <div class="slide">
-            <div class="glass-card grid-2">
-                <div class="stagger d-1">
-                    <span class="badge">Metodología</span>
-                    <h2>El Experimento Mínimo</h2>
-                    <p>Validaremos <strong>deseabilidad y usabilidad</strong> mediante un prototipo móvil interactivo sin invertir prematuramente en infraestructura.</p>
+            <div class="glass-card">
+                <div class="slide-head stagger d-1">
+                    <span class="badge">05 · Experimento</span>
+                    <span class="slide-kicker">Deseabilidad + usabilidad · No factibilidad del motor</span>
                 </div>
-                <div class="stagger d-2">
+                <h2 class="stagger d-1">Wizard of Oz mínimo, con comparación real</h2>
+                <p class="lead compact stagger d-2">
+                    Primero validamos que la <strong>señal explícita produce valor</strong>.
+                    Todavía no construimos el sistema que la automatiza.
+                </p>
+
+                <div class="grid-2 stagger d-2 gap-md align-start">
+                    <div class="compare-card compare-control">
+                        <span class="compare-label">Control</span>
+                        <h4>Sin selección de preferencias</h4>
+                        <ul class="dense">
+                            <li>Onboarding actual / sin paso de gustos</li>
+                            <li>Portada genérica o por tendencias</li>
+                            <li>Mismo diseño, catálogo y nº de tarjetas</li>
+                        </ul>
+                        <p class="micro-note">Establece tasa base de play, tiempo y Watch Time.</p>
+                    </div>
+                    <div class="compare-card compare-exp">
+                        <span class="compare-label">Experimental</span>
+                        <h4>3 preferencias + portada curada</h4>
+                        <ul class="dense">
+                            <li>Selección breve de géneros/títulos</li>
+                            <li>Portada curada por perfil predefinido</li>
+                            <li>Usuario percibe “recomendación automática”</li>
+                        </ul>
+                        <p class="micro-note">Mide el efecto direccional de la señal explícita.</p>
+                    </div>
+                </div>
+
+                <div class="grid-3 stagger d-3 gap-sm">
+                    <div class="stat-tile">
+                        <span class="stat-label">Muestra</span>
+                        <strong>30–50</strong>
+                        <span class="stat-desc">~15–25 por brazo · direccional</span>
+                    </div>
+                    <div class="stat-tile">
+                        <span class="stat-label">Duración</span>
+                        <strong>14 días</strong>
+                        <span class="stat-desc">Sesión 1 + seguimiento 7d + análisis</span>
+                    </div>
+                    <div class="stat-tile">
+                        <span class="stat-label">Aprender</span>
+                        <strong>4 preguntas</strong>
+                        <span class="stat-desc">¿Aceptan? ¿Rápido? ¿Relevante? ¿Reproducen?</span>
+                    </div>
+                </div>
+
+                <div class="var-row stagger d-4">
+                    <div>
+                        <span class="var-type">Independiente</span>
+                        <p>Presencia de selección + portada curada</p>
+                    </div>
+                    <div>
+                        <span class="var-type">Dependientes</span>
+                        <p>Finalización, tiempo, abandono, play válido, tiempo a play, WT, relevancia, retorno</p>
+                    </div>
+                    <div>
+                        <span class="var-type">Controladas</span>
+                        <p>Región, catálogo, dispositivo, nº recs, diseño, criterio de play válido</p>
+                    </div>
+                </div>
+            </div>
+            <div class="speaker-tag">
+                <div class="speaker-avatar">VN</div>
+                <div class="speaker-name">Valeria Nieto</div>
+            </div>
+        </div>
+
+        <!-- 6 · Operación e instrumentación -->
+        <div class="slide">
+            <div class="glass-card">
+                <div class="slide-head stagger d-1">
+                    <span class="badge">06 · Operación</span>
+                    <span class="slide-kicker">Cómo simula el WoZ · Qué medimos · Cómo se construyó</span>
+                </div>
+                <h2 class="stagger d-1">Detrás del velo y delante del evento</h2>
+
+                <div class="grid-2 stagger d-2 gap-md align-start">
                     <div class="card-box">
-                        <h3 style="margin-bottom: 1rem;">Configuración: Wizard of Oz</h3>
-                        <ul>
-                            <li><strong>Muestra:</strong> 30–50 usuarios nuevos.</li>
-                            <li><strong>Distribución:</strong> ~20 Control vs ~20 Experimental.</li>
-                            <li><strong>Duración:</strong> Primera sesión observada y seguimiento 7 días.</li>
-                        </ul>
+                        <h4>Wizard of Oz — protocolo</h4>
+                        <ol class="steps">
+                            <li>El usuario declara 3 preferencias en el prototipo móvil.</li>
+                            <li>El equipo captura la selección y la mapea a un <strong>perfil predefinido</strong>.</li>
+                            <li>Se prepara una <strong>portada curada</strong> con reglas documentadas y repertorio limitado.</li>
+                            <li>El usuario ve “recomendaciones automáticas” y puede reproducir.</li>
+                        </ol>
+                        <p class="micro-note">La curación manual es un <em>techo de valor</em>, no promesa de precisión del motor futuro.</p>
                     </div>
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <div class="speaker-avatar">VN</div>
-                <div class="speaker-name">Valeria Nieto</div>
-            </div>
-        </div>
-
-        <!-- Slide 6: Valeria -->
-        <div class="slide">
-            <div class="glass-card stagger d-1">
-                <span class="badge">Operación</span>
-                <h2>Qué ocurre detrás y qué observaremos</h2>
-                <div class="grid-2" style="align-items: stretch; gap: 2rem;">
-                    <div class="card-box stagger d-2">
-                        <h3 style="color: var(--cyan-400);">Magia (Wizard of Oz)</h3>
-                        <p style="font-size: 1rem; margin-bottom: 1rem;">El usuario percibe una recomendación automática, pero hacemos:</p>
-                        <ul style="font-size: 0.95rem;">
-                            <li>Preferencias seleccionadas capturadas.</li>
-                            <li>Asignación manual a un perfil predefinido.</li>
-                            <li>Portada curada manualmente en base al perfil.</li>
-                        </ul>
-                    </div>
-                    <div class="card-box stagger d-3">
-                        <h3 style="color: var(--purple-500);">Instrumentación (Eventos)</h3>
-                        <ul class="metrics-list" style="font-size: 0.95rem;">
+                    <div class="card-box">
+                        <h4>Instrumentación del flujo</h4>
+                        <ul class="metrics-list dense">
                             <li><code>preference_selection_started</code></li>
-                            <li><code>preference_selection_completed</code></li>
+                            <li><code>preference_selection_completed</code> + duración</li>
                             <li><code>onboarding_abandoned</code></li>
-                            <li><code>content_selected</code></li>
-                            <li><code>valid_play_started</code></li>
-                            <li><code>watch_time</code> y <code>day_return</code></li>
+                            <li><code>content_selected</code> / recomendado vs no</li>
+                            <li><code>valid_play_started</code> (umbral definido)</li>
+                            <li><code>watch_time</code> sesión 1 · <code>day_return</code> D1–D7</li>
+                        </ul>
+                        <p class="micro-note">+ encuesta breve de relevancia percibida (escala 1–5) y diario ligero de retorno.</p>
+                    </div>
+                </div>
+
+                <div class="grid-3 stagger d-3 gap-sm">
+                    <div class="card-box compact-card">
+                        <h4>Calendario</h4>
+                        <ul class="dense tiny">
+                            <li><strong>D1–2:</strong> recluta, consentimiento, asignación</li>
+                            <li><strong>D3–4:</strong> primeras sesiones</li>
+                            <li><strong>D4–11:</strong> seguimiento 7 días</li>
+                            <li><strong>D12–14:</strong> análisis y decisión</li>
+                        </ul>
+                    </div>
+                    <div class="card-box compact-card">
+                        <h4>Herramienta + IA</h4>
+                        <ul class="dense tiny">
+                            <li><strong>Figma Make</strong> + Design System WebFlix</li>
+                            <li>Prompts de contexto, interfaz y componentes</li>
+                            <li>Artefacto mínimo: no producto completo</li>
+                            <li>Respaldo: video + capturas locales</li>
+                        </ul>
+                    </div>
+                    <div class="card-box compact-card">
+                        <h4>En paralelo</h4>
+                        <ul class="dense tiny">
+                            <li><strong>Spike técnico</strong> de factibilidad</li>
+                            <li>Metadatos, integración, latencia p95</li>
+                            <li>Errores y capacidad de captura de señales</li>
+                            <li>Fuera del alcance del WoZ</li>
                         </ul>
                     </div>
                 </div>
+
                 <div class="footer-note stagger d-4">
-                    *Prototipo construido con Figma Make mediante prompts de contexto, interfaz y nuestro Design System de WebFlix.
+                    *Riesgos operativos mitigados: reglas de curación documentadas, mismos controles de dispositivo/catálogo, recordatorios de seguimiento y plan B si falla la demo.
                 </div>
             </div>
             <div class="speaker-tag">
@@ -238,26 +489,70 @@
             </div>
         </div>
 
-        <!-- Slide 7: Cristian — Demo -->
+        <!-- 7 · Demo -->
         <div class="slide">
-            <div class="glass-card grid-2" style="align-items: center;">
+            <div class="glass-card grid-2 gap-lg align-center">
                 <div class="stagger d-1">
-                    <span class="badge">El Artefacto</span>
-                    <h2>Demostración del Flujo Crítico</h2>
-                    <p style="font-size: 1.4rem; color: var(--white); line-height: 1.6;">Perfil <br><span style="color: var(--cyan-400);">→ tres preferencias</span> <br>→ portada curada <br><span style="color: var(--purple-500);">→ reproducción.</span></p>
-                    <p style="font-size: 0.9rem; margin-top: 2rem; color: var(--text-tertiary);">*Contamos con respaldo local en caso de falla de internet. Atajos: (1) Iframe · (2) Video · (3) Imágenes</p>
+                    <div class="slide-head">
+                        <span class="badge">07 · Artefacto</span>
+                        <span class="slide-kicker">Flujo crítico a demostrar</span>
+                    </div>
+                    <h2>Del perfil vacío al primer play</h2>
+                    <p class="lead compact">
+                        El prototipo solo necesita representar con claridad el tramo que prueba la hipótesis — no un app completo.
+                    </p>
+
+                    <ol class="flow-steps">
+                        <li>
+                            <span class="flow-num">1</span>
+                            <div>
+                                <strong>Perfil nuevo</strong>
+                                <span>Sin historial · cold start</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="flow-num">2</span>
+                            <div>
+                                <strong>Tres preferencias</strong>
+                                <span>Selección breve · meta ≤ 30s</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="flow-num">3</span>
+                            <div>
+                                <strong>Portada curada</strong>
+                                <span>Señales → contenido percibido como “para mí”</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="flow-num">4</span>
+                            <div>
+                                <strong>Reproducción válida</strong>
+                                <span>Activación en la primera sesión</span>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <div class="callout callout-tight">
+                        Contingencia en vivo: iframe → video/GIF → capturas.
+                        Atajos <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> · <kbd>D</kbd> salta a esta slide.
+                    </div>
                 </div>
-                <div class="stagger d-2">
+
+                <div class="stagger d-2 demo-col">
                     <div class="mobile-mockup" id="demo-mockup">
                         <div class="mockup-label">[ SIMULACIÓN WIZARD OF OZ ]</div>
                         <div class="mockup-content level-1 is-active" data-demo-level="1">
-                            <p class="mockup-placeholder">[ Iframe Figma Make / Lovable ]</p>
+                            <p class="mockup-placeholder">Iframe<br>Figma Make / Lovable</p>
+                            <p class="mockup-hint">Nivel 1 · interactivo</p>
                         </div>
                         <div class="mockup-content level-2" data-demo-level="2">
-                            <p class="mockup-placeholder">[ GIF / Video Local ]</p>
+                            <p class="mockup-placeholder">GIF / Video<br>local</p>
+                            <p class="mockup-hint">Nivel 2 · respaldo</p>
                         </div>
                         <div class="mockup-content level-3" data-demo-level="3">
-                            <p class="mockup-placeholder">[ Imágenes Estáticas ]</p>
+                            <p class="mockup-placeholder">Imágenes<br>estáticas del flujo</p>
+                            <p class="mockup-hint">Nivel 3 · offline</p>
                         </div>
                     </div>
                 </div>
@@ -268,35 +563,42 @@
             </div>
         </div>
 
-        <!-- Slide 8: Cristian — Decisión -->
+        <!-- 8 · Decisión -->
         <div class="slide slide-scrollable">
-            <div class="glass-card stagger d-1">
-                <span class="badge">Conclusión</span>
-                <h2>Cómo Decidiremos</h2>
-                <p>Aprenderemos si los usuarios aceptan declarar preferencias sin fricción y si perciben la experiencia como más relevante.</p>
-                <div class="section-label">[ CRITERIOS DE ÉXITO ESPERADOS ]</div>
+            <div class="glass-card">
+                <div class="slide-head stagger d-1">
+                    <span class="badge">08 · Decisión</span>
+                    <span class="slide-kicker">Criterios · Escenarios · Confiabilidad · Cierre</span>
+                </div>
+                <h2 class="stagger d-1">Cómo sabremos si avanzar</h2>
+                <p class="lead compact stagger d-1">
+                    Aprendemos si los usuarios aceptan declarar preferencias sin fricción y si eso construye
+                    una experiencia <strong>más relevante y accionable</strong> en la primera sesión.
+                </p>
 
-                <div class="grid-3 stagger d-2" style="margin-bottom: 2.5rem; gap: 1rem;">
+                <div class="criteria-grid stagger d-2">
                     <div class="card-box">
-                        <h4 style="color: var(--cyan-400);">Guardrails</h4>
-                        <ul style="font-size: 0.95rem; margin:0;">
-                            <li>≥80% completa selección.</li>
-                            <li>Mediana de tiempo ≤ 30s.</li>
-                            <li>No aumenta abandono vs Control.</li>
+                        <h4 class="accent-cyan">Guardrails de fricción</h4>
+                        <ul class="dense">
+                            <li>≥ <strong>80%</strong> completa la selección</li>
+                            <li>Mediana de tiempo ≤ <strong>30 s</strong></li>
+                            <li>Abandono no empeora vs control (tol. ≤ 5 pp)</li>
                         </ul>
                     </div>
                     <div class="card-box card-box-highlight">
-                        <h4 style="color: var(--purple-500);">Señal Principal</h4>
-                        <ul style="font-size: 0.95rem; margin:0;">
-                            <li>La reproducción válida mejora <strong style="color: var(--white); font-size: 1.1em;">al menos 15%</strong> frente al control.</li>
+                        <h4 class="accent-purple">Señal principal</h4>
+                        <ul class="dense">
+                            <li>Reproducción válida mejora ≥ <strong>15%</strong> vs control</li>
+                            <li>Meta direccional: ≥ <strong>65%</strong> inicia play válido</li>
                         </ul>
                     </div>
                     <div class="card-box">
-                        <h4 style="color: var(--zinc-400);">Señales Secundarias</h4>
-                        <ul style="font-size: 0.95rem; margin:0;">
-                            <li>Menor tiempo a 1ra reproducción.</li>
-                            <li>Mayor relevancia percibida.</li>
-                            <li>Watch Time inicial superior.</li>
+                        <h4>Señales de soporte</h4>
+                        <ul class="dense">
+                            <li>Tiempo a 1ª play &lt; 3 min y mejor que control</li>
+                            <li>Watch Time sesión 1 +10% vs control</li>
+                            <li>Relevancia: ≥ 75% con score 4–5</li>
+                            <li>Retorno 7d: exploratorio (no sustituto de Day-7)</li>
                         </ul>
                     </div>
                 </div>
@@ -304,20 +606,25 @@
                 <div class="grid-3 stagger d-3 decision-grid">
                     <div class="decision-card decision-confirm">
                         <strong>✅ Confirma</strong>
-                        <span>Automatizar versión mínima y ejecutar A/B a escala.</span>
+                        <span>Guardrails OK + relevancia y activación mejoran vs control → automatizar versión mínima y A/B a escala.</span>
                     </div>
                     <div class="decision-card decision-inconclusive">
                         <strong>⚠️ Inconcluso</strong>
-                        <span>Iterar preferencias, perfiles o portada. Repetir prueba.</span>
+                        <span>Señales mixtas (ej. sube relevancia pero no el play, o hay fricción) → iterar preferencias, perfiles o portada y repetir.</span>
                     </div>
                     <div class="decision-card decision-refute">
                         <strong>❌ Refuta</strong>
-                        <span>Abandonar la selección explícita y probar otra palanca.</span>
+                        <span>Aumenta abandono o no mueve relevancia/play/WT → abandonar selección explícita y probar otra palanca.</span>
                     </div>
                 </div>
 
-                <div class="footer-note stagger d-4">
-                    *Confiabilidad: Finalización/Fricción (Moderada), Reproducción/Watch Time (Direccional), Day-7 (No concluyente en esta fase). En paralelo: Spike técnico de viabilidad.
+                <div class="closing-bar stagger d-4">
+                    <div class="closing-quote">
+                        “No demostramos todavía que recuperaremos el Day-7. Validamos el mecanismo y los leading indicators que podrían moverlo. Day-7 es outcome de negocio de la fase 2 a escala.”
+                    </div>
+                    <div class="closing-meta">
+                        <span>Confiabilidad: fricción moderada · activación direccional · Day-7 no concluyente · factibilidad = spike paralelo</span>
+                    </div>
                 </div>
             </div>
             <div class="speaker-tag">
