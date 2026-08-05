@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="WebFlix · Vista de notas del presentador · sincronizada con el pitch">
+  <meta name="description" content="WebFlix · Notas del presentador · seguimiento en vivo o navegación libre">
   <title>WebFlix · Notas del presentador</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,26 +22,34 @@
       </div>
 
       <div class="timer-block" id="timer-block" data-state="ok">
-        <span class="timer-label">Timer</span>
+        <span class="timer-label">Timer (del deck)</span>
         <span class="timer-time" id="timer-time">00:00</span>
         <span class="timer-meta">meta ~10:00 · warn 9:30 · danger 10:30</span>
       </div>
 
       <div class="top-actions">
         <a class="btn ghost" href="../" target="_blank" rel="noopener">Abrir deck</a>
-        <button type="button" class="btn" id="btn-prev" title="Anterior">←</button>
-        <button type="button" class="btn" id="btn-next" title="Siguiente">→</button>
-        <button type="button" class="btn ghost" id="btn-timer" title="T pause/play">T</button>
-        <button type="button" class="btn ghost" id="btn-reset" title="R reset">R</button>
+        <button type="button" class="btn" id="btn-prev" title="Anterior (solo en tu vista)">←</button>
+        <button type="button" class="btn" id="btn-next" title="Siguiente (solo en tu vista)">→</button>
       </div>
     </header>
 
-    <div class="progress-track" aria-hidden="true">
+    <!-- Barra cuando sales del seguimiento -->
+    <div class="follow-bar" id="follow-bar" hidden>
+      <div class="follow-copy">
+        <strong>Navegación libre</strong>
+        <span id="live-hint">La presentación sigue en otro slide</span>
+      </div>
+      <button type="button" class="btn follow-btn" id="btn-follow" title="Tecla L o Esc">
+        Seguir presentación
+      </button>
+    </div>
+
+    <div class="progress-track" aria-hidden="true" title="Progreso de la presentación en vivo">
       <div class="progress-fill" id="progress-fill"></div>
     </div>
 
     <main class="layout">
-      <!-- PAST -->
       <aside class="col col-past" id="col-past">
         <div class="col-label">
           <span class="pill dim">Ya pasó</span>
@@ -49,7 +57,6 @@
         <div class="stack" id="past-stack"></div>
       </aside>
 
-      <!-- NOW -->
       <section class="col col-now" id="col-now">
         <div class="now-head">
           <div class="now-meta">
@@ -86,7 +93,6 @@
         </div>
       </section>
 
-      <!-- NEXT -->
       <aside class="col col-next" id="col-next">
         <div class="col-label">
           <span class="pill next">Viene</span>
@@ -97,12 +103,13 @@
 
     <nav class="rail" id="rail" aria-label="Slides del pitch"></nav>
     <footer class="foot">
-      <span>Mismo origen · sync por BroadcastChannel + localStorage</span>
-      <span>Controles: ← → · T timer · R reset · click en la rail</span>
-      <span>En el deck: tecla <kbd>N</kbd> abre notas</span>
+      <span>Solo el deck mueve el slide en vivo · tu browse es privado</span>
+      <span>← → navega notas · <kbd>L</kbd> / <kbd>Esc</kbd> seguir presentación</span>
+      <span>4+ personas · misma sala · room en la URL</span>
     </footer>
   </div>
 
+  <script src="../sync.js"></script>
   <script src="notes-data.js"></script>
   <script src="notas.js"></script>
 </body>
