@@ -210,9 +210,9 @@ window.WEBFLIX_NOTES = [
       },
     ],
     highlight: [
-      "⭐ Énfasis · paso a paso en vivo",
-      "3 pantallas exp + contraste control",
-      "Plan B: 1 vivo · 2 video · 3 capturas",
+      "⭐ Énfasis · video del flujo en el teléfono",
+      "Space / P = play-pause del video",
+      "1 video · 2 capturas · 3 offline · D salta a esta slide",
     ],
     avoid: ["No decir que corre el motor real", "No improvisar fuera del flujo"],
     glossary: ["WoZ", "tramo-critico", "Ley-Jakob", "affordance", "guardrail", "<30s", "control", "experimental"],

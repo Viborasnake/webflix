@@ -147,7 +147,41 @@ document.addEventListener("DOMContentLoaded", () => {
     setHud(!hudVisible);
   }
 
+  function getDemoVideo() {
+    return document.getElementById("demo-video");
+  }
+
+  function pauseDemoVideo() {
+    const v = getDemoVideo();
+    if (!v) return;
+    try {
+      v.pause();
+    } catch (_) { /* ignore */ }
+    const overlay = v.closest(".demo-level")?.querySelector(".demo-overlay");
+    if (overlay) overlay.classList.remove("is-playing");
+  }
+
+  function playDemoVideo({ restart } = {}) {
+    const v = getDemoVideo();
+    if (!v) return;
+    try {
+      if (restart) v.currentTime = 0;
+      const p = v.play();
+      if (p && typeof p.catch === "function") p.catch(() => { /* autoplay blocked */ });
+      const overlay = v.closest(".demo-level")?.querySelector(".demo-overlay");
+      if (overlay) overlay.classList.add("is-playing");
+    } catch (_) { /* ignore */ }
+  }
+
+  function toggleDemoVideo() {
+    const v = getDemoVideo();
+    if (!v) return;
+    if (v.paused) playDemoVideo();
+    else pauseDemoVideo();
+  }
+
   function setDemoLevel(level) {
+    const prev = demoLevel;
     demoLevel = Math.min(3, Math.max(1, level));
     document.querySelectorAll(".demo-level").forEach((el) => {
       el.classList.toggle("is-active", Number(el.dataset.level) === demoLevel);
@@ -155,6 +189,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".dot").forEach((el) => {
       el.classList.toggle("is-on", Number(el.dataset.goto) === demoLevel);
     });
+
+    // Video solo en nivel 1
+    if (demoLevel === 1) {
+      playDemoVideo({ restart: prev !== 1 });
+    } else {
+      pauseDemoVideo();
+    }
     publish(true);
   }
 
@@ -200,6 +241,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (chromeLogo) chromeLogo.hidden = hideLogo;
 
     updateSpeaker(slide);
+
+    // Demo video: play al entrar a la slide de Cris; pause al salir
+    if (DEMO_INDEX >= 0) {
+      if (current === DEMO_INDEX) {
+        if (demoLevel === 1) playDemoVideo({ restart: true });
+      } else {
+        pauseDemoVideo();
+      }
+    }
+
     publish(true);
   }
 
@@ -296,6 +347,15 @@ document.addEventListener("DOMContentLoaded", () => {
       case "ArrowRight":
       case "ArrowDown":
       case " ":
+        // En demo video: space = play/pause (no avanzar slide)
+        if (current === DEMO_INDEX && demoLevel === 1) {
+          e.preventDefault();
+          toggleDemoVideo();
+          break;
+        }
+        e.preventDefault();
+        next();
+        break;
       case "PageDown":
         e.preventDefault();
         next();
@@ -350,6 +410,13 @@ document.addEventListener("DOMContentLoaded", () => {
       case "2":
       case "3":
         if (current === DEMO_INDEX) setDemoLevel(Number(e.key));
+        break;
+      case "p":
+      case "P":
+        if (current === DEMO_INDEX && demoLevel === 1) {
+          e.preventDefault();
+          toggleDemoVideo();
+        }
         break;
       case "f":
       case "F":

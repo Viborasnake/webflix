@@ -2158,12 +2158,22 @@ body {
   z-index: 2;
 }
 
-.demo-level img {
+.demo-level img,
+.demo-level video.demo-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  opacity: 0.5;
+}
+
+.demo-level img {
+  opacity: 0.55;
+}
+
+.demo-level video.demo-video {
+  opacity: 1;
+  background: #000;
+  display: block;
 }
 
 .demo-overlay {
@@ -2177,6 +2187,23 @@ body {
   background: linear-gradient(180deg, rgba(7, 7, 11, 0.15), rgba(7, 7, 11, 0.78));
   text-align: center;
   padding: 1rem;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+/* Con video activo: badge discreto abajo, no tapa el flujo */
+.demo-overlay--soft {
+  justify-content: flex-end;
+  padding-bottom: 1.1rem;
+  background: linear-gradient(180deg, transparent 55%, rgba(7, 7, 11, 0.72) 100%);
+}
+
+.demo-level.is-active .demo-overlay--soft.is-playing {
+  opacity: 0;
+}
+
+.demo-level.is-active:hover .demo-overlay--soft.is-playing {
+  opacity: 1;
 }
 
 .demo-badge {

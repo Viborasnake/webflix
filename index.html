@@ -500,8 +500,8 @@
           </ol>
 
           <div class="callout">
-            Cada umbral es también <strong>guardrail de refutación</strong>.
-            Contingencia: <kbd>1</kbd> vivo · <kbd>2</kbd> video · <kbd>3</kbd> capturas · <kbd>D</kbd> esta slide.
+            Video del flujo narrado en el teléfono.
+            Contingencia: <kbd>1</kbd> video · <kbd>2</kbd> capturas · <kbd>3</kbd> offline · <kbd>D</kbd> esta slide · <kbd>Space</kbd> play/pause.
           </div>
         </div>
 
@@ -510,36 +510,43 @@
             <div class="phone-notch"></div>
             <div class="phone-screen">
               <div class="demo-level is-active" data-level="1">
-                <img src="assets/home-phones.png" alt="Prototipo WebFlix">
-                <div class="demo-overlay">
-                  <span class="demo-badge">Nivel 1 · Interactivo</span>
-                  <p>Figma · en pulido</p>
-                  <small>Demo en vivo</small>
+                <video
+                  id="demo-video"
+                  class="demo-video"
+                  src="assets/experimento-flujo.mp4"
+                  playsinline
+                  preload="auto"
+                  poster="assets/home-phones.png"
+                ></video>
+                <div class="demo-overlay demo-overlay--soft">
+                  <span class="demo-badge">Nivel 1 · Video del flujo</span>
+                  <p>Experimento narrado</p>
+                  <small>Space · play/pause</small>
                 </div>
               </div>
               <div class="demo-level" data-level="2">
-                <img src="assets/home-phones.png" alt="Video">
+                <img src="assets/home-phones.png" alt="Capturas del flujo">
                 <div class="demo-overlay">
-                  <span class="demo-badge">Nivel 2 · Video</span>
-                  <p>GIF / Video local</p>
-                  <small>Si falla la red</small>
+                  <span class="demo-badge">Nivel 2 · Capturas</span>
+                  <p>Stills del flujo</p>
+                  <small>Plan B visual</small>
                 </div>
               </div>
               <div class="demo-level" data-level="3">
-                <img src="assets/home-phones.png" alt="Capturas">
+                <img src="assets/cover-phone.png" alt="Home curada offline">
                 <div class="demo-overlay">
                   <span class="demo-badge">Nivel 3 · Offline</span>
-                  <p>Capturas del flujo</p>
-                  <small>Plan B</small>
+                  <p>Home curada</p>
+                  <small>Si falla el video</small>
                 </div>
               </div>
             </div>
             <div class="phone-bar"></div>
           </div>
           <div class="demo-dots">
-            <button type="button" class="dot is-on" data-goto="1" aria-label="Nivel 1"></button>
-            <button type="button" class="dot" data-goto="2" aria-label="Nivel 2"></button>
-            <button type="button" class="dot" data-goto="3" aria-label="Nivel 3"></button>
+            <button type="button" class="dot is-on" data-goto="1" aria-label="Video del flujo"></button>
+            <button type="button" class="dot" data-goto="2" aria-label="Capturas"></button>
+            <button type="button" class="dot" data-goto="3" aria-label="Offline"></button>
           </div>
         </div>
       </div>
