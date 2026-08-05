@@ -42,6 +42,17 @@
       </div>
     </header>
 
+    <!-- Aviso: otro tomó el control remoto -->
+    <div class="control-bar" id="control-bar" hidden>
+      <div class="control-copy">
+        <strong id="control-bar-title">Otro usuario tiene el control</strong>
+        <span id="control-bar-hint">Tus flechas no mueven el deck hasta que tomes el control</span>
+      </div>
+      <button type="button" class="btn follow-btn" id="btn-take-control" title="Tecla C">
+        Tomar control
+      </button>
+    </div>
+
     <!-- Barra cuando sales del seguimiento (browse libre) -->
     <div class="follow-bar" id="follow-bar" hidden>
       <div class="follow-copy">
@@ -136,9 +147,9 @@
     </section>
 
     <footer class="foot">
-      <span><kbd>Q</kbd> panel Q&A · <kbd>C</kbd> controlar deck</span>
-      <span>← → navega · <kbd>L</kbd> seguir vivo · <kbd>Esc</kbd> soltar control / cerrar Q&A</span>
-      <span>4+ personas · room en la URL · un control a la vez</span>
+      <span><kbd>Q</kbd> Q&A · <kbd>C</kbd> tomar / soltar control (uno a la vez)</span>
+      <span>← → navega · <kbd>L</kbd> seguir vivo · <kbd>Esc</kbd> soltar control</span>
+      <span>Nombre en URL: <code>?name=Tami</code> · room opcional</span>
     </footer>
   </div>
 

@@ -12,9 +12,40 @@
   // Slide en vivo del deck
   let liveSlide = 0;
   let followLive = true;
-  let controlMode = false; // true = ←→ mueven el deck
+  let controlMode = false; // true = ←→ mueven el deck (solo uno a la vez)
   let hasLive = false;
   let liveAdvancedWhileBrowsing = false;
+
+  // Identidad de esta sesión de notas (control exclusivo)
+  function getOrCreateSessionId() {
+    try {
+      let id = sessionStorage.getItem("webflix-notes-sid");
+      if (!id) {
+        id =
+          (crypto.randomUUID && crypto.randomUUID()) ||
+          "s-" + Math.random().toString(36).slice(2, 10);
+        sessionStorage.setItem("webflix-notes-sid", id);
+      }
+      return id;
+    } catch (_) {
+      return "s-" + Math.random().toString(36).slice(2, 10);
+    }
+  }
+  const SESSION_ID = getOrCreateSessionId();
+  function sessionNameFromUrl() {
+    try {
+      const q = new URLSearchParams(window.location.search);
+      const n = (q.get("name") || q.get("who") || "").trim();
+      if (n) return n.slice(0, 24);
+    } catch (_) { /* ignore */ }
+    return "Sesión " + SESSION_ID.slice(0, 4);
+  }
+  const SESSION_NAME = sessionNameFromUrl();
+
+  // Quién tiene el control remoto (null = nadie o nosotros)
+  let remoteController = null; // { id, name, ts }
+  let controlHeartbeat = null;
+  let takeoverToastUntil = 0;
 
   let timerRunning = false;
   let timerAccumulated = 0;
@@ -48,6 +79,10 @@
   const qaFilters = $("qa-filters");
   const qaBubbles = $("qa-bubbles");
   const qaIntro = $("qa-intro");
+  const controlBar = $("control-bar");
+  const controlBarTitle = $("control-bar-title");
+  const controlBarHint = $("control-bar-hint");
+  const btnTakeControl = $("btn-take-control");
 
   const QA = window.WEBFLIX_QA || { filters: [], pistas: [], intro: "" };
   const GLOSSARY = window.WEBFLIX_GLOSSARY || {};
@@ -111,7 +146,7 @@
     syncStatus.classList.remove("is-live", "is-wait", "is-solo", "is-free", "is-control");
     if (mode === "control") {
       syncStatus.classList.add("is-control");
-      syncStatus.textContent = extra || "Control remoto · mueves la presentación";
+      syncStatus.textContent = extra || "Tú controlas el deck";
     } else if (mode === "live") {
       syncStatus.classList.add("is-live");
       syncStatus.textContent = extra || "En seguimiento · presentación en vivo";
@@ -127,11 +162,73 @@
     }
   }
 
+  function otherHasControl() {
+    return !!(
+      remoteController &&
+      remoteController.id &&
+      remoteController.id !== SESSION_ID
+    );
+  }
+
+  function stopHeartbeat() {
+    if (controlHeartbeat) {
+      clearInterval(controlHeartbeat);
+      controlHeartbeat = null;
+    }
+  }
+
+  function startHeartbeat() {
+    stopHeartbeat();
+    controlHeartbeat = setInterval(() => {
+      if (!controlMode || !bus || typeof bus.sendControl !== "function") return;
+      bus.sendControl("claim", {
+        controllerId: SESSION_ID,
+        controllerName: SESSION_NAME,
+      });
+    }, 4000);
+  }
+
+  function claimControlBroadcast() {
+    if (!bus || typeof bus.sendControl !== "function") return;
+    bus.sendControl("claim", {
+      controllerId: SESSION_ID,
+      controllerName: SESSION_NAME,
+    });
+    remoteController = {
+      id: SESSION_ID,
+      name: SESSION_NAME,
+      ts: Date.now(),
+    };
+    startHeartbeat();
+  }
+
+  function releaseControlBroadcast() {
+    stopHeartbeat();
+    if (!bus || typeof bus.sendControl !== "function") return;
+    // Solo liberar si nosotros éramos el dueño
+    if (remoteController && remoteController.id && remoteController.id !== SESSION_ID) {
+      return;
+    }
+    bus.sendControl("release", {
+      controllerId: SESSION_ID,
+      controllerName: SESSION_NAME,
+    });
+    if (remoteController && remoteController.id === SESSION_ID) {
+      remoteController = null;
+    }
+  }
+
   function updateControlButton() {
     if (!btnControl) return;
     btnControl.classList.toggle("is-on", controlMode);
     btnControl.setAttribute("aria-pressed", controlMode ? "true" : "false");
-    btnControl.textContent = controlMode ? "● Control activo" : "Controlar presentación";
+    if (controlMode) {
+      btnControl.textContent = "● Control activo";
+    } else if (otherHasControl()) {
+      btnControl.textContent = "Tomar control";
+    } else {
+      btnControl.textContent = "Controlar presentación";
+    }
     if (btnPrev) {
       btnPrev.title = controlMode
         ? "Anterior · mueve el deck"
@@ -143,6 +240,26 @@
         : "Siguiente · solo tu vista";
     }
     if (app) app.classList.toggle("is-controlling", controlMode);
+  }
+
+  function updateControlBar() {
+    if (!controlBar) return;
+    const showOther = otherHasControl() && !controlMode;
+    const showToast = Date.now() < takeoverToastUntil;
+    controlBar.hidden = !(showOther || showToast);
+    if (controlBar.hidden) return;
+
+    const name = (remoteController && remoteController.name) || "Otro usuario";
+    if (controlBarTitle) {
+      controlBarTitle.textContent = showOther
+        ? `${name} tiene el control`
+        : `${name} tomó el control`;
+    }
+    if (controlBarHint) {
+      controlBarHint.textContent = showOther
+        ? "Tus flechas solo mueven tu vista. Pulsa “Tomar control” para manejar el deck."
+        : "Se soltó tu control. Puedes seguir en libre o recuperar el mando.";
+    }
   }
 
   function updateFollowUI() {
@@ -162,6 +279,9 @@
       if (controlMode) {
         nowBadge.textContent = "CONTROL";
         nowBadge.className = "pill control";
+      } else if (otherHasControl()) {
+        nowBadge.textContent = "REMOTO";
+        nowBadge.className = "pill free";
       } else if (followLive && hasLive) {
         nowBadge.textContent = "EN VIVO";
         nowBadge.className = "pill live";
@@ -175,9 +295,13 @@
     }
 
     updateControlButton();
+    updateControlBar();
 
     if (controlMode) {
-      setSyncLabel("control");
+      setSyncLabel("control", "Tú controlas el deck · " + SESSION_NAME);
+    } else if (otherHasControl()) {
+      const n = remoteController.name || "Otro";
+      setSyncLabel("free", n + " controla el deck");
     } else if (followLive && hasLive) {
       setSyncLabel("live");
     } else if (!followLive) {
@@ -367,7 +491,12 @@
 
   function sendCmd(cmd, extra) {
     if (!bus || typeof bus.sendCommand !== "function") return;
-    bus.sendCommand(cmd, extra);
+    if (!controlMode) return; // solo el dueño del control mueve el deck
+    bus.sendCommand(cmd, {
+      controllerId: SESSION_ID,
+      controllerName: SESSION_NAME,
+      ...extra,
+    });
   }
 
   /** Navegación: libre (solo local) o control (mueve el deck) */
@@ -399,6 +528,9 @@
   }
 
   function resumeFollow() {
+    if (controlMode) {
+      releaseControlBroadcast();
+    }
     controlMode = false;
     followLive = true;
     liveAdvancedWhileBrowsing = false;
@@ -407,20 +539,74 @@
   }
 
   function setControlMode(on) {
-    controlMode = !!on;
-    if (controlMode) {
-      // Al activar control, saltamos al vivo y enganchamos
+    const next = !!on;
+    if (next === controlMode) {
+      renderView();
+      return;
+    }
+
+    if (next) {
+      // Tomar control: los demás lo pierden al recibir el claim
+      controlMode = true;
       followLive = true;
       liveAdvancedWhileBrowsing = false;
       viewSlide = liveSlide;
-      // Forzar al deck al slide actual de esta vista (por si quiere arrancar control desde aquí)
-      sendCmd("goto", { slide: viewSlide });
+      claimControlBroadcast();
+      sendCmd("goto", {
+        slide: viewSlide,
+        controllerId: SESSION_ID,
+        controllerName: SESSION_NAME,
+      });
+    } else {
+      controlMode = false;
+      releaseControlBroadcast();
     }
     renderView();
   }
 
   function toggleControlMode() {
     setControlMode(!controlMode);
+  }
+
+  function onRemoteControl(ctrl) {
+    if (!ctrl || !ctrl.action) return;
+    const id = ctrl.controllerId;
+    const name = ctrl.controllerName || "Otro usuario";
+
+    if (ctrl.action === "claim") {
+      if (!id) return;
+      // Nosotros re-claimamos: ignorar eco
+      if (id === SESSION_ID) {
+        remoteController = { id, name, ts: ctrl.ts || Date.now() };
+        updateFollowUI();
+        return;
+      }
+      // Otro tomó el control
+      const wasMine = controlMode;
+      remoteController = { id, name, ts: ctrl.ts || Date.now() };
+      if (wasMine) {
+        controlMode = false;
+        stopHeartbeat();
+        followLive = true;
+        viewSlide = liveSlide;
+        takeoverToastUntil = Date.now() + 8000;
+      } else if (!controlMode) {
+        // Aviso suave aunque no teníamos control
+        takeoverToastUntil = Date.now() + 5000;
+      }
+      renderView();
+      return;
+    }
+
+    if (ctrl.action === "release") {
+      // Solo limpia si liberó el dueño actual
+      if (remoteController && id && remoteController.id === id) {
+        remoteController = null;
+      } else if (!remoteController || remoteController.id === id) {
+        remoteController = null;
+      }
+      renderView();
+    }
   }
 
   function onLiveState(state) {
@@ -444,8 +630,12 @@
 
   if (bus) {
     bus.subscribe((state) => onLiveState(state));
+    if (typeof bus.onControl === "function") {
+      bus.onControl((ctrl) => onRemoteControl(ctrl));
+    }
     bus.onStatus((st) => {
-      if (controlMode) setSyncLabel("control");
+      if (controlMode) setSyncLabel("control", "Tú controlas el deck · " + SESSION_NAME);
+      else if (otherHasControl()) updateFollowUI();
       else if (!hasLive && (st === "wait" || st === "init")) setSyncLabel("wait");
       else if (!followLive) updateFollowUI();
       else if (hasLive) setSyncLabel("live");
@@ -455,9 +645,33 @@
     setSyncLabel("solo", "Sync no cargó · solo local");
   }
 
+  // Si al abrir ya hay claim en storage
+  if (bus && typeof bus.getLatestControl === "function") {
+    const boot = bus.getLatestControl();
+    if (boot) onRemoteControl(boot);
+  }
+
   buildRail();
   renderView();
   renderTimer();
+
+  // Limpiar toast de takeover
+  setInterval(() => {
+    if (takeoverToastUntil && Date.now() > takeoverToastUntil) {
+      takeoverToastUntil = 0;
+      updateControlBar();
+    }
+  }, 500);
+
+  // Al cerrar pestaña, liberar control si lo teníamos
+  window.addEventListener("beforeunload", () => {
+    if (controlMode) releaseControlBroadcast();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && controlMode) {
+      // mantener claim con heartbeat; no liberar al minimizar
+    }
+  });
 
   document.addEventListener("click", (e) => {
     const t = e.target.closest("[data-goto]");
@@ -469,6 +683,9 @@
   if (btnNext) btnNext.addEventListener("click", () => goNotes(viewSlide + 1));
   if (btnFollow) btnFollow.addEventListener("click", () => resumeFollow());
   if (btnControl) btnControl.addEventListener("click", () => toggleControlMode());
+  if (btnTakeControl) {
+    btnTakeControl.addEventListener("click", () => setControlMode(true));
+  }
   if (btnQa) btnQa.addEventListener("click", () => setQaOpen(!qaOpen, { manual: true }));
   if (btnQaClose) btnQaClose.addEventListener("click", () => setQaOpen(false, { manual: true }));
 

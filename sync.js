@@ -2,10 +2,10 @@
  * WebFlix pitch sync bus
  * ─────────────────────────────────────────────
  * DECK publica estado en vivo (slide + timer).
- * NOTAS escuchan estado; cada una puede navegar libre.
- * NOTAS en modo control envían COMMANDS al deck
- * (goto / next / prev / timer) sin que el browse
- * libre de otros afecte nada.
+ * NOTAS escuchan estado; browse libre es local.
+ * NOTAS en modo control envían COMMANDS al deck.
+ * CONTROL exclusivo: claim/release entre notas;
+ * el deck reenvía claims a todos los peers.
  *
  * Transportes:
  *  1) BroadcastChannel + localStorage
@@ -15,6 +15,7 @@
   const CHANNEL = "webflix-pitch-sync-v2";
   const STORAGE_KEY = "webflix-pitch-state-v2";
   const COMMAND_KEY = "webflix-pitch-cmd-v2";
+  const CONTROL_KEY = "webflix-pitch-control-v2";
   const DEFAULT_ROOM = "webflix-g5";
   const PEER_CDN = "https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";
 
@@ -48,7 +49,9 @@
     const room = roomFromUrl();
     const stateListeners = new Set();
     const commandListeners = new Set();
+    const controlListeners = new Set();
     let latest = null;
+    let latestControl = null;
     let channel = null;
     let peer = null;
     let peerReady = false;
@@ -57,6 +60,7 @@
     let status = "init";
     const statusListeners = new Set();
     let lastCmdTs = 0;
+    let lastControlTs = 0;
 
     try {
       channel = new BroadcastChannel(CHANNEL + ":" + room);
@@ -73,9 +77,18 @@
       });
     }
 
+    function fanoutPeer(payload) {
+      peerConns.forEach((conn) => {
+        if (conn.open) {
+          try {
+            conn.send(payload);
+          } catch (_) { /* ignore */ }
+        }
+      });
+    }
+
     function emitState(state, meta) {
       if (!state || typeof state.slide !== "number") return;
-      // Solo estados del deck
       if (state.source && state.source !== "deck") return;
       if (latest && state.ts && latest.ts && state.ts < latest.ts) return;
       latest = state;
@@ -98,6 +111,20 @@
       });
     }
 
+    function emitControl(ctrl, meta) {
+      if (!ctrl || !ctrl.action) return;
+      if (ctrl.room && ctrl.room !== room) return;
+      // claims: aceptar el más reciente; release solo si es el mismo dueño o más nuevo
+      if (ctrl.ts && ctrl.ts < lastControlTs) return;
+      if (ctrl.ts) lastControlTs = ctrl.ts;
+      latestControl = ctrl;
+      controlListeners.forEach((fn) => {
+        try {
+          fn(ctrl, meta || { via: "unknown" });
+        } catch (_) { /* ignore */ }
+      });
+    }
+
     function readStorage() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY + ":" + room);
@@ -114,12 +141,34 @@
       } catch (_) { /* private mode */ }
     }
 
+    function readControlStorage() {
+      try {
+        const raw = localStorage.getItem(CONTROL_KEY + ":" + room);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) {
+        return null;
+      }
+    }
+
     if (channel) {
       channel.onmessage = (ev) => {
         const data = ev.data;
         if (!data) return;
         if (data.type === "state") emitState(data, { via: "broadcast" });
-        if (data.type === "command") emitCommand(data, { via: "broadcast" });
+        if (data.type === "command") {
+          // Deck aplica; notas no reenvían
+          if (role === "deck") emitCommand(data, { via: "broadcast" });
+        }
+        if (data.type === "control") {
+          // Todas las notas + deck (relay)
+          if (role === "notes") emitControl(data, { via: "broadcast" });
+          if (role === "deck") {
+            // Reenviar a peers y a BC no (ya llegó por BC). Solo peers remotos.
+            fanoutPeer(data);
+            // No hace falta emitControl en deck salvo si quisiéramos HUD
+          }
+        }
       };
     }
 
@@ -131,15 +180,23 @@
       }
       if (e.key === COMMAND_KEY + ":" + room && e.newValue) {
         try {
-          emitCommand(JSON.parse(e.newValue), { via: "storage" });
+          if (role === "deck") emitCommand(JSON.parse(e.newValue), { via: "storage" });
+        } catch (_) { /* ignore */ }
+      }
+      if (e.key === CONTROL_KEY + ":" + room && e.newValue) {
+        try {
+          const data = JSON.parse(e.newValue);
+          if (role === "notes") emitControl(data, { via: "storage" });
+          if (role === "deck") fanoutPeer(data);
         } catch (_) { /* ignore */ }
       }
     });
 
     const boot = readStorage();
     if (boot) latest = boot;
+    const bootCtrl = readControlStorage();
+    if (bootCtrl) latestControl = bootCtrl;
 
-    /** Solo el deck publica el estado en vivo */
     function publish(state) {
       if (role !== "deck") return null;
       const payload = {
@@ -156,22 +213,11 @@
           channel.postMessage({ type: "state", ...payload });
         } catch (_) { /* ignore */ }
       }
-      peerConns.forEach((conn) => {
-        if (conn.open) {
-          try {
-            conn.send({ type: "state", ...payload });
-          } catch (_) { /* ignore */ }
-        }
-      });
+      fanoutPeer({ type: "state", ...payload });
       setStatus(peerConns.size ? "live+" + peerConns.size : "live");
       return payload;
     }
 
-    /**
-     * Notas en modo control → comandos al deck.
-     * cmd: "goto" | "next" | "prev" | "timer-toggle" | "timer-reset"
-     * slide?: number (para goto)
-     */
     function sendCommand(cmd, extra) {
       if (role !== "notes") return null;
       const payload = {
@@ -191,13 +237,38 @@
       try {
         localStorage.setItem(COMMAND_KEY + ":" + room, JSON.stringify(payload));
       } catch (_) { /* ignore */ }
-      peerConns.forEach((conn) => {
-        if (conn.open) {
-          try {
-            conn.send(payload);
-          } catch (_) { /* ignore */ }
-        }
-      });
+      fanoutPeer(payload);
+      return payload;
+    }
+
+    /**
+     * Control exclusivo entre notas.
+     * action: "claim" | "release"
+     * controllerId, controllerName
+     */
+    function sendControl(action, extra) {
+      if (role !== "notes") return null;
+      const payload = {
+        type: "control",
+        v: 2,
+        source: "notes",
+        room,
+        action,
+        ts: Date.now(),
+        ...extra,
+      };
+      latestControl = payload;
+      lastControlTs = payload.ts;
+      if (channel) {
+        try {
+          channel.postMessage(payload);
+        } catch (_) { /* ignore */ }
+      }
+      try {
+        localStorage.setItem(CONTROL_KEY + ":" + room, JSON.stringify(payload));
+      } catch (_) { /* ignore */ }
+      // Enviar al deck para que reenvíe a otros dispositivos
+      fanoutPeer(payload);
       return payload;
     }
 
@@ -216,6 +287,16 @@
       return () => commandListeners.delete(fn);
     }
 
+    function onControl(fn) {
+      controlListeners.add(fn);
+      if (latestControl) {
+        try {
+          fn(latestControl, { via: "bootstrap" });
+        } catch (_) { /* ignore */ }
+      }
+      return () => controlListeners.delete(fn);
+    }
+
     function onStatus(fn) {
       statusListeners.add(fn);
       fn(status, { room, role });
@@ -232,10 +313,39 @@
         if (data.type === "command" && role === "deck") {
           emitCommand(data, { via: "peer" });
         }
-        // deck reenvía estado si notes pide hello
-        if (data.type === "hello" && role === "deck" && latest) {
+        if (data.type === "control") {
+          if (role === "deck") {
+            // Relay a todos los demás peers + BC (por si hay tabs locales)
+            peerConns.forEach((c) => {
+              if (c !== conn && c.open) {
+                try {
+                  c.send(data);
+                } catch (_) { /* ignore */ }
+              }
+            });
+            if (channel) {
+              try {
+                channel.postMessage(data);
+              } catch (_) { /* ignore */ }
+            }
+            try {
+              localStorage.setItem(CONTROL_KEY + ":" + room, JSON.stringify(data));
+            } catch (_) { /* ignore */ }
+          }
+          if (role === "notes") {
+            emitControl(data, { via: "peer" });
+          }
+        }
+        if (data.type === "hello" && role === "deck") {
+          if (latest) {
+            try {
+              conn.send({ type: "state", ...latest });
+            } catch (_) { /* ignore */ }
+          }
+          // Si hay control activo, avisar al que llega
           try {
-            conn.send({ type: "state", ...latest });
+            const ctrl = readControlStorage();
+            if (ctrl && ctrl.action === "claim") conn.send(ctrl);
           } catch (_) { /* ignore */ }
         }
       });
@@ -318,10 +428,13 @@
       room,
       publish,
       sendCommand,
+      sendControl,
       subscribe,
       onCommand,
+      onControl,
       onStatus,
       getLatest: () => latest,
+      getLatestControl: () => latestControl,
       getStatus: () => status,
     };
   }
