@@ -277,23 +277,20 @@ body {
   font-family: var(--display);
   font-weight: 700;
   letter-spacing: -0.035em;
-  line-height: 1.1;
-  font-size: clamp(1.85rem, 3.6vw, 3rem);
+  line-height: 1.08;
+  font-size: clamp(1.9rem, 3.8vw, 3.25rem);
   color: #f8fafc;
 }
 
-/* “Perdemos 1 de cada 3” siempre en una línea */
-.cover-hook {
-  /* primera línea no se parte en el medio del número */
-}
-
+/* Orden fijo de lectura (4 líneas) */
 .cover-hook em {
   font-style: normal;
   color: #f87171;
-  white-space: nowrap;
+  white-space: nowrap; /* “1 de cada 3” no se parte */
 }
 
 .cover-hook em.hook-accent {
+  display: inline;
   font-style: italic;
   color: #f87171;
   white-space: normal;
