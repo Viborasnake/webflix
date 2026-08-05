@@ -206,7 +206,38 @@ document.addEventListener("DOMContentLoaded", () => {
     goTo(Math.max(0, current - 1));
   }
 
-  // El deck NUNCA aplica estado remoto de notas (es master).
+  // Comandos remotos desde /notas en modo "Controlar presentación"
+  if (bus && typeof bus.onCommand === "function") {
+    bus.onCommand((cmd) => {
+      if (!cmd || !cmd.cmd) return;
+      switch (cmd.cmd) {
+        case "goto":
+          if (typeof cmd.slide === "number") goTo(cmd.slide);
+          break;
+        case "next":
+          next();
+          break;
+        case "prev":
+          prev();
+          break;
+        case "timer-toggle":
+          toggleTimer();
+          break;
+        case "timer-reset":
+          resetTimer();
+          if (current >= 1) {
+            timerArmed = true;
+            startTimer();
+          }
+          break;
+        case "demo-level":
+          if (typeof cmd.level === "number") setDemoLevel(cmd.level);
+          break;
+        default:
+          break;
+      }
+    });
+  }
 
   document.getElementById("deck").addEventListener("click", (e) => {
     if (e.target.closest("button, a, kbd, .dot, .timer, .speaker-tag, .hud, #timer")) return;

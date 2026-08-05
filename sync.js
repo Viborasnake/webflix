@@ -1,17 +1,20 @@
 /**
  * WebFlix pitch sync bus
  * ─────────────────────────────────────────────
- * El DECK es la única fuente de verdad (publica).
- * Las vistas /notas solo ESCUCHAN. Cada sesión de
- * notas puede navegar libre; eso no se publica.
+ * DECK publica estado en vivo (slide + timer).
+ * NOTAS escuchan estado; cada una puede navegar libre.
+ * NOTAS en modo control envían COMMANDS al deck
+ * (goto / next / prev / timer) sin que el browse
+ * libre de otros afecte nada.
  *
  * Transportes:
- *  1) BroadcastChannel + localStorage → misma máquina / pestañas
- *  2) PeerJS (opcional) → varios dispositivos en la misma sala
+ *  1) BroadcastChannel + localStorage
+ *  2) PeerJS (opcional, multi-dispositivo)
  */
 (function (global) {
   const CHANNEL = "webflix-pitch-sync-v2";
   const STORAGE_KEY = "webflix-pitch-state-v2";
+  const COMMAND_KEY = "webflix-pitch-cmd-v2";
   const DEFAULT_ROOM = "webflix-g5";
   const PEER_CDN = "https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";
 
@@ -26,7 +29,6 @@
   }
 
   function peerIdForRoom(room) {
-    // PeerJS: alfanumérico, único global en su cloud
     return "wfxdeck-" + room;
   }
 
@@ -44,7 +46,8 @@
 
   function createBus(role) {
     const room = roomFromUrl();
-    const listeners = new Set();
+    const stateListeners = new Set();
+    const commandListeners = new Set();
     let latest = null;
     let channel = null;
     let peer = null;
@@ -53,6 +56,7 @@
     const peerConns = new Set();
     let status = "init";
     const statusListeners = new Set();
+    let lastCmdTs = 0;
 
     try {
       channel = new BroadcastChannel(CHANNEL + ":" + room);
@@ -69,15 +73,27 @@
       });
     }
 
-    function emit(state, meta) {
+    function emitState(state, meta) {
       if (!state || typeof state.slide !== "number") return;
-      // Solo aceptar estados del deck (o legacy sin source)
+      // Solo estados del deck
       if (state.source && state.source !== "deck") return;
       if (latest && state.ts && latest.ts && state.ts < latest.ts) return;
       latest = state;
-      listeners.forEach((fn) => {
+      stateListeners.forEach((fn) => {
         try {
           fn(state, meta || { via: "unknown" });
+        } catch (_) { /* ignore */ }
+      });
+    }
+
+    function emitCommand(cmd, meta) {
+      if (!cmd || !cmd.cmd) return;
+      if (cmd.room && cmd.room !== room) return;
+      if (cmd.ts && cmd.ts <= lastCmdTs) return;
+      if (cmd.ts) lastCmdTs = cmd.ts;
+      commandListeners.forEach((fn) => {
+        try {
+          fn(cmd, meta || { via: "unknown" });
         } catch (_) { /* ignore */ }
       });
     }
@@ -101,26 +117,31 @@
     if (channel) {
       channel.onmessage = (ev) => {
         const data = ev.data;
-        if (!data || data.type !== "state") return;
-        emit(data, { via: "broadcast" });
+        if (!data) return;
+        if (data.type === "state") emitState(data, { via: "broadcast" });
+        if (data.type === "command") emitCommand(data, { via: "broadcast" });
       };
     }
 
     global.addEventListener("storage", (e) => {
-      if (e.key !== STORAGE_KEY + ":" + room || !e.newValue) return;
-      try {
-        emit(JSON.parse(e.newValue), { via: "storage" });
-      } catch (_) { /* ignore */ }
+      if (e.key === STORAGE_KEY + ":" + room && e.newValue) {
+        try {
+          emitState(JSON.parse(e.newValue), { via: "storage" });
+        } catch (_) { /* ignore */ }
+      }
+      if (e.key === COMMAND_KEY + ":" + room && e.newValue) {
+        try {
+          emitCommand(JSON.parse(e.newValue), { via: "storage" });
+        } catch (_) { /* ignore */ }
+      }
     });
 
-    // Bootstrap last known
     const boot = readStorage();
-    if (boot) {
-      latest = boot;
-    }
+    if (boot) latest = boot;
 
+    /** Solo el deck publica el estado en vivo */
     function publish(state) {
-      if (role !== "deck") return; // notas nunca publican
+      if (role !== "deck") return null;
       const payload = {
         ...state,
         v: 2,
@@ -135,7 +156,6 @@
           channel.postMessage({ type: "state", ...payload });
         } catch (_) { /* ignore */ }
       }
-      // PeerJS: enviar a todos los clientes de notas
       peerConns.forEach((conn) => {
         if (conn.open) {
           try {
@@ -147,14 +167,53 @@
       return payload;
     }
 
+    /**
+     * Notas en modo control → comandos al deck.
+     * cmd: "goto" | "next" | "prev" | "timer-toggle" | "timer-reset"
+     * slide?: number (para goto)
+     */
+    function sendCommand(cmd, extra) {
+      if (role !== "notes") return null;
+      const payload = {
+        type: "command",
+        v: 2,
+        source: "notes",
+        room,
+        cmd,
+        ts: Date.now(),
+        ...extra,
+      };
+      if (channel) {
+        try {
+          channel.postMessage(payload);
+        } catch (_) { /* ignore */ }
+      }
+      try {
+        localStorage.setItem(COMMAND_KEY + ":" + room, JSON.stringify(payload));
+      } catch (_) { /* ignore */ }
+      peerConns.forEach((conn) => {
+        if (conn.open) {
+          try {
+            conn.send(payload);
+          } catch (_) { /* ignore */ }
+        }
+      });
+      return payload;
+    }
+
     function subscribe(fn) {
-      listeners.add(fn);
+      stateListeners.add(fn);
       if (latest) {
         try {
           fn(latest, { via: "bootstrap" });
         } catch (_) { /* ignore */ }
       }
-      return () => listeners.delete(fn);
+      return () => stateListeners.delete(fn);
+    }
+
+    function onCommand(fn) {
+      commandListeners.add(fn);
+      return () => commandListeners.delete(fn);
     }
 
     function onStatus(fn) {
@@ -166,14 +225,24 @@
     function wirePeerConn(conn) {
       peerConns.add(conn);
       conn.on("data", (data) => {
-        // Los clientes no envían estado de slide; ignorar basura
-        if (role === "deck") return;
-        if (!data || data.type !== "state") return;
-        emit(data, { via: "peer" });
+        if (!data) return;
+        if (data.type === "state" && role === "notes") {
+          emitState(data, { via: "peer" });
+        }
+        if (data.type === "command" && role === "deck") {
+          emitCommand(data, { via: "peer" });
+        }
+        // deck reenvía estado si notes pide hello
+        if (data.type === "hello" && role === "deck" && latest) {
+          try {
+            conn.send({ type: "state", ...latest });
+          } catch (_) { /* ignore */ }
+        }
       });
       conn.on("close", () => {
         peerConns.delete(conn);
         if (role === "notes") setStatus("wait");
+        if (role === "deck") setStatus(peerConns.size ? "live+" + peerConns.size : "live");
       });
       conn.on("error", () => {
         peerConns.delete(conn);
@@ -201,12 +270,10 @@
             conn.on("open", () => wirePeerConn(conn));
           });
           peer.on("error", (err) => {
-            // ID taken u offline → seguimos con BroadcastChannel
             console.warn("[webflix-sync] peer deck:", err && err.type);
             setStatus("local");
           });
         } else {
-          // notes client: peer id aleatorio, conecta al deck
           peer = new Peer({ debug: 0 });
           peer.on("open", () => {
             peerReady = true;
@@ -214,7 +281,6 @@
             const conn = peer.connect(hostId, { reliable: true });
             conn.on("open", () => {
               wirePeerConn(conn);
-              // pedir estado actual
               try {
                 conn.send({ type: "hello", role: "notes" });
               } catch (_) { /* ignore */ }
@@ -225,7 +291,6 @@
             console.warn("[webflix-sync] peer notes:", err && err.type);
             setStatus(latest ? "local" : "wait");
           });
-          // reintentar conexión al host cada 4s si no hay conns
           setInterval(() => {
             if (!peerReady || peerConns.size > 0) return;
             try {
@@ -240,11 +305,8 @@
       }
     }
 
-    // En deck: si un cliente dice hello, reenviar estado (vía wirePeerConn on open)
-    // Arrancar peer en background
     startPeer();
 
-    // Si hay bootstrap local, notas pueden empezar en "local"
     if (role === "notes") {
       setStatus(latest ? "local" : "wait");
     } else {
@@ -255,7 +317,9 @@
       role,
       room,
       publish,
+      sendCommand,
       subscribe,
+      onCommand,
       onStatus,
       getLatest: () => latest,
       getStatus: () => status,

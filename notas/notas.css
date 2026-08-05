@@ -117,6 +117,43 @@ body {
   color: var(--amber);
 }
 
+.sync.is-control {
+  color: #f0abfc;
+}
+
+.btn.control-toggle {
+  border-color: rgba(240, 171, 252, 0.35);
+  color: #e9d5ff;
+  background: rgba(88, 28, 135, 0.35);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.btn.control-toggle.is-on,
+.btn.control-toggle[aria-pressed="true"] {
+  background: #a855f7;
+  border-color: #e9d5ff;
+  color: #0a0a12;
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.35);
+}
+
+.notes-app.is-controlling .col-now {
+  border-color: rgba(240, 171, 252, 0.55);
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.2), 0 24px 60px rgba(88, 28, 135, 0.35);
+}
+
+.pill.control {
+  color: #0a0a12;
+  background: #e879f9;
+  border-color: transparent;
+}
+
+.follow-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 /* Barra: saliste del seguimiento */
 .follow-bar {
   display: flex;

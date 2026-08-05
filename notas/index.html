@@ -29,20 +29,27 @@
 
       <div class="top-actions">
         <a class="btn ghost" href="../" target="_blank" rel="noopener">Abrir deck</a>
-        <button type="button" class="btn" id="btn-prev" title="Anterior (solo en tu vista)">←</button>
-        <button type="button" class="btn" id="btn-next" title="Siguiente (solo en tu vista)">→</button>
+        <button type="button" class="btn control-toggle" id="btn-control" aria-pressed="false" title="Tecla C · mueve el deck para todos">
+          Controlar presentación
+        </button>
+        <button type="button" class="btn" id="btn-prev" title="Anterior">←</button>
+        <button type="button" class="btn" id="btn-next" title="Siguiente">→</button>
+        <button type="button" class="btn ghost" id="btn-timer" title="T · solo en control">T</button>
+        <button type="button" class="btn ghost" id="btn-reset" title="R · solo en control">R</button>
       </div>
     </header>
 
-    <!-- Barra cuando sales del seguimiento -->
+    <!-- Barra cuando sales del seguimiento (browse libre) -->
     <div class="follow-bar" id="follow-bar" hidden>
       <div class="follow-copy">
         <strong>Navegación libre</strong>
         <span id="live-hint">La presentación sigue en otro slide</span>
       </div>
-      <button type="button" class="btn follow-btn" id="btn-follow" title="Tecla L o Esc">
-        Seguir presentación
-      </button>
+      <div class="follow-actions">
+        <button type="button" class="btn follow-btn" id="btn-follow" title="Tecla L o Esc">
+          Seguir presentación
+        </button>
+      </div>
     </div>
 
     <div class="progress-track" aria-hidden="true" title="Progreso de la presentación en vivo">
@@ -103,9 +110,9 @@
 
     <nav class="rail" id="rail" aria-label="Slides del pitch"></nav>
     <footer class="foot">
-      <span>Solo el deck mueve el slide en vivo · tu browse es privado</span>
-      <span>← → navega notas · <kbd>L</kbd> / <kbd>Esc</kbd> seguir presentación</span>
-      <span>4+ personas · misma sala · room en la URL</span>
+      <span><kbd>C</kbd> controlar deck · sin control = browse privado</span>
+      <span>← → navega · <kbd>L</kbd> seguir vivo · <kbd>Esc</kbd> soltar control</span>
+      <span>4+ personas · room en la URL · un control a la vez</span>
     </footer>
   </div>
 

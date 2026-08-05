@@ -1,4 +1,4 @@
-/* Vista de notas · sigue la presentación en vivo o navega en local */
+/* Vista de notas · seguimiento / libre / control remoto del deck */
 (() => {
   const NOTES = window.WEBFLIX_NOTES || [];
   const SPEAKERS = window.WEBFLIX_SPEAKERS || {};
@@ -7,11 +7,12 @@
   const WARN_MS = 9 * 60 * 1000 + 30 * 1000;
   const DANGER_MS = 10 * 60 * 1000 + 30 * 1000;
 
-  // Vista local (puede desacoplarse del deck)
+  // Vista local
   let viewSlide = 0;
   // Slide en vivo del deck
   let liveSlide = 0;
-  let followLive = true; // true = auto-seguir presentación
+  let followLive = true;
+  let controlMode = false; // true = ←→ mueven el deck
   let hasLive = false;
   let liveAdvancedWhileBrowsing = false;
 
@@ -37,6 +38,10 @@
   const btnFollow = $("btn-follow");
   const liveHint = $("live-hint");
   const nowBadge = $("now-badge");
+  const btnControl = $("btn-control");
+  const app = $("app");
+  const btnPrev = $("btn-prev");
+  const btnNext = $("btn-next");
 
   function pad(n) {
     return String(n).padStart(2, "0");
@@ -89,8 +94,11 @@
 
   function setSyncLabel(mode, extra) {
     if (!syncStatus) return;
-    syncStatus.classList.remove("is-live", "is-wait", "is-solo", "is-free");
-    if (mode === "live") {
+    syncStatus.classList.remove("is-live", "is-wait", "is-solo", "is-free", "is-control");
+    if (mode === "control") {
+      syncStatus.classList.add("is-control");
+      syncStatus.textContent = extra || "Control remoto · mueves la presentación";
+    } else if (mode === "live") {
       syncStatus.classList.add("is-live");
       syncStatus.textContent = extra || "En seguimiento · presentación en vivo";
     } else if (mode === "free") {
@@ -105,8 +113,27 @@
     }
   }
 
+  function updateControlButton() {
+    if (!btnControl) return;
+    btnControl.classList.toggle("is-on", controlMode);
+    btnControl.setAttribute("aria-pressed", controlMode ? "true" : "false");
+    btnControl.textContent = controlMode ? "● Control activo" : "Controlar presentación";
+    if (btnPrev) {
+      btnPrev.title = controlMode
+        ? "Anterior · mueve el deck"
+        : "Anterior · solo tu vista";
+    }
+    if (btnNext) {
+      btnNext.title = controlMode
+        ? "Siguiente · mueve el deck"
+        : "Siguiente · solo tu vista";
+    }
+    if (app) app.classList.toggle("is-controlling", controlMode);
+  }
+
   function updateFollowUI() {
-    const desynced = !followLive;
+    // En control: siempre alineado al vivo (tú eres el driver)
+    const desynced = !followLive && !controlMode;
     if (followBar) {
       followBar.hidden = !desynced;
     }
@@ -118,7 +145,10 @@
         : "Aún no hay señal del deck";
     }
     if (nowBadge) {
-      if (followLive && hasLive) {
+      if (controlMode) {
+        nowBadge.textContent = "CONTROL";
+        nowBadge.className = "pill control";
+      } else if (followLive && hasLive) {
         nowBadge.textContent = "EN VIVO";
         nowBadge.className = "pill live";
       } else if (!followLive) {
@@ -129,7 +159,12 @@
         nowBadge.className = "pill live";
       }
     }
-    if (followLive && hasLive) {
+
+    updateControlButton();
+
+    if (controlMode) {
+      setSyncLabel("control");
+    } else if (followLive && hasLive) {
       setSyncLabel("live");
     } else if (!followLive) {
       setSyncLabel(
@@ -171,7 +206,6 @@
     $("now-on-screen").textContent = note.onScreen || "";
     $("time-window").textContent = note.window || "—";
     counterEl.textContent = `${pad(viewSlide + 1)} / ${pad(TOTAL)}`;
-    // Progress del deck en vivo (si hay), no del browse local
     const progressSlide = hasLive ? liveSlide : viewSlide;
     progressFill.style.width = `${((progressSlide + 1) / TOTAL) * 100}%`;
 
@@ -220,11 +254,30 @@
     ).join("");
   }
 
-  /** Navegación LOCAL: no publica, no mueve el deck ni a otras sesiones */
-  function browseTo(index) {
+  function sendCmd(cmd, extra) {
+    if (!bus || typeof bus.sendCommand !== "function") return;
+    bus.sendCommand(cmd, extra);
+  }
+
+  /** Navegación: libre (solo local) o control (mueve el deck) */
+  function goNotes(index) {
     if (index < 0 || index >= TOTAL) return;
+
+    if (controlMode) {
+      // Control remoto: mueve el deck; la vista se alinea al eco en vivo
+      viewSlide = index;
+      followLive = true;
+      liveAdvancedWhileBrowsing = false;
+      sendCmd("goto", { slide: index });
+      // Optimistic UI (el deck confirmará con state)
+      liveSlide = index;
+      hasLive = true;
+      renderView();
+      return;
+    }
+
+    // Browse libre
     viewSlide = index;
-    // Solo re-engancha si aterrizas en el slide en vivo del deck
     if (hasLive && viewSlide === liveSlide) {
       followLive = true;
       liveAdvancedWhileBrowsing = false;
@@ -235,10 +288,28 @@
   }
 
   function resumeFollow() {
+    controlMode = false;
     followLive = true;
     liveAdvancedWhileBrowsing = false;
     viewSlide = liveSlide;
     renderView();
+  }
+
+  function setControlMode(on) {
+    controlMode = !!on;
+    if (controlMode) {
+      // Al activar control, saltamos al vivo y enganchamos
+      followLive = true;
+      liveAdvancedWhileBrowsing = false;
+      viewSlide = liveSlide;
+      // Forzar al deck al slide actual de esta vista (por si quiere arrancar control desde aquí)
+      sendCmd("goto", { slide: viewSlide });
+    }
+    renderView();
+  }
+
+  function toggleControlMode() {
+    setControlMode(!controlMode);
   }
 
   function onLiveState(state) {
@@ -250,9 +321,10 @@
 
     applyTimerFromLive(state);
 
-    if (followLive) {
+    if (controlMode || followLive) {
       viewSlide = liveSlide;
       liveAdvancedWhileBrowsing = false;
+      if (controlMode) followLive = true;
     } else if (changed) {
       liveAdvancedWhileBrowsing = true;
     }
@@ -262,7 +334,8 @@
   if (bus) {
     bus.subscribe((state) => onLiveState(state));
     bus.onStatus((st) => {
-      if (!hasLive && (st === "wait" || st === "init")) setSyncLabel("wait");
+      if (controlMode) setSyncLabel("control");
+      else if (!hasLive && (st === "wait" || st === "init")) setSyncLabel("wait");
       else if (!followLive) updateFollowUI();
       else if (hasLive) setSyncLabel("live");
       else if (st === "local") setSyncLabel("solo");
@@ -278,18 +351,31 @@
   document.addEventListener("click", (e) => {
     const t = e.target.closest("[data-goto]");
     if (!t) return;
-    browseTo(Number(t.dataset.goto));
+    goNotes(Number(t.dataset.goto));
   });
 
-  $("btn-prev").addEventListener("click", () => browseTo(viewSlide - 1));
-  $("btn-next").addEventListener("click", () => browseTo(viewSlide + 1));
+  if (btnPrev) btnPrev.addEventListener("click", () => goNotes(viewSlide - 1));
+  if (btnNext) btnNext.addEventListener("click", () => goNotes(viewSlide + 1));
+  if (btnFollow) btnFollow.addEventListener("click", () => resumeFollow());
+  if (btnControl) btnControl.addEventListener("click", () => toggleControlMode());
 
-  if (btnFollow) {
-    btnFollow.addEventListener("click", () => resumeFollow());
+  const btnTimer = $("btn-timer");
+  const btnReset = $("btn-reset");
+  if (btnTimer) {
+    btnTimer.addEventListener("click", () => {
+      if (!controlMode) {
+        // hint: solo en control
+        setControlMode(true);
+      }
+      sendCmd("timer-toggle");
+    });
   }
-
-  // Timer de notas es solo espejo: no controla el deck
-  // (botones T/R quitados de la UI; atajos no re-publican)
+  if (btnReset) {
+    btnReset.addEventListener("click", () => {
+      if (!controlMode) setControlMode(true);
+      sendCmd("timer-reset");
+    });
+  }
 
   document.addEventListener("keydown", (e) => {
     const tag = (e.target && e.target.tagName) || "";
@@ -300,35 +386,57 @@
       case " ":
       case "PageDown":
         e.preventDefault();
-        browseTo(viewSlide + 1);
+        goNotes(viewSlide + 1);
         break;
       case "ArrowLeft":
       case "ArrowUp":
       case "PageUp":
       case "Backspace":
         e.preventDefault();
-        browseTo(viewSlide - 1);
+        goNotes(viewSlide - 1);
         break;
       case "Home":
         e.preventDefault();
-        browseTo(0);
+        goNotes(0);
         break;
       case "End":
         e.preventDefault();
-        browseTo(TOTAL - 1);
+        goNotes(TOTAL - 1);
+        break;
+      case "c":
+      case "C":
+        e.preventDefault();
+        toggleControlMode();
         break;
       case "l":
       case "L":
       case "s":
       case "S":
-        // Seguir presentación
         e.preventDefault();
         resumeFollow();
         break;
       case "Escape":
-        if (!followLive) {
+        if (controlMode) {
+          e.preventDefault();
+          setControlMode(false);
+          resumeFollow();
+        } else if (!followLive) {
           e.preventDefault();
           resumeFollow();
+        }
+        break;
+      case "t":
+      case "T":
+        if (controlMode) {
+          e.preventDefault();
+          sendCmd("timer-toggle");
+        }
+        break;
+      case "r":
+      case "R":
+        if (controlMode) {
+          e.preventDefault();
+          sendCmd("timer-reset");
         }
         break;
       default:
