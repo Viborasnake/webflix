@@ -49,7 +49,7 @@
   const qaBubbles = $("qa-bubbles");
   const qaIntro = $("qa-intro");
 
-  const QA = window.WEBFLIX_QA || { filters: [], torpedos: [], intro: "" };
+  const QA = window.WEBFLIX_QA || { filters: [], pistas: [], intro: "" };
   const GLOSSARY = window.WEBFLIX_GLOSSARY || {};
   const GLOSSARY_CORE = window.WEBFLIX_GLOSSARY_CORE || [];
   let qaOpen = false;
@@ -254,7 +254,7 @@
 
   function renderQaBubbles() {
     if (!qaBubbles) return;
-    const list = (QA.torpedos || []).filter(
+    const list = (QA.pistas || QA.torpedos || []).filter(
       (t) => qaFilter === "all" || t.cat === qaFilter
     );
     qaBubbles.innerHTML = list
@@ -291,7 +291,7 @@
   }
 
   function maybeAutoOpenQa() {
-    // En slide de cierre (último): abrir torpedos una vez
+    // En slide de cierre (último): abrir Q&A una vez
     if (viewSlide === TOTAL - 1 && !qaAutoOpenedForClose && !qaOpen) {
       qaAutoOpenedForClose = true;
       setQaOpen(true);

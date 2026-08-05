@@ -1,7 +1,7 @@
-/* Torpedos Q&A · pistas para responder (obvias, no tan obvias, falacias, coherencia, decisión, plan B) */
+/* Q&A · pistas para responder (obvias, no tan obvias, falacias, coherencia, decisión, plan B) */
 window.WEBFLIX_QA = {
   intro:
-    "Torpedos para el cierre. No leas en voz alta: ancla, responde en una idea, cierra. Quién responde según el tema.",
+    "Pistas para el cierre. No leas en voz alta: ancla, responde en una idea, cierra. Quién responde según el tema.",
   filters: [
     { id: "all", label: "Todos" },
     { id: "obvia", label: "Obvias" },
@@ -11,7 +11,7 @@ window.WEBFLIX_QA = {
     { id: "decision", label: "Decisiones" },
     { id: "planb", label: "Plan B · Exp. 2" },
   ],
-  torpedos: [
+  pistas: [
     // ── Obvias ──────────────────────────────────────
     {
       id: "d7-directo",

@@ -323,14 +323,14 @@ window.WEBFLIX_NOTES = [
     speaker: "Valeria",
     role: "Cierra · Q&A",
     window: "9:45 → fin",
-    onScreen: "Gracias · equipo · Q&A · torpedos",
+    onScreen: "Gracias · equipo · Q&A · pistas",
     say: [
       "Gracias. ¿Preguntas?",
       "Ya validamos que el usuario quiere esto. Ahora necesitamos construirlo de verdad.",
     ],
     highlight: [
       "Equipo de pie o asiente",
-      "Abrir panel Q&A (tecla Q) con torpedos",
+      "Abrir panel Q&A (tecla Q) con pistas",
       "Mapa: Erick cifras · Tami hip/exp · Cris demo · Vale decisión",
       "Si atacan el momento del onboarding: Plan B · Exp. 2 (selector en D1–D7 a no-players)",
     ],
