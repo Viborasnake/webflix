@@ -54,9 +54,9 @@ window.WEBFLIX_QA = {
       cat: "obvia",
       tag: "Diseño",
       who: "Tami",
-      q: "¿Por qué solo tres preferencias?",
+      q: "¿Por qué 3 a 5 preferencias?",
       pista:
-        "Señal mínima suficiente vs fricción. Guardrail <30 s: si tarda más, se refuta. No es un paso nuevo: es el onboarding actual rediseñado y liviano.",
+        "Rango mínimo suficiente vs fricción. Swipe hasta acumular 3–5. Guardrail <30 s: si tarda más, se refuta. No es un paso nuevo: es el onboarding actual rediseñado.",
     },
     {
       id: "motor-roto",
@@ -76,7 +76,7 @@ window.WEBFLIX_QA = {
       who: "Erick / Tami",
       q: "¿Cómo saben que no es precio, catálogo o UX general?",
       pista:
-        "No lo “sabemos”: lo tratamos como supuesto. Por eso hay control con home genérica comparable. Atribuimos diferencia a la señal de preferencias, no al azar. Otros drivers pueden convivir; este test aísla una palanca.",
+        "No lo “sabemos”: lo tratamos como supuesto. Control = onboarding de hoy (largo); experimental = swipe liviano. Atribuimos diferencia al rediseño, no al azar. Otros drivers pueden convivir; este test aísla una palanca.",
     },
     {
       id: "familiares",

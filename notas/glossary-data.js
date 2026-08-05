@@ -66,11 +66,11 @@ window.WEBFLIX_GLOSSARY = {
   },
   "H-C": {
     term: "H·C ★",
-    def: "Hipótesis C: onboarding liviano con 3 elecciones. La más barata de probar. Va primero.",
+    def: "Hipótesis C: onboarding liviano con swipe 3–5 preferencias. La más barata de probar. Va primero.",
   },
   "redisenar-no-agregar": {
     term: "Rediseñar, no agregar",
-    def: "No sumamos un paso nuevo. Arreglamos el de gustos que ya existe.",
+    def: "No sumamos un paso nuevo. Arreglamos el de gustos que ya existe (swipe liviano).",
   },
   "falsable": {
     term: "Hipótesis falsable",
@@ -86,11 +86,11 @@ window.WEBFLIX_GLOSSARY = {
   },
   "control": {
     term: "Grupo control",
-    def: "Sin preferencias + home genérica. Sirve de base para comparar.",
+    def: "Onboarding actual (largo). Mismo objetivo: capturar gustos. Base para comparar el rediseño.",
   },
   "experimental": {
     term: "Brazo experimental",
-    def: "3 elecciones + home curada. “La apuesta”. Misma medición que el control.",
+    def: "Onboarding rediseñado: swipe 3–5 + home curada (WoZ). “La apuesta”.",
   },
   "play-valido": {
     term: "Play válido (s1)",

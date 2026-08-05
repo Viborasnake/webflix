@@ -30,8 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let hudVisible = false;
   let timerArmed = false;
 
-  const WARN_MS = 9 * 60 * 1000 + 30 * 1000;
-  const DANGER_MS = 10 * 60 * 1000 + 30 * 1000;
+  // Pitch v3 meta ~8:00 · warn 7:00 · danger 8:30
+  const WARN_MS = 7 * 60 * 1000;
+  const DANGER_MS = 8 * 60 * 1000 + 30 * 1000;
   let timerStartedAt = null;
   let timerAccumulated = 0;
   let timerRunning = false;
