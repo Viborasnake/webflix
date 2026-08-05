@@ -329,10 +329,10 @@ body {
     radial-gradient(ellipse 50% 80% at 100% 0%, rgba(34, 211, 238, 0.08), transparent 55%),
     rgba(8, 10, 16, 0.97);
   padding: 14px 18px 18px;
-  max-height: min(52vh, 520px);
+  max-height: min(62vh, 640px);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   overflow: hidden;
 }
 
@@ -369,6 +369,113 @@ body {
   color: var(--muted);
   max-width: 52rem;
   line-height: 1.4;
+}
+
+/* Métricas de negocio vs experimento · referencia fija en Q&A */
+.qa-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.qa-metrics[hidden] {
+  display: none !important;
+}
+
+.qa-metric-col {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.025);
+  padding: 10px 12px 11px;
+  min-width: 0;
+}
+
+.qa-metric-col--negocio {
+  border-color: rgba(167, 139, 250, 0.35);
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(139, 92, 246, 0.12), transparent 60%),
+    rgba(255, 255, 255, 0.02);
+}
+
+.qa-metric-col--experimento {
+  border-color: rgba(34, 211, 238, 0.35);
+  background:
+    radial-gradient(120% 100% at 100% 0%, rgba(34, 211, 238, 0.1), transparent 55%),
+    rgba(255, 255, 255, 0.02);
+}
+
+.qa-metric-head {
+  margin-bottom: 8px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.qa-metric-head h3 {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 2px;
+}
+
+.qa-metric-col--negocio .qa-metric-head h3 {
+  color: #ddd6fe;
+}
+
+.qa-metric-col--experimento .qa-metric-head h3 {
+  color: #a5f3fc;
+}
+
+.qa-metric-head p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.qa-metric-list {
+  display: grid;
+  gap: 6px;
+}
+
+.qa-metric-item {
+  padding: 5px 0 0;
+}
+
+.qa-metric-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.qa-metric-name {
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.qa-metric-meta {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #c4b5fd;
+  white-space: nowrap;
+}
+
+.qa-metric-col--experimento .qa-metric-meta {
+  color: #67e8f9;
+}
+
+.qa-metric-note {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--muted);
 }
 
 .qa-filters {
@@ -524,7 +631,13 @@ body {
 
 @media (max-width: 980px) {
   .qa-panel {
-    max-height: 60vh;
+    max-height: 68vh;
+  }
+
+  .qa-metrics {
+    grid-template-columns: 1fr;
+    max-height: 28vh;
+    overflow-y: auto;
   }
 }
 

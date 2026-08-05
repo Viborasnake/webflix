@@ -1,7 +1,72 @@
-/* Q&A · pistas para responder (obvias, no tan obvias, falacias, coherencia, decisión, plan B) */
+/* Q&A · pistas + métricas (negocio vs experimento) */
 window.WEBFLIX_QA = {
   intro:
-    "Pistas para el cierre. No leas en voz alta: ancla, responde en una idea, cierra. Quién responde según el tema.",
+    "Pistas para el cierre. No leas en voz alta: ancla, responde en una idea, cierra. Quién responde según el tema. Arriba: métricas de negocio vs del experimento.",
+  /** Referencia rápida en el panel Q&A */
+  metricas: {
+    negocio: {
+      title: "Negocio",
+      subtitle: "Outcome que importa a la compañía · no es KPI primario de este test",
+      items: [
+        {
+          name: "Day-7 Retention",
+          meta: "42% → 29%",
+          note: "Outcome de negocio. −13 pp (≈31% relativa). El experimento le apunta, no lo mueve directo.",
+        },
+        {
+          name: "Escala",
+          meta: "~310M MAU",
+          note: "Contexto de impacto: con esta base, cada punto de retención importa.",
+        },
+        {
+          name: "Problema de negocio",
+          meta: "Cold start / descubrimiento",
+          note: "Pocos se activan en el 1er momento de valor → peor personalización → menos Day-7.",
+        },
+        {
+          name: "Day-7 en cohorte (exploratorio)",
+          meta: "29% → 33%",
+          note: "Solo señal con n chica. Luz verde para seguir mirando, no victoria estadística.",
+        },
+      ],
+    },
+    experimento: {
+      title: "Experimento",
+      subtitle: "KPIs del test · umbrales predefinidos · n = 30–50 · WoZ",
+      items: [
+        {
+          name: "Completa selección",
+          meta: "≥80% en <30 s",
+          note: "Primario · fricción del onboarding rediseñado. Sim: 84% / 22 s.",
+        },
+        {
+          name: "Play válido (s1)",
+          meta: "≥65%",
+          note: "Primario · activación en 1ª sesión. Sim: 69%. Tiempo a 1ª play meta <3 min · sim 2:40.",
+        },
+        {
+          name: "Watch Time (s1)",
+          meta: "+10% vs control",
+          note: "Primario · profundidad de uso vs onboarding de hoy. Sim: +12%.",
+        },
+        {
+          name: "Relevancia percibida",
+          meta: "≥75% notas 4–5",
+          note: "Primario · “¿estas recomendaciones son para mí?”. Sim: 78%.",
+        },
+        {
+          name: "Intención de volver",
+          meta: "+15% (cualitativa)",
+          note: "Secundaria · declarada, no retención observada. Sim: +17%.",
+        },
+        {
+          name: "Guardrail / refutación",
+          meta: "Abandono no sube",
+          note: "Si el swipe fricciona o no se cumplen umbrales → hipótesis refutada → tablero.",
+        },
+      ],
+    },
+  },
   filters: [
     { id: "all", label: "Todos" },
     { id: "obvia", label: "Obvias" },
