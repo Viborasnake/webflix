@@ -1,5 +1,5 @@
-/* Notas del presentador · Pitch WebFlix Shark Tank v2
- * Mismo contenido del pitch · frases cortas para leer en voz alta
+/* Notas del presentador · WebFlix Shark Tank v2
+ * Frases cortas para leer en voz alta (sin meta-hablar del formato)
  * Erick → Tami → Cris → Vale
  */
 window.WEBFLIX_NOTES = [
@@ -8,7 +8,7 @@ window.WEBFLIX_NOTES = [
     n: "01",
     title: "Portada",
     speaker: "Erick",
-    role: "Abre el pitch",
+    role: "Apertura",
     window: "Setup · saludo",
     onScreen: "Hook “Perdemos 1 de cada 3…” · 310M · 42%→29% · tesis Day-7",
     say: [
@@ -43,7 +43,7 @@ window.WEBFLIX_NOTES = [
     speaker: "Erick",
     role: "Problema · 0:00→1:15",
     window: "0:00 → 1:15",
-    onScreen: "42%→29% Day-7 · Watch Time / Sesiones / Churn · honestidad del pitch",
+    onScreen: "42%→29% Day-7 · Watch Time / Sesiones / Churn · honestidad del experimento",
     say: [
       "¿A quién afecta? A todos los usuarios nuevos.",
       "La plataforma tiene 310 millones de suscriptores y cerca de 360 millones de usuarios activos al mes, contando perfiles.",
@@ -54,7 +54,7 @@ window.WEBFLIX_NOTES = [
       "Day-7 es el outcome de negocio que queremos recuperar.",
       "Pero seamos honestos desde ya: el experimento de hoy no prueba Day-7 en directo.",
       "Prueba los pasos previos: activación y relevancia en la primera sesión. Los que creemos que pueden moverlo.",
-      "Guárdense esa distinción. Vuelve más adelante en el pitch.",
+      "Guárdense esa distinción: outcome de negocio versus lo que medimos ahora.",
     ],
     highlight: [
       "310 M / ~360 M MAU = escala, no tamaño de muestra",
@@ -268,8 +268,8 @@ window.WEBFLIX_NOTES = [
     highlight: [
       "⭐ Énfasis demo — mirar al jurado",
       "Ley de Jakob / Tinder-like",
-      "Plan B: 1 vivo · 2 video · 3 capturas · D esta slide",
-      "Pasar el arco limpio a Vale",
+      "Plan B demo: 1 vivo · 2 video · 3 capturas",
+      "Cerrar el puente y ceder a Vale",
     ],
     avoid: [
       "No improvisar features fuera del tramo crítico",
@@ -364,7 +364,7 @@ window.WEBFLIX_NOTES = [
     ],
     avoid: [
       "No pedir “arreglar el algoritmo” sin el puente del piloto",
-      "No reabrir todo el pitch en el ask",
+      "No reabrir todo el argumento en el pedido",
     ],
     glossary: [
       "confirma",
@@ -395,8 +395,8 @@ window.WEBFLIX_NOTES = [
       "Si atacan el momento del onboarding: Plan B · Exp. 2 (selector en D1–D7 a no-players)",
     ],
     avoid: [
-      "No reabrir el pitch completo en la respuesta",
-      "No inventar cifras fuera de slide",
+      "No recontar todo el caso en cada respuesta",
+      "No inventar cifras que no estén en pantalla",
       "No presentar simulados como estudio real",
       "No defender el Plan B como claim de hoy — es contingencia",
     ],

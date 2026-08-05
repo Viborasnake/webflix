@@ -330,7 +330,7 @@
     const past = [];
     for (let i = viewSlide - 1; i >= 0 && past.length < 2; i--) past.push(NOTES[i]);
     pastStack.innerHTML =
-      past.map((n) => miniCard(n)).join("") || miniCard(null, "Inicio del pitch");
+      past.map((n) => miniCard(n)).join("") || miniCard(null, "Inicio");
 
     const upcoming = [];
     for (let i = viewSlide + 1; i < TOTAL && upcoming.length < 2; i++) upcoming.push(NOTES[i]);

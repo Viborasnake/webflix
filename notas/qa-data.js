@@ -188,7 +188,7 @@ window.WEBFLIX_QA = {
       who: "Erick / Vale",
       q: "¿No se contradicen al mostrar resultados y decir que no probaron Day-7?",
       pista:
-        "No: KPIs primarios = activación/relevancia/fricción. Day-7 solo exploratorio y etiquetado. La honestidad del pitch es parte del diseño, no un disclaimer al final.",
+        "No: KPIs primarios = activación/relevancia/fricción. Day-7 solo exploratorio y etiquetado. La honestidad metodológica va desde el inicio, no es un disclaimer al final.",
     },
     {
       id: "coh-confirmar",
@@ -280,7 +280,7 @@ window.WEBFLIX_QA = {
       cat: "planb",
       tag: "Exp. 2",
       who: "Cualquiera",
-      q: "¿No contradice eso el pitch de “onboarding liviano”?",
+      q: "¿No contradice eso la apuesta de “onboarding liviano”?",
       pista:
         "No: es contingencia si el momento falla. Hoy apostamos a rediseñar el paso existente. Si se refuta por fricción de timing (no por la señal en sí), el Plan B preserva la palanca y cambia cuándo se pide. Es ciencia, no terquedad.",
     },
