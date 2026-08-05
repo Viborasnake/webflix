@@ -314,7 +314,7 @@ body {
   font-weight: 600;
 }
 
-/* Mención escueta del Design System en portada */
+/* Mención escueta del Design System (p. ej. primera lámina de Cris) */
 .cover-ds {
   display: inline-flex;
   align-items: center;
@@ -330,6 +330,12 @@ body {
   border: 1px solid rgba(167, 139, 250, 0.18);
   width: fit-content;
   max-width: 100%;
+}
+
+.tools-ds {
+  margin: 0.1rem 0 0.15rem;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .cover-ds-label {
