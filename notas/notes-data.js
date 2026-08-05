@@ -159,12 +159,12 @@ window.WEBFLIX_NOTES = [
     onScreen: "Figma AI · Claude + ChatGPT · intuición sin evidencia",
     say: [
       {
-        text: "También definimos la identidad y el design system de WebFlix: base oscura, púrpura y cyan. Muy escueto, y seguimos.",
-        hint: "DS · Identidad y design system propios · #07070B · #8B5CF6 · #22D3EE",
+        text: "Para llegar hasta acá también armamos la identidad y el design system de WebFlix, la base visual del producto y del prototipo.",
+        hint: "DS · Identidad y design system WebFlix · #07070B · #8B5CF6 · #22D3EE",
       },
       {
-        text: "Para llegar hasta acá usamos Figma AI para maquetar rápido, y Claude y ChatGPT para todo el trabajo de oportunidad: problema, mapa de supuestos, hipótesis falsable.",
-        hint: "La IA aceleró el proceso. No reemplazó la evidencia.",
+        text: "Usamos Figma AI para maquetar rápido, y Claude y ChatGPT para todo el trabajo de oportunidad: problema, mapa de supuestos, hipótesis falsable.",
+        hint: "La IA aceleró el proceso. No reemplazó la evidencia. · Figma AI · Claude + ChatGPT",
       },
       {
         text: "De hecho, iterando el mapa de supuestos con IA fue como descartamos que el motor fuera la causa raíz: era pura intuición sin evidencia.",
@@ -172,11 +172,11 @@ window.WEBFLIX_NOTES = [
       },
     ],
     highlight: [
-      "1 frase DS y listo",
+      "Conectar DS → Figma/maquetas → IA de oportunidad",
       "Bloque corto (~25 s)",
-      "IA = copiloto",
+      "IA = copiloto, no evidencia",
     ],
-    avoid: ["No detenerse en la marca", "No vender IA como validación de usuarios"],
+    avoid: ["No desviar a un tour de marca", "No vender IA como validación de usuarios"],
     glossary: ["copiloto", "supuesto", "falsable"],
   },
   {
