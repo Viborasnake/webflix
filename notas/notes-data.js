@@ -1,0 +1,237 @@
+/* Notas del presentador · alineadas a index.html v2 (10 slides) */
+window.WEBFLIX_NOTES = [
+  {
+    id: 0,
+    n: "01",
+    title: "Portada",
+    speaker: "Erick",
+    role: "Abre el pitch",
+    window: "0:00 · setup",
+    onScreen: "Hook “Perdemos 1 de cada 3…” · 310M · 42%→29% · tesis Day-7",
+    say: [
+      "¿Cómo puede recomendar bien una plataforma cuando todavía no conoce a quien acaba de llegar?",
+      "En WebFlix perdemos 1 de cada 3 usuarios antes de que la app los conozca.",
+      "El Day-7 es el outcome de negocio. Hoy no lo probamos directo: validamos activación y relevancia en la primera sesión.",
+    ],
+    highlight: [
+      "Pausa tras el hook",
+      "Anclar −13 pp si miran KPIs",
+      "No leer todos los números",
+    ],
+    avoid: [
+      "No prometer recuperar Day-7 hoy",
+      "No invocar “algoritmo roto”",
+    ],
+  },
+  {
+    id: 1,
+    n: "02",
+    title: "Problema",
+    speaker: "Erick",
+    role: "Problema · 0:00→1:15",
+    window: "0:00 → 1:15",
+    onScreen: "42%→29% Day-7 · Watch Time / Sesiones / Churn · honestidad del pitch",
+    say: [
+      "Se suscriben… y se van antes de vivir el valor.",
+      "Usuarios nuevos no descubren contenido relevante en la primera semana: catálogo enorme, sin historial, poca señal.",
+      "Hecho: Day-7 de 42% a 29% (−13 pp). Caen watch time y sesiones; sube churn del primer mes.",
+      "Day-7 es el outcome a recuperar. Hoy no lo probamos directo: activación y relevancia en la 1ª sesión.",
+    ],
+    highlight: [
+      "310 M = escala del negocio, no tamaño de muestra",
+      "Declarar honestidad del pitch en voz alta",
+    ],
+    avoid: [
+      "No decir “el algoritmo está roto”",
+      "No vender Day-7 como resultado de este test",
+    ],
+  },
+  {
+    id: 2,
+    n: "03",
+    title: "Entendimiento",
+    speaker: "Erick",
+    role: "Tres fricciones · 1:15→2:15",
+    window: "1:15 → 2:15",
+    onScreen: "3 fricciones · insight “supuesto a validar” · cadena no virtuosa",
+    say: [
+      "Tres fricciones. Una distinción clave.",
+      "1) Descubrimiento lento. 2) Onboarding mal diseñado — el paso existe, está mal hecho. 3) Cold start de señales.",
+      "El motor no está roto: tarda en aprender porque tiene pocas señales. Es velocidad de personalización, no oferta.",
+      "No asumimos que el motor era la causa. Lo tratamos como supuesto a validar. Eso cambió el enfoque.",
+    ],
+    highlight: [
+      "Cadena: Registro → Home genérica → Scroll → Abandono",
+      "Cerrar con “supuesto, no hecho”",
+    ],
+    avoid: [
+      "No culpar al catálogo como única causa",
+      "No saltar a la solución sin fricciones",
+    ],
+  },
+  {
+    id: 3,
+    n: "04",
+    title: "Hipótesis",
+    speaker: "Tamara",
+    role: "Hipótesis · 2:15→3:10",
+    window: "2:15 → 3:10",
+    onScreen: "Rediseñar, no agregar · 3 elecciones · guardrail <30 s · H·C ★",
+    say: [
+      "Creemos que rediseñar —no agregar— la selección de gustos, dejándola en solo tres elecciones rápidas, da señales suficientes desde la primera sesión.",
+      "No es un paso nuevo encima: es el paso actual, bien diseñado.",
+      "Guardrail: si tarda más de 30 s, se refuta. Éxito: − tiempo a play y +15% play en sesión 1.",
+      "Priorizamos H·C Onboarding liviano: más rápida de validar y menor riesgo técnico. La probamos primero.",
+    ],
+    highlight: [
+      "“Rediseñar, no agregar” es la frase ancla",
+      "Señalar H·C con la estrella",
+    ],
+    avoid: [
+      "No vender H·A / H·B como parte del test de hoy",
+      "No tocar motor ni catálogo en el alcance",
+    ],
+  },
+  {
+    id: 4,
+    n: "05",
+    title: "Experimento ⭐",
+    speaker: "Tamara",
+    role: "Experimento · 3:10→4:50",
+    window: "3:10 → 4:50",
+    onScreen: "Control vs Experimental · umbrales · 30–50 · 7 días · 2 semanas",
+    say: [
+      "Probamos la idea antes de la ingeniería. Wizard of Oz longitudinal.",
+      "Control: sin selección, home genérica. Experimental — la apuesta: 3 géneros + home curada; sigue pareciendo automático.",
+      "Umbrales: ≥80% completa <30 s · ≥65% play válido s1 · <3 min a 1ª play · +10% WT · ≥75% relevancia · +15% intención volver.",
+      "Muestra 30–50, seguimiento 7 días, ejecución 2 semanas. Direccional, no prueba de plataforma.",
+    ],
+    highlight: [
+      "Énfasis del bloque de Tami",
+      "Nombrar “La apuesta” en experimental",
+      "WoZ = techo de valor, no promesa del motor",
+    ],
+    avoid: [
+      "No hablar de significancia estadística a escala WebFlix",
+      "No confundir curación manual con producto final",
+    ],
+  },
+  {
+    id: 5,
+    n: "06",
+    title: "Herramientas",
+    speaker: "Cristian",
+    role: "IA copiloto · 4:50→5:25",
+    window: "4:50 → 5:25",
+    onScreen: "Figma AI · Claude + ChatGPT · ejemplo que cambió el rumbo",
+    say: [
+      "La IA aceleró el proceso. No reemplazó la evidencia.",
+      "Figma AI para maquetas rápidas. Claude y ChatGPT para problema, mapa de supuestos e hipótesis falsable.",
+      "Al inicio creíamos que el problema era el motor. Iterando vimos intuición sin evidencia: el cuello era falta de señales tempranas.",
+      "Con la hipótesis de Tami, el prototipo solo representa el tramo crítico — no un producto completo.",
+    ],
+    highlight: [
+      "Frase: copiloto, no evidencia",
+      "Insight del rumbo: señales, no motor roto",
+    ],
+    avoid: [
+      "No vender la demo de IA como validación de usuarios",
+    ],
+  },
+  {
+    id: 6,
+    n: "07",
+    title: "Prototipo ⭐",
+    speaker: "Cristian",
+    role: "Demo · 5:25→7:15",
+    window: "5:25 → 7:15",
+    onScreen: "3 swipes → perfil → home curada (WoZ) → play + métricas · Plan B",
+    say: [
+      "Del perfil vacío al primer play. Outcome acotado: ¿tres preferencias tempranas generan portada más relevante y más reproducción, sin fricción?",
+      "No probamos el algoritmo final.",
+      "Flujo: 3 swipes Tinder-like · perfil · home curada WoZ · play + métricas.",
+      "Cada umbral es guardrail de refutación. Contingencia: 1 vivo · 2 video · 3 capturas · D esta slide.",
+    ],
+    highlight: [
+      "Énfasis demo — mirar al jurado, no solo a la pantalla",
+      "Si falla red: 2 o 3 sin disculparse de más",
+    ],
+    avoid: [
+      "No improvisar features fuera del tramo crítico",
+      "No decir que ya corre el motor real",
+    ],
+  },
+  {
+    id: 7,
+    n: "08",
+    title: "Resultados",
+    speaker: "Valeria",
+    role: "Simulación · 7:15→8:25",
+    window: "7:15 → 8:25",
+    onScreen: "Banner simulación · 84% / 69% / +12% / 78% · Day-7 exploratorio 29→33",
+    say: [
+      "Coherentes con los criterios. No son resultados de campo.",
+      "Simulación para el ejercicio — construida con los umbrales. No presentar como estudio corrido en producción.",
+      "Guardrail 84% en 22 s · play válido 69% mediana 2:40 · WT +12% · relevancia 78%.",
+      "Intención volver +17% es declarada. Day-7 29→33 con n chica: no es prueba estadística — luz verde para seguir mirando.",
+    ],
+    highlight: [
+      "Decir “simulación” en la primera frase",
+      "Separar primaria vs exploratoria",
+    ],
+    avoid: [
+      "NUNCA presentar simulados como campo real",
+      "No vender Day-7 29→33 como victoria estadística",
+    ],
+  },
+  {
+    id: 8,
+    n: "09",
+    title: "Aprendizajes ⭐",
+    speaker: "Valeria",
+    role: "Decisión · 8:25→9:45",
+    window: "8:25 → 9:45",
+    onScreen: "3 aprendizajes · Confirma · 4 next steps · el pedido",
+    say: [
+      "Confirmamos. Ahora hay que construirlo.",
+      "Dispuestos en segundos. 3 señales bastan. Es descubrimiento, no catálogo.",
+      "Decisión predefinida · Confirma: perseverar, con un ajuste — la próxima fase no puede seguir curada a mano.",
+      "Pedimos apoyo para pasar de 30–50 usuarios a un piloto real con Ingeniería y Data.",
+    ],
+    highlight: [
+      "Énfasis y cierre del arco de Vale",
+      "El ask es acceso / piloto, no rebuild del motor",
+    ],
+    avoid: [
+      "No pedir “arreglar el algoritmo” sin el puente del piloto",
+    ],
+  },
+  {
+    id: 9,
+    n: "10",
+    title: "Cierre",
+    speaker: "Valeria",
+    role: "Cierra · Q&A",
+    window: "9:45 → fin",
+    onScreen: "Gracias · equipo · Q&A",
+    say: [
+      "Gracias. ¿Preguntas?",
+      "Ya validamos que el usuario quiere esto. Ahora necesitamos construirlo de verdad.",
+    ],
+    highlight: [
+      "Equipo de pie o asiente",
+      "Q&A: Erick cifras · Tami hipótesis · Cris demo · Vale decisión",
+    ],
+    avoid: [
+      "No reabrir el pitch completo en la respuesta",
+      "No inventar cifras fuera de slide",
+    ],
+  },
+];
+
+window.WEBFLIX_SPEAKERS = {
+  Erick: { name: "Erick Fuentealba", img: "../assets/Erick.png", color: "purple" },
+  Tamara: { name: "Tamara Valdivia", img: "../assets/Tami.png", color: "amber" },
+  Cristian: { name: "Cristian Pizarro", img: "../assets/Cris.png", color: "green" },
+  Valeria: { name: "Valeria Nieto", img: "../assets/Vale.png", color: "cyan" },
+};

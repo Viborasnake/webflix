@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WebFlix · Vista de notas del presentador · sincronizada con el pitch">
+  <title>WebFlix · Notas del presentador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="notas.css">
+</head>
+<body>
+  <div class="notes-app" id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark">W</span>
+        <div class="brand-copy">
+          <strong>WebFlix · Notas</strong>
+          <span id="sync-status" class="sync is-wait">Esperando presentación…</span>
+        </div>
+      </div>
+
+      <div class="timer-block" id="timer-block" data-state="ok">
+        <span class="timer-label">Timer</span>
+        <span class="timer-time" id="timer-time">00:00</span>
+        <span class="timer-meta">meta ~10:00 · warn 9:30 · danger 10:30</span>
+      </div>
+
+      <div class="top-actions">
+        <a class="btn ghost" href="../" target="_blank" rel="noopener">Abrir deck</a>
+        <button type="button" class="btn" id="btn-prev" title="Anterior">←</button>
+        <button type="button" class="btn" id="btn-next" title="Siguiente">→</button>
+        <button type="button" class="btn ghost" id="btn-timer" title="T pause/play">T</button>
+        <button type="button" class="btn ghost" id="btn-reset" title="R reset">R</button>
+      </div>
+    </header>
+
+    <div class="progress-track" aria-hidden="true">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <main class="layout">
+      <!-- PAST -->
+      <aside class="col col-past" id="col-past">
+        <div class="col-label">
+          <span class="pill dim">Ya pasó</span>
+        </div>
+        <div class="stack" id="past-stack"></div>
+      </aside>
+
+      <!-- NOW -->
+      <section class="col col-now" id="col-now">
+        <div class="now-head">
+          <div class="now-meta">
+            <span class="pill live" id="now-badge">AHORA</span>
+            <span class="counter" id="counter">01 / 10</span>
+            <span class="window" id="time-window">—</span>
+          </div>
+          <div class="speaker-row" id="speaker-row">
+            <img id="speaker-img" src="" alt="" width="48" height="48">
+            <div>
+              <strong id="speaker-name">—</strong>
+              <span id="speaker-role">—</span>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="now-title" id="now-title">—</h1>
+        <p class="now-on-screen" id="now-on-screen"></p>
+
+        <div class="say-box">
+          <h2>Di</h2>
+          <div class="say-body" id="now-say"></div>
+        </div>
+
+        <div class="tips-grid">
+          <div class="tip-card highlight">
+            <h3>Destacar</h3>
+            <ul id="now-highlight"></ul>
+          </div>
+          <div class="tip-card warn">
+            <h3>Evitar / ancla</h3>
+            <ul id="now-avoid"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEXT -->
+      <aside class="col col-next" id="col-next">
+        <div class="col-label">
+          <span class="pill next">Viene</span>
+        </div>
+        <div class="stack" id="next-stack"></div>
+      </aside>
+    </main>
+
+    <nav class="rail" id="rail" aria-label="Slides del pitch"></nav>
+    <footer class="foot">
+      <span>Mismo origen · sync por BroadcastChannel + localStorage</span>
+      <span>Controles: ← → · T timer · R reset · click en la rail</span>
+      <span>En el deck: tecla <kbd>N</kbd> abre notas</span>
+    </footer>
+  </div>
+
+  <script src="notes-data.js"></script>
+  <script src="notas.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-/* WebFlix Pitch Deck · navigation, timer, demo levels */
+/* WebFlix Pitch Deck · navigation, timer, demo levels + sync con /notas */
 
 document.addEventListener("DOMContentLoaded", () => {
   const slides = Array.from(document.querySelectorAll(".slide"));
@@ -19,12 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
     Cristian: { name: "Cristian Pizarro", img: "assets/Cris.png" },
   };
 
+  const SYNC_KEY = "webflix-pitch-state";
+  const SYNC_CHANNEL = "webflix-pitch-sync";
+  const SOURCE = "deck";
+
   const DEMO_INDEX = slides.findIndex((s) => s.hasAttribute("data-demo"));
   const total = slides.length;
   let current = 0;
   let demoLevel = 1;
   let hudVisible = false;
   let timerArmed = false; // auto-start once when leaving cover
+  let applyingRemote = false;
 
   // Timer: meta ~9:45 pitch v2, max 10:30
   const WARN_MS = 9 * 60 * 1000 + 30 * 1000;
@@ -33,6 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerAccumulated = 0;
   let timerRunning = false;
   let timerRaf = null;
+
+  let channel = null;
+  try {
+    channel = new BroadcastChannel(SYNC_CHANNEL);
+  } catch (_) {
+    channel = null;
+  }
 
   function pad(n) {
     return String(n).padStart(2, "0");
@@ -54,6 +66,35 @@ document.addEventListener("DOMContentLoaded", () => {
     return "ok";
   }
 
+  function getState() {
+    return {
+      v: 1,
+      source: SOURCE,
+      slide: current,
+      total,
+      demoLevel,
+      timerRunning,
+      timerAccumulated,
+      timerStartedAt,
+      timerMs: elapsed(),
+      timerArmed,
+      ts: Date.now(),
+    };
+  }
+
+  function broadcastState() {
+    if (applyingRemote) return;
+    const state = getState();
+    try {
+      localStorage.setItem(SYNC_KEY, JSON.stringify(state));
+    } catch (_) { /* private mode */ }
+    if (channel) {
+      try {
+        channel.postMessage({ type: "state", ...state });
+      } catch (_) { /* ignore */ }
+    }
+  }
+
   function renderTimer() {
     const ms = elapsed();
     if (timerTime) timerTime.textContent = formatMs(ms);
@@ -66,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     timerRunning = true;
     timerStartedAt = Date.now();
     renderTimer();
+    broadcastState();
   }
 
   function pauseTimer() {
@@ -75,6 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
     timerStartedAt = null;
     if (timerRaf) cancelAnimationFrame(timerRaf);
     renderTimer();
+    broadcastState();
   }
 
   function toggleTimer() {
@@ -89,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
     timerArmed = false;
     if (timerRaf) cancelAnimationFrame(timerRaf);
     renderTimer();
+    broadcastState();
   }
 
   /** Arranca el cronómetro la primera vez que salimos de la portada (slide 2+). */
@@ -111,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setHud(!hudVisible);
   }
 
-  function setDemoLevel(level) {
+  function setDemoLevel(level, { silent } = {}) {
     demoLevel = Math.min(3, Math.max(1, level));
     document.querySelectorAll(".demo-level").forEach((el) => {
       el.classList.toggle("is-active", Number(el.dataset.level) === demoLevel);
@@ -119,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".dot").forEach((el) => {
       el.classList.toggle("is-on", Number(el.dataset.goto) === demoLevel);
     });
+    if (!silent) broadcastState();
   }
 
   function updateSpeaker(slide) {
@@ -138,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     speakerTag.hidden = false;
   }
 
-  function goTo(index) {
+  function goTo(index, { silent } = {}) {
     if (index < 0 || index >= total) return;
 
     if (index !== current) {
@@ -149,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
       slides[current].classList.add("is-active");
     }
 
-    maybeArmTimer(current);
+    if (!silent) maybeArmTimer(current);
 
     const slide = slides[current];
     const pct = ((current + 1) / total) * 100;
@@ -162,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (chromeLogo) chromeLogo.hidden = hideLogo;
 
     updateSpeaker(slide);
+    if (!silent) broadcastState();
   }
 
   function next() {
@@ -171,6 +217,47 @@ document.addEventListener("DOMContentLoaded", () => {
   function prev() {
     goTo(Math.max(0, current - 1));
   }
+
+  function applyRemoteState(state) {
+    if (!state || state.source === SOURCE) return;
+    if (typeof state.slide !== "number") return;
+
+    applyingRemote = true;
+    try {
+      if (timerRaf) cancelAnimationFrame(timerRaf);
+
+      timerRunning = !!state.timerRunning;
+      timerAccumulated = Number(state.timerAccumulated) || 0;
+      timerStartedAt = state.timerRunning
+        ? Number(state.timerStartedAt) || Date.now()
+        : null;
+      timerArmed = !!state.timerArmed;
+
+      if (typeof state.demoLevel === "number") {
+        setDemoLevel(state.demoLevel, { silent: true });
+      }
+      goTo(Math.min(total - 1, Math.max(0, state.slide)), { silent: true });
+      renderTimer();
+    } finally {
+      applyingRemote = false;
+    }
+  }
+
+  function onSyncMessage(data) {
+    if (!data || data.type !== "state") return;
+    applyRemoteState(data);
+  }
+
+  if (channel) {
+    channel.onmessage = (ev) => onSyncMessage(ev.data);
+  }
+
+  window.addEventListener("storage", (e) => {
+    if (e.key !== SYNC_KEY || !e.newValue) return;
+    try {
+      onSyncMessage(JSON.parse(e.newValue));
+    } catch (_) { /* ignore */ }
+  });
 
   document.getElementById("deck").addEventListener("click", (e) => {
     if (e.target.closest("button, a, kbd, .dot, .timer, .speaker-tag, .hud, #timer")) return;
@@ -246,6 +333,11 @@ document.addEventListener("DOMContentLoaded", () => {
           document.exitFullscreen?.();
         }
         break;
+      case "n":
+      case "N":
+        // atajo: abrir notas en otra pestaña
+        window.open("notas/", "webflix-notas");
+        break;
       default:
         break;
     }
@@ -278,4 +370,5 @@ document.addEventListener("DOMContentLoaded", () => {
   goTo(0);
   renderTimer();
   setDemoLevel(1);
+  broadcastState();
 });
