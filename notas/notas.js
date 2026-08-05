@@ -32,15 +32,8 @@
     }
   }
   const SESSION_ID = getOrCreateSessionId();
-  function sessionNameFromUrl() {
-    try {
-      const q = new URLSearchParams(window.location.search);
-      const n = (q.get("name") || q.get("who") || "").trim();
-      if (n) return n.slice(0, 24);
-    } catch (_) { /* ignore */ }
-    return "Sesión " + SESSION_ID.slice(0, 4);
-  }
-  const SESSION_NAME = sessionNameFromUrl();
+  // Nombre genérico de esta pestaña (sin personalizar por orador)
+  const SESSION_NAME = "Presentador " + SESSION_ID.slice(0, 4);
 
   // Quién tiene el control remoto (null = nadie o nosotros)
   let remoteController = null; // { id, name, ts }

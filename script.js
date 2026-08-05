@@ -360,14 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case "n":
       case "N": {
-        const room =
-          (bus && bus.room) ||
-          (window.WebflixSync && window.WebflixSync.DEFAULT_ROOM) ||
-          "webflix-grupo5-eep";
-        window.open(
-          `notas/?room=${encodeURIComponent(room)}`,
-          "webflix-notas"
-        );
+        window.open("notas/", "webflix-notas");
         break;
       }
       default:

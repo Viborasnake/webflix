@@ -11,8 +11,8 @@
  *  2) MQTT público (Internet) → ubicaciones distintas  ✅
  *  3) PeerJS (opcional, refuerzo misma red)
  *
- * URL: ?room=CODIGO-UNICO&name=Tami
- * Todos deben usar el MISMO room.
+ * URLs simples: /  y  /notas/  (mismo room por defecto).
+ * Opcional: ?room=codigo si quieren otra sala.
  */
 (function (global) {
   const CHANNEL = "webflix-pitch-sync-v3";
