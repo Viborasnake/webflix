@@ -356,19 +356,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Play manual del video de Cris (botón + clic en el video)
+  // Play manual del video de Cris (botón + clic). Flechas = solo slides.
   const demoPlayBtn = document.getElementById("demo-play-btn");
   const demoVideo = getDemoVideo();
+
+  function blurDemoFocus() {
+    try {
+      if (demoVideo) demoVideo.blur();
+      if (demoPlayBtn) demoPlayBtn.blur();
+      if (document.activeElement && document.activeElement.blur) {
+        document.activeElement.blur();
+      }
+    } catch (_) { /* ignore */ }
+  }
+
   if (demoPlayBtn) {
+    demoPlayBtn.tabIndex = -1;
     demoPlayBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       toggleDemoVideo();
+      blurDemoFocus();
     });
   }
   if (demoVideo) {
+    // Sin foco/controls nativos: evita seek con ← →
+    demoVideo.tabIndex = -1;
+    demoVideo.removeAttribute("controls");
+    demoVideo.setAttribute("controlslist", "nodownload noplaybackrate noremoteplayback");
+    demoVideo.setAttribute("disablePictureInPicture", "");
+
     demoVideo.addEventListener("click", (e) => {
       e.stopPropagation();
       toggleDemoVideo();
+      blurDemoFocus();
     });
     demoVideo.addEventListener("play", () => setDemoPlayingUI(true));
     demoVideo.addEventListener("pause", () => setDemoPlayingUI(false));
@@ -384,24 +404,65 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      // Bloquear seek nativo del <video> (flechas, j/l, media keys, etc.)
+      const v = getDemoVideo();
+      const mediaKeys = [
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "Home",
+        "End",
+        "PageUp",
+        "PageDown",
+        "MediaTrackNext",
+        "MediaTrackPrevious",
+        "MediaPlayPause",
+        "MediaFastForward",
+        "MediaRewind",
+      ];
+      if (
+        v &&
+        (e.target === v || document.activeElement === v) &&
+        mediaKeys.includes(e.key)
+      ) {
+        e.preventDefault();
+        try {
+          v.blur();
+        } catch (_) { /* ignore */ }
+      }
+    },
+    true
+  );
+
   document.addEventListener("keydown", (e) => {
     const tag = (e.target && e.target.tagName) || "";
     if (tag === "INPUT" || tag === "TEXTAREA") return;
 
+    // Si el foco quedó en el video, quitarlo: flechas son de slides
+    if (e.target && e.target.id === "demo-video") {
+      try {
+        e.target.blur();
+      } catch (_) { /* ignore */ }
+    }
+
     switch (e.key) {
       case "ArrowRight":
       case "ArrowDown":
+      case "PageDown":
+        e.preventDefault();
+        next();
+        break;
       case " ":
-        // En demo video: space = play/pause (no avanzar slide)
+        // Solo Space (y P) controlan el video; flechas NUNCA
         if (current === DEMO_INDEX && demoLevel === 1) {
           e.preventDefault();
           toggleDemoVideo();
           break;
         }
-        e.preventDefault();
-        next();
-        break;
-      case "PageDown":
         e.preventDefault();
         next();
         break;
