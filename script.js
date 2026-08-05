@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerRunning = false;
   let timerRaf = null;
   let lastPublishAt = 0;
+  /** Se incrementa en cada reinicio total para que las notas limpien control */
+  let sessionEpoch = 0;
 
   function pad(n) {
     return String(n).padStart(2, "0");
@@ -68,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
       timerStartedAt,
       timerMs: elapsed(),
       timerArmed,
+      sessionEpoch,
       speaker: slides[current] && slides[current].dataset.speaker,
     };
   }
@@ -201,8 +204,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /** Reinicio total: portada, timer 00:00, demo nivel 1, sin armar cronómetro */
   function resetSession() {
-    resetTimer();
-    setDemoLevel(1);
+    sessionEpoch += 1;
+    // Orden: timer off → demo 1 → portada (sin armar timer)
+    timerRunning = false;
+    timerStartedAt = null;
+    timerAccumulated = 0;
+    timerArmed = false;
+    if (timerRaf) {
+      cancelAnimationFrame(timerRaf);
+      timerRaf = null;
+    }
+    if (timerTime) timerTime.textContent = "00:00";
+    if (timerEl) timerEl.dataset.state = "ok";
+
+    demoLevel = 1;
+    document.querySelectorAll(".demo-level").forEach((el) => {
+      el.classList.toggle("is-active", Number(el.dataset.level) === 1);
+    });
+    document.querySelectorAll(".dot").forEach((el) => {
+      el.classList.toggle("is-on", Number(el.dataset.goto) === 1);
+    });
+
     goTo(0, { noArm: true });
     publish(true);
   }
@@ -370,9 +392,16 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   setHud(false);
-  goTo(0);
+  // Init limpio: portada, timer en 0, demo 1 (sin armar cronómetro)
+  demoLevel = 1;
+  document.querySelectorAll(".demo-level").forEach((el) => {
+    el.classList.toggle("is-active", Number(el.dataset.level) === 1);
+  });
+  document.querySelectorAll(".dot").forEach((el) => {
+    el.classList.toggle("is-on", Number(el.dataset.goto) === 1);
+  });
+  goTo(0, { noArm: true });
   renderTimer();
-  setDemoLevel(1);
   publish(true);
 
   // Re-publicar al recuperar foco (clientes que se reconectan)

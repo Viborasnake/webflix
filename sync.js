@@ -60,7 +60,17 @@
     let status = "init";
     const statusListeners = new Set();
     let lastCmdTs = 0;
+    let lastCmdNonce = "";
     let lastControlTs = 0;
+    let lastControlNonce = "";
+
+    function makeNonce() {
+      return (
+        Date.now().toString(36) +
+        "-" +
+        Math.random().toString(36).slice(2, 9)
+      );
+    }
 
     try {
       channel = new BroadcastChannel(CHANNEL + ":" + room);
@@ -102,8 +112,11 @@
     function emitCommand(cmd, meta) {
       if (!cmd || !cmd.cmd) return;
       if (cmd.room && cmd.room !== room) return;
-      if (cmd.ts && cmd.ts <= lastCmdTs) return;
+      // Dedupe BC+Peer: mismo ts se ignora; reloj desfasado solo si es claramente viejo
+      if (cmd.ts && lastCmdTs && cmd.ts < lastCmdTs) return;
+      if (cmd.ts && cmd.ts === lastCmdTs && cmd.nonce && cmd.nonce === lastCmdNonce) return;
       if (cmd.ts) lastCmdTs = cmd.ts;
+      if (cmd.nonce) lastCmdNonce = cmd.nonce;
       commandListeners.forEach((fn) => {
         try {
           fn(cmd, meta || { via: "unknown" });
@@ -114,9 +127,13 @@
     function emitControl(ctrl, meta) {
       if (!ctrl || !ctrl.action) return;
       if (ctrl.room && ctrl.room !== room) return;
-      // claims: aceptar el más reciente; release solo si es el mismo dueño o más nuevo
-      if (ctrl.ts && ctrl.ts < lastControlTs) return;
+      // claims: aceptar el más reciente
+      if (ctrl.ts && lastControlTs && ctrl.ts < lastControlTs) return;
+      if (ctrl.ts && ctrl.ts === lastControlTs && ctrl.nonce && ctrl.nonce === lastControlNonce) {
+        return;
+      }
       if (ctrl.ts) lastControlTs = ctrl.ts;
+      if (ctrl.nonce) lastControlNonce = ctrl.nonce;
       latestControl = ctrl;
       controlListeners.forEach((fn) => {
         try {
@@ -227,6 +244,7 @@
         room,
         cmd,
         ts: Date.now(),
+        nonce: makeNonce(),
         ...extra,
       };
       if (channel) {
@@ -255,10 +273,12 @@
         room,
         action,
         ts: Date.now(),
+        nonce: makeNonce(),
         ...extra,
       };
       latestControl = payload;
       lastControlTs = payload.ts;
+      lastControlNonce = payload.nonce;
       if (channel) {
         try {
           channel.postMessage(payload);

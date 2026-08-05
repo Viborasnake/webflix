@@ -46,6 +46,8 @@
   let remoteController = null; // { id, name, ts }
   let controlHeartbeat = null;
   let takeoverToastUntil = 0;
+  let lastSessionEpoch = 0;
+  const CONTROL_STALE_MS = 45 * 1000;
 
   let timerRunning = false;
   let timerAccumulated = 0;
@@ -205,7 +207,7 @@
   function releaseControlBroadcast() {
     stopHeartbeat();
     if (!bus || typeof bus.sendControl !== "function") return;
-    // Solo liberar si nosotros éramos el dueño
+    // Solo liberar si nosotros éramos el dueño (o no hay dueño)
     if (remoteController && remoteController.id && remoteController.id !== SESSION_ID) {
       return;
     }
@@ -215,6 +217,24 @@
     });
     if (remoteController && remoteController.id === SESSION_ID) {
       remoteController = null;
+    }
+  }
+
+  /** Limpieza local forzada (reinicio de sesión o claim viejo) */
+  function clearControlLocal() {
+    controlMode = false;
+    stopHeartbeat();
+    remoteController = null;
+    takeoverToastUntil = 0;
+  }
+
+  function clearControlGlobal() {
+    clearControlLocal();
+    if (bus && typeof bus.sendControl === "function") {
+      bus.sendControl("clear", {
+        controllerId: SESSION_ID,
+        controllerName: SESSION_NAME,
+      });
     }
   }
 
@@ -422,66 +442,90 @@
     }
   }
 
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
   function renderView() {
     const note = NOTES[viewSlide];
     if (!note) return;
     const sp = SPEAKERS[note.speaker] || {};
 
-    $("now-title").textContent = note.title;
-    $("now-on-screen").textContent = note.onScreen || "";
-    $("time-window").textContent = note.window || "—";
-    counterEl.textContent = `${pad(viewSlide + 1)} / ${pad(TOTAL)}`;
+    const elTitle = $("now-title");
+    const elOn = $("now-on-screen");
+    const elWin = $("time-window");
+    if (elTitle) elTitle.textContent = note.title;
+    if (elOn) elOn.textContent = note.onScreen || "";
+    if (elWin) elWin.textContent = note.window || "—";
+    if (counterEl) counterEl.textContent = `${pad(viewSlide + 1)} / ${pad(TOTAL)}`;
     const progressSlide = hasLive ? liveSlide : viewSlide;
-    progressFill.style.width = `${((progressSlide + 1) / TOTAL) * 100}%`;
+    if (progressFill) {
+      progressFill.style.width = `${((progressSlide + 1) / TOTAL) * 100}%`;
+    }
 
-    $("speaker-name").textContent = sp.name || note.speaker;
-    $("speaker-role").textContent = note.role || "";
+    const elSpName = $("speaker-name");
+    const elSpRole = $("speaker-role");
+    if (elSpName) elSpName.textContent = sp.name || note.speaker;
+    if (elSpRole) elSpRole.textContent = note.role || "";
     const img = $("speaker-img");
-    if (sp.img) {
-      img.src = sp.img;
-      img.alt = sp.name || note.speaker;
-      img.hidden = false;
-    } else {
-      img.hidden = true;
+    if (img) {
+      if (sp.img) {
+        img.src = sp.img;
+        img.alt = sp.name || note.speaker;
+        img.hidden = false;
+      } else {
+        img.hidden = true;
+      }
     }
 
     const say = $("now-say");
-    say.innerHTML = (note.say || [])
-      .map((line) => {
-        const text = typeof line === "string" ? line : line.text || "";
-        const hint = typeof line === "string" ? "" : line.hint || "";
-        const hintHtml = hint
-          ? `<span class="say-hint"><span class="say-hint-lab">En slide</span>${hint}</span>`
-          : "";
-        return `<div class="say-line"><p class="say-text">${text}</p>${hintHtml}</div>`;
-      })
-      .join("");
+    if (say) {
+      say.innerHTML = (note.say || [])
+        .map((line) => {
+          const text = typeof line === "string" ? line : line.text || "";
+          const hint = typeof line === "string" ? "" : line.hint || "";
+          const hintHtml = hint
+            ? `<span class="say-hint"><span class="say-hint-lab">En slide</span>${escapeHtml(hint)}</span>`
+            : "";
+          return `<div class="say-line"><p class="say-text">${escapeHtml(text)}</p>${hintHtml}</div>`;
+        })
+        .join("");
+    }
     fillList($("now-highlight"), note.highlight);
     fillList($("now-avoid"), note.avoid);
     renderGlossary(note);
 
-    const past = [];
-    for (let i = viewSlide - 1; i >= 0 && past.length < 2; i--) past.push(NOTES[i]);
-    pastStack.innerHTML =
-      past.map((n) => miniCard(n)).join("") || miniCard(null, "Inicio");
+    if (pastStack) {
+      const past = [];
+      for (let i = viewSlide - 1; i >= 0 && past.length < 2; i--) past.push(NOTES[i]);
+      pastStack.innerHTML =
+        past.map((n) => miniCard(n)).join("") || miniCard(null, "Inicio");
+    }
 
-    const upcoming = [];
-    for (let i = viewSlide + 1; i < TOTAL && upcoming.length < 2; i++) upcoming.push(NOTES[i]);
-    nextStack.innerHTML =
-      upcoming.map((n) => miniCard(n)).join("") || miniCard(null, "Fin · Q&A");
+    if (nextStack) {
+      const upcoming = [];
+      for (let i = viewSlide + 1; i < TOTAL && upcoming.length < 2; i++) {
+        upcoming.push(NOTES[i]);
+      }
+      nextStack.innerHTML =
+        upcoming.map((n) => miniCard(n)).join("") || miniCard(null, "Fin · Q&A");
+    }
 
-    rail.querySelectorAll(".rail-item").forEach((btn, i) => {
-      btn.classList.toggle("is-active", i === viewSlide);
-      btn.classList.toggle("is-past", i < viewSlide);
-      btn.classList.toggle("is-live", hasLive && i === liveSlide);
-    });
+    if (rail) {
+      rail.querySelectorAll(".rail-item").forEach((btn, i) => {
+        btn.classList.toggle("is-active", i === viewSlide);
+        btn.classList.toggle("is-past", i < viewSlide);
+        btn.classList.toggle("is-live", hasLive && i === liveSlide);
+      });
+    }
 
     // reset auto-flag al salir del cierre
     if (viewSlide !== TOTAL - 1) {
       qaAutoOpenedForClose = false;
-      if (qaOpen && !btnQa?.classList.contains("is-on")) {
-        /* keep if user forced */ 
-      }
     }
 
     updateFollowUI();
@@ -516,10 +560,9 @@
     );
     if (!ok) return;
 
-    // Local
-    if (controlMode) releaseControlBroadcast();
-    controlMode = false;
-    stopHeartbeat();
+    // Limpiar control de toda la sala
+    clearControlGlobal();
+
     followLive = true;
     liveAdvancedWhileBrowsing = false;
     viewSlide = 0;
@@ -528,10 +571,15 @@
     timerRunning = false;
     timerStartedAt = null;
     timerAccumulated = 0;
-    if (timerRaf) cancelAnimationFrame(timerRaf);
+    if (timerRaf) {
+      cancelAnimationFrame(timerRaf);
+      timerRaf = null;
+    }
     renderTimer();
+    if (qaOpen) setQaOpen(false, { manual: true });
+    qaAutoOpenedForClose = false;
 
-    // Deck + otros
+    // Deck + otros (sessionEpoch en el state)
     sendCmd("session-reset");
     renderView();
   }
@@ -609,26 +657,38 @@
     if (!ctrl || !ctrl.action) return;
     const id = ctrl.controllerId;
     const name = ctrl.controllerName || "Otro usuario";
+    const ts = ctrl.ts || Date.now();
+
+    // Claim caducado (sesión anterior en localStorage)
+    if (ctrl.action === "claim" && Date.now() - ts > CONTROL_STALE_MS) {
+      return;
+    }
+
+    if (ctrl.action === "clear") {
+      clearControlLocal();
+      followLive = true;
+      renderView();
+      return;
+    }
 
     if (ctrl.action === "claim") {
       if (!id) return;
-      // Nosotros re-claimamos: ignorar eco
+      // Nosotros re-claimamos: eco / heartbeat
       if (id === SESSION_ID) {
-        remoteController = { id, name, ts: ctrl.ts || Date.now() };
+        remoteController = { id, name, ts };
         updateFollowUI();
         return;
       }
       // Otro tomó el control
       const wasMine = controlMode;
-      remoteController = { id, name, ts: ctrl.ts || Date.now() };
+      remoteController = { id, name, ts };
       if (wasMine) {
         controlMode = false;
         stopHeartbeat();
         followLive = true;
         viewSlide = liveSlide;
         takeoverToastUntil = Date.now() + 8000;
-      } else if (!controlMode) {
-        // Aviso suave aunque no teníamos control
+      } else {
         takeoverToastUntil = Date.now() + 5000;
       }
       renderView();
@@ -637,9 +697,7 @@
 
     if (ctrl.action === "release") {
       // Solo limpia si liberó el dueño actual
-      if (remoteController && id && remoteController.id === id) {
-        remoteController = null;
-      } else if (!remoteController || remoteController.id === id) {
+      if (!remoteController || !id || remoteController.id === id) {
         remoteController = null;
       }
       renderView();
@@ -649,6 +707,27 @@
   function onLiveState(state) {
     if (!state || typeof state.slide !== "number") return;
     hasLive = true;
+
+    // Reinicio total desde el deck
+    if (
+      typeof state.sessionEpoch === "number" &&
+      state.sessionEpoch > 0 &&
+      state.sessionEpoch !== lastSessionEpoch
+    ) {
+      lastSessionEpoch = state.sessionEpoch;
+      clearControlLocal();
+      followLive = true;
+      liveAdvancedWhileBrowsing = false;
+      viewSlide = Math.min(TOTAL - 1, Math.max(0, state.slide));
+      liveSlide = viewSlide;
+      applyTimerFromLive(state);
+      // Cerrar Q&A al reiniciar
+      if (qaOpen) setQaOpen(false, { manual: true });
+      qaAutoOpenedForClose = false;
+      renderView();
+      return;
+    }
+
     const nextLive = Math.min(TOTAL - 1, Math.max(0, state.slide));
     const changed = nextLive !== liveSlide;
     liveSlide = nextLive;
@@ -682,10 +761,24 @@
     setSyncLabel("solo", "Sync no cargó · solo local");
   }
 
-  // Si al abrir ya hay claim en storage
+  // Si al abrir ya hay claim fresco en storage
   if (bus && typeof bus.getLatestControl === "function") {
     const boot = bus.getLatestControl();
-    if (boot) onRemoteControl(boot);
+    if (boot && boot.action === "claim") {
+      const age = Date.now() - (boot.ts || 0);
+      if (age <= CONTROL_STALE_MS) onRemoteControl(boot);
+    }
+  }
+
+  // Bootstrap estado del deck (slide/timer) si ya hay sesión en curso
+  if (bus && typeof bus.getLatest === "function") {
+    const bootState = bus.getLatest();
+    if (bootState && typeof bootState.slide === "number") {
+      if (typeof bootState.sessionEpoch === "number") {
+        lastSessionEpoch = bootState.sessionEpoch;
+      }
+      onLiveState(bootState);
+    }
   }
 
   buildRail();
@@ -804,8 +897,11 @@
           setQaOpen(false, { manual: true });
         } else if (controlMode) {
           e.preventDefault();
+          // setControlMode(false) ya libera control
           setControlMode(false);
-          resumeFollow();
+          followLive = true;
+          viewSlide = liveSlide;
+          renderView();
         } else if (!followLive) {
           e.preventDefault();
           resumeFollow();
