@@ -42,6 +42,17 @@
   const app = $("app");
   const btnPrev = $("btn-prev");
   const btnNext = $("btn-next");
+  const btnQa = $("btn-qa");
+  const btnQaClose = $("btn-qa-close");
+  const qaPanel = $("qa-panel");
+  const qaFilters = $("qa-filters");
+  const qaBubbles = $("qa-bubbles");
+  const qaIntro = $("qa-intro");
+
+  const QA = window.WEBFLIX_QA || { filters: [], torpedos: [], intro: "" };
+  let qaOpen = false;
+  let qaFilter = "all";
+  let qaAutoOpenedForClose = false;
 
   function pad(n) {
     return String(n).padStart(2, "0");
@@ -197,6 +208,63 @@
     el.innerHTML = (items || []).map((t) => `<li>${t}</li>`).join("") || "<li>—</li>";
   }
 
+  function renderQaFilters() {
+    if (!qaFilters) return;
+    const filters = QA.filters || [];
+    qaFilters.innerHTML = filters
+      .map(
+        (f) =>
+          `<button type="button" class="qa-filter${f.id === qaFilter ? " is-on" : ""}" data-qa-filter="${f.id}">${f.label}</button>`
+      )
+      .join("");
+  }
+
+  function renderQaBubbles() {
+    if (!qaBubbles) return;
+    const list = (QA.torpedos || []).filter(
+      (t) => qaFilter === "all" || t.cat === qaFilter
+    );
+    qaBubbles.innerHTML = list
+      .map(
+        (t) => `<article class="qa-bubble" data-cat="${t.cat}">
+          <div class="qa-bubble-meta">
+            <span class="qa-tag">${t.tag || t.cat}</span>
+            <span class="qa-who">${t.who || ""}</span>
+          </div>
+          <p class="qa-q">${t.q}</p>
+          <p class="qa-pista">${t.pista}</p>
+        </article>`
+      )
+      .join("");
+  }
+
+  function setQaOpen(open, { manual } = {}) {
+    qaOpen = !!open;
+    if (qaPanel) qaPanel.hidden = !qaOpen;
+    if (app) app.classList.toggle("is-qa-open", qaOpen);
+    if (btnQa) {
+      btnQa.classList.toggle("is-on", qaOpen);
+      btnQa.setAttribute("aria-pressed", qaOpen ? "true" : "false");
+    }
+    if (qaOpen) {
+      if (qaIntro) qaIntro.textContent = QA.intro || "";
+      renderQaFilters();
+      renderQaBubbles();
+    }
+    if (manual && !qaOpen) {
+      // si el usuario cierra en el cierre, no re-autoabrir en este slide
+      qaAutoOpenedForClose = true;
+    }
+  }
+
+  function maybeAutoOpenQa() {
+    // En slide de cierre (último): abrir torpedos una vez
+    if (viewSlide === TOTAL - 1 && !qaAutoOpenedForClose && !qaOpen) {
+      qaAutoOpenedForClose = true;
+      setQaOpen(true);
+    }
+  }
+
   function renderView() {
     const note = NOTES[viewSlide];
     if (!note) return;
@@ -241,7 +309,16 @@
       btn.classList.toggle("is-live", hasLive && i === liveSlide);
     });
 
+    // reset auto-flag al salir del cierre
+    if (viewSlide !== TOTAL - 1) {
+      qaAutoOpenedForClose = false;
+      if (qaOpen && !btnQa?.classList.contains("is-on")) {
+        /* keep if user forced */ 
+      }
+    }
+
     updateFollowUI();
+    maybeAutoOpenQa();
   }
 
   function buildRail() {
@@ -358,15 +435,24 @@
   if (btnNext) btnNext.addEventListener("click", () => goNotes(viewSlide + 1));
   if (btnFollow) btnFollow.addEventListener("click", () => resumeFollow());
   if (btnControl) btnControl.addEventListener("click", () => toggleControlMode());
+  if (btnQa) btnQa.addEventListener("click", () => setQaOpen(!qaOpen, { manual: true }));
+  if (btnQaClose) btnQaClose.addEventListener("click", () => setQaOpen(false, { manual: true }));
+
+  if (qaFilters) {
+    qaFilters.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-qa-filter]");
+      if (!btn) return;
+      qaFilter = btn.dataset.qaFilter;
+      renderQaFilters();
+      renderQaBubbles();
+    });
+  }
 
   const btnTimer = $("btn-timer");
   const btnReset = $("btn-reset");
   if (btnTimer) {
     btnTimer.addEventListener("click", () => {
-      if (!controlMode) {
-        // hint: solo en control
-        setControlMode(true);
-      }
+      if (!controlMode) setControlMode(true);
       sendCmd("timer-toggle");
     });
   }
@@ -403,6 +489,11 @@
         e.preventDefault();
         goNotes(TOTAL - 1);
         break;
+      case "q":
+      case "Q":
+        e.preventDefault();
+        setQaOpen(!qaOpen, { manual: true });
+        break;
       case "c":
       case "C":
         e.preventDefault();
@@ -416,7 +507,10 @@
         resumeFollow();
         break;
       case "Escape":
-        if (controlMode) {
+        if (qaOpen) {
+          e.preventDefault();
+          setQaOpen(false, { manual: true });
+        } else if (controlMode) {
           e.preventDefault();
           setControlMode(false);
           resumeFollow();

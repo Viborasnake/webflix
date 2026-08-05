@@ -239,19 +239,22 @@ window.WEBFLIX_NOTES = [
     speaker: "Valeria",
     role: "Cierra · Q&A",
     window: "9:45 → fin",
-    onScreen: "Gracias · equipo · Q&A",
+    onScreen: "Gracias · equipo · Q&A · torpedos",
     say: [
       "Gracias. ¿Preguntas?",
       "Ya validamos que el usuario quiere esto. Ahora necesitamos construirlo de verdad.",
     ],
     highlight: [
       "Equipo de pie o asiente",
-      "Q&A: Erick cifras/fricciones · Tami hipótesis/experimento · Cris demo/IA · Vale decisión/ask",
+      "Abrir panel Q&A (tecla Q) con torpedos",
+      "Mapa: Erick cifras · Tami hip/exp · Cris demo · Vale decisión",
+      "Si atacan el momento del onboarding: Plan B · Exp. 2 (selector en D1–D7 a no-players)",
     ],
     avoid: [
       "No reabrir el pitch completo en la respuesta",
       "No inventar cifras fuera de slide",
       "No presentar simulados como estudio real",
+      "No defender el Plan B como claim de hoy — es contingencia",
     ],
   },
 ];
