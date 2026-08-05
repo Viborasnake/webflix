@@ -685,7 +685,8 @@ body {
 }
 
 .team-card {
-  padding: 1.5rem 1.15rem 1.25rem;
+  --ring: #a78bfa;
+  padding: 1.35rem 1.15rem 1.25rem;
   border-radius: var(--radius);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -694,41 +695,133 @@ body {
   align-items: center;
   text-align: center;
   gap: 0.3rem;
+  overflow: visible;
 }
 
-/* Avatar ring + glow — foco visual del card */
-.team-card img {
-  width: 92px;
-  height: 92px;
+/*
+  Avatar pop-out:
+  - el anillo es solo marco (no recorta)
+  - el PNG se asienta en el círculo y la cabeza sobresale por arriba
+  - recorte suave solo en lados/abajo para no “salir” por los hombros
+*/
+.team-avatar {
+  position: relative;
+  width: 100px;
+  height: 118px; /* espacio extra arriba para la cabeza */
+  margin: 0 auto 0.55rem;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.team-card.sm .team-avatar {
+  width: 84px;
+  height: 100px;
+  margin: 0 auto 0.45rem;
+}
+
+/* Disco + anillo de color (atrás / marco) */
+.team-avatar-ring {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 96px;
+  height: 96px;
+  transform: translateX(-50%);
   border-radius: 50%;
+  border: 3px solid var(--ring);
+  background:
+    radial-gradient(circle at 50% 35%, #1e1e2c 0%, #0c0c14 70%);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--ring) 16%, transparent),
+    0 0 28px color-mix(in srgb, var(--ring) 40%, transparent),
+    inset 0 -12px 24px rgba(0, 0, 0, 0.35);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.team-card.sm .team-avatar-ring {
+  width: 80px;
+  height: 80px;
+  border-width: 2.5px;
+}
+
+/* Contenedor de la foto: más alto que el anillo */
+.team-avatar-mask {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 112px;
+  height: 118px;
+  transform: translateX(-50%);
+  z-index: 2;
+  overflow: hidden;
+  /* recorta lados y base; deja libre la corona superior del PNG */
+  border-radius: 56px 56px 48px 48px;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 6%,
+    #000 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 6%,
+    #000 78%,
+    transparent 100%
+  );
+}
+
+.team-card.sm .team-avatar-mask {
+  width: 96px;
+  height: 100px;
+  border-radius: 48px 48px 40px 40px;
+}
+
+.team-avatar-mask img,
+.team-card .team-avatar img {
+  position: absolute;
+  left: 50%;
+  bottom: -2%;
+  width: 118%;
+  max-width: none;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
   object-fit: cover;
   object-position: center top;
-  margin-bottom: 0.75rem;
-  border: 3px solid transparent;
-  background: var(--elev);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transform: translateX(-50%);
+  transition: transform 0.28s ease, bottom 0.28s ease;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
 }
 
-.team-card:hover img {
-  transform: scale(1.04);
+.team-card:hover .team-avatar-mask img {
+  bottom: 2%;
+  transform: translateX(-50%) scale(1.04);
 }
 
-.team-card.sm img {
-  width: 76px;
-  height: 76px;
-  margin-bottom: 0.55rem;
-  border-width: 2.5px;
+.team-card.sm .team-avatar-mask img {
+  width: 120%;
 }
 
 .team-card h3 {
   font-family: var(--display);
   font-size: 1.15rem;
   font-weight: 600;
+  position: relative;
+  z-index: 3;
 }
 
 .team-card .role {
   font-size: 0.78rem;
   margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 3;
 }
 
 .team-card ul {
@@ -737,6 +830,8 @@ body {
   border-top: 1px solid var(--border);
   padding-top: 0.65rem;
   margin-top: 0.25rem;
+  position: relative;
+  z-index: 3;
 }
 
 .team-card li {
@@ -746,60 +841,36 @@ body {
 }
 
 .team-card.c-purple {
+  --ring: #c4b5fd;
   background: rgba(139, 92, 246, 0.08);
   border-color: rgba(139, 92, 246, 0.25);
-}
-.team-card.c-purple img {
-  border-color: #c4b5fd;
-  box-shadow:
-    0 0 0 4px rgba(139, 92, 246, 0.18),
-    0 0 28px rgba(139, 92, 246, 0.45),
-    0 8px 20px rgba(0, 0, 0, 0.35);
 }
 .team-card.c-purple .role {
   color: #a78bfa;
 }
 
 .team-card.c-amber {
+  --ring: #fcd34d;
   background: rgba(251, 178, 76, 0.08);
   border-color: rgba(251, 178, 76, 0.25);
-}
-.team-card.c-amber img {
-  border-color: #fcd34d;
-  box-shadow:
-    0 0 0 4px rgba(251, 178, 76, 0.18),
-    0 0 28px rgba(251, 178, 76, 0.4),
-    0 8px 20px rgba(0, 0, 0, 0.35);
 }
 .team-card.c-amber .role {
   color: #fbb24c;
 }
 
 .team-card.c-cyan {
+  --ring: #67e8f9;
   background: rgba(34, 211, 238, 0.08);
   border-color: rgba(34, 211, 238, 0.25);
-}
-.team-card.c-cyan img {
-  border-color: #67e8f9;
-  box-shadow:
-    0 0 0 4px rgba(34, 211, 238, 0.18),
-    0 0 28px rgba(34, 211, 238, 0.4),
-    0 8px 20px rgba(0, 0, 0, 0.35);
 }
 .team-card.c-cyan .role {
   color: #22d3ee;
 }
 
 .team-card.c-green {
+  --ring: #86efac;
   background: rgba(74, 222, 128, 0.08);
   border-color: rgba(74, 222, 128, 0.25);
-}
-.team-card.c-green img {
-  border-color: #86efac;
-  box-shadow:
-    0 0 0 4px rgba(74, 222, 128, 0.18),
-    0 0 28px rgba(74, 222, 128, 0.4),
-    0 8px 20px rgba(0, 0, 0, 0.35);
 }
 .team-card.c-green .role {
   color: #4ade80;
