@@ -700,32 +700,32 @@ body {
 
 /*
   Avatar pop-out:
-  - el anillo es solo marco (no recorta)
-  - el PNG se asienta en el círculo y la cabeza sobresale por arriba
-  - recorte suave solo en lados/abajo para no “salir” por los hombros
+  - anillo decorativo abajo
+  - PNG sin recorte superior (cabeza completa)
+  - solo se suaviza el pie inferior
 */
 .team-avatar {
   position: relative;
-  width: 100px;
-  height: 118px; /* espacio extra arriba para la cabeza */
-  margin: 0 auto 0.55rem;
+  width: 110px;
+  height: 132px; /* más aire arriba para la cabeza completa */
+  margin: 0.15rem auto 0.4rem;
   flex-shrink: 0;
   overflow: visible;
 }
 
 .team-card.sm .team-avatar {
-  width: 84px;
-  height: 100px;
-  margin: 0 auto 0.45rem;
+  width: 92px;
+  height: 112px;
+  margin: 0.1rem auto 0.35rem;
 }
 
-/* Disco + anillo de color (atrás / marco) */
+/* Disco + anillo de color (atrás) */
 .team-avatar-ring {
   position: absolute;
   left: 50%;
-  bottom: 0;
-  width: 96px;
-  height: 96px;
+  bottom: 4px;
+  width: 92px;
+  height: 92px;
   transform: translateX(-50%);
   border-radius: 50%;
   border: 3px solid var(--ring);
@@ -740,51 +740,48 @@ body {
 }
 
 .team-card.sm .team-avatar-ring {
-  width: 80px;
-  height: 80px;
+  width: 76px;
+  height: 76px;
   border-width: 2.5px;
+  bottom: 2px;
 }
 
-/* Contenedor de la foto: más alto que el anillo */
+/* Foto: overflow visible arriba; solo mask suave abajo */
 .team-avatar-mask {
   position: absolute;
   left: 50%;
   bottom: 0;
-  width: 112px;
-  height: 118px;
+  width: 120px;
+  height: 132px;
   transform: translateX(-50%);
   z-index: 2;
-  overflow: hidden;
-  /* recorta lados y base; deja libre la corona superior del PNG */
-  border-radius: 56px 56px 48px 48px;
+  overflow: visible; /* no cortar la cabeza */
+  /* mask solo desvanece la base, no la parte superior */
   -webkit-mask-image: linear-gradient(
     to bottom,
-    transparent 0%,
-    #000 6%,
-    #000 78%,
+    #000 0%,
+    #000 82%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to bottom,
-    transparent 0%,
-    #000 6%,
-    #000 78%,
+    #000 0%,
+    #000 82%,
     transparent 100%
   );
 }
 
 .team-card.sm .team-avatar-mask {
-  width: 96px;
-  height: 100px;
-  border-radius: 48px 48px 40px 40px;
+  width: 100px;
+  height: 112px;
 }
 
 .team-avatar-mask img,
 .team-card .team-avatar img {
   position: absolute;
   left: 50%;
-  bottom: -2%;
-  width: 118%;
+  bottom: 6px;
+  width: 108%;
   max-width: none;
   height: auto;
   margin: 0;
@@ -793,20 +790,27 @@ body {
   border-radius: 0 !important;
   box-shadow: none !important;
   background: transparent !important;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain; /* no recortar con cover */
+  object-position: center bottom;
   transform: translateX(-50%);
   transition: transform 0.28s ease, bottom 0.28s ease;
-  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.4));
 }
 
 .team-card:hover .team-avatar-mask img {
-  bottom: 2%;
-  transform: translateX(-50%) scale(1.04);
+  bottom: 10px;
+  transform: translateX(-50%) scale(1.03);
 }
 
 .team-card.sm .team-avatar-mask img {
-  width: 120%;
+  width: 110%;
+  bottom: 4px;
+}
+
+/* Cards y grid no recortan el pop-out */
+.team-grid,
+.team-card {
+  overflow: visible;
 }
 
 .team-card h3 {
