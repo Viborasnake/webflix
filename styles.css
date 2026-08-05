@@ -417,15 +417,19 @@ body {
 }
 
 .cover-kpis {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
   gap: 0;
+  width: 100%;
 }
 
 .cover-kpis .kpi-item {
   text-align: center;
-  padding: 0.15rem 0.75rem;
+  padding: 0.15rem 2rem;
   position: relative;
+  min-width: 10rem;
+  flex: 0 1 auto;
 }
 
 .cover-kpis .kpi-item:not(:last-child)::after {
