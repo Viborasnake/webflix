@@ -1,28 +1,39 @@
 /**
- * WebFlix pitch sync bus
+ * WebFlix pitch sync bus — multi-ubicación
  * ─────────────────────────────────────────────
- * DECK publica estado en vivo (slide + timer).
- * NOTAS escuchan estado; browse libre es local.
- * NOTAS en modo control envían COMMANDS al deck.
- * CONTROL exclusivo: claim/release entre notas;
- * el deck reenvía claims a todos los peers.
+ * DECK publica estado (slide + timer).
+ * NOTAS escuchan; browse libre es local.
+ * NOTAS en control envían COMMANDS al deck.
+ * CONTROL exclusivo entre notas (claim/release/clear).
  *
- * Transportes:
- *  1) BroadcastChannel + localStorage
- *  2) PeerJS (opcional, multi-dispositivo)
+ * Transportes (en paralelo):
+ *  1) BroadcastChannel + localStorage → misma máquina / pestañas
+ *  2) MQTT público (Internet) → ubicaciones distintas  ✅
+ *  3) PeerJS (opcional, refuerzo misma red)
+ *
+ * URL: ?room=CODIGO-UNICO&name=Tami
+ * Todos deben usar el MISMO room.
  */
 (function (global) {
-  const CHANNEL = "webflix-pitch-sync-v2";
-  const STORAGE_KEY = "webflix-pitch-state-v2";
-  const COMMAND_KEY = "webflix-pitch-cmd-v2";
-  const CONTROL_KEY = "webflix-pitch-control-v2";
-  const DEFAULT_ROOM = "webflix-g5";
+  const CHANNEL = "webflix-pitch-sync-v3";
+  const STORAGE_KEY = "webflix-pitch-state-v3";
+  const COMMAND_KEY = "webflix-pitch-cmd-v3";
+  const CONTROL_KEY = "webflix-pitch-control-v3";
+  /** Room por defecto del equipo (cámbialo si hay interferencia) */
+  const DEFAULT_ROOM = "webflix-grupo5-eep";
+  const MQTT_CDN = "https://unpkg.com/mqtt@5.10.4/dist/mqtt.min.js";
   const PEER_CDN = "https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";
+  const MQTT_URLS = [
+    "wss://broker.emqx.io:8084/mqtt",
+    "wss://broker.hivemq.com:8884/mqtt",
+  ];
 
   function roomFromUrl() {
     try {
       const q = new URLSearchParams(global.location.search);
-      const r = (q.get("room") || DEFAULT_ROOM).toLowerCase().replace(/[^a-z0-9-]/g, "");
+      const r = (q.get("room") || DEFAULT_ROOM)
+        .toLowerCase()
+        .replace(/[^a-z0-9-_]/g, "");
       return r || DEFAULT_ROOM;
     } catch (_) {
       return DEFAULT_ROOM;
@@ -30,29 +41,44 @@
   }
 
   function peerIdForRoom(room) {
-    return "wfxdeck-" + room;
+    // PeerJS global: debe ser único
+    return "wfxdeck-" + room.replace(/[^a-z0-9]/gi, "").slice(0, 40);
   }
 
-  function loadPeerScript() {
-    if (global.Peer) return Promise.resolve(global.Peer);
+  function topics(room) {
+    const base = "webflix/" + room;
+    return {
+      state: base + "/state",
+      cmd: base + "/cmd",
+      control: base + "/control",
+    };
+  }
+
+  function loadScript(src, globalName) {
+    if (globalName && global[globalName]) {
+      return Promise.resolve(global[globalName]);
+    }
     return new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      s.src = PEER_CDN;
+      s.src = src;
       s.async = true;
-      s.onload = () => resolve(global.Peer);
-      s.onerror = () => reject(new Error("PeerJS CDN failed"));
+      s.onload = () => resolve(globalName ? global[globalName] : true);
+      s.onerror = () => reject(new Error("Fail load " + src));
       document.head.appendChild(s);
     });
   }
 
   function createBus(role) {
     const room = roomFromUrl();
+    const T = topics(room);
     const stateListeners = new Set();
     const commandListeners = new Set();
     const controlListeners = new Set();
     let latest = null;
     let latestControl = null;
     let channel = null;
+    let mqttClient = null;
+    let mqttReady = false;
     let peer = null;
     let peerReady = false;
     /** @type {Set<any>} */
@@ -63,13 +89,10 @@
     let lastCmdNonce = "";
     let lastControlTs = 0;
     let lastControlNonce = "";
+    let lastStateTs = 0;
 
     function makeNonce() {
-      return (
-        Date.now().toString(36) +
-        "-" +
-        Math.random().toString(36).slice(2, 9)
-      );
+      return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 9);
     }
 
     try {
@@ -82,7 +105,7 @@
       status = next;
       statusListeners.forEach((fn) => {
         try {
-          fn(status, { room, role });
+          fn(status, { room, role, mqtt: mqttReady, peer: peerReady });
         } catch (_) { /* ignore */ }
       });
     }
@@ -97,10 +120,18 @@
       });
     }
 
+    function mqttPublish(topic, payload) {
+      if (!mqttClient || !mqttReady) return;
+      try {
+        mqttClient.publish(topic, JSON.stringify(payload), { qos: 0, retain: topic === T.state });
+      } catch (_) { /* ignore */ }
+    }
+
     function emitState(state, meta) {
       if (!state || typeof state.slide !== "number") return;
       if (state.source && state.source !== "deck") return;
-      if (latest && state.ts && latest.ts && state.ts < latest.ts) return;
+      if (state.ts && lastStateTs && state.ts < lastStateTs) return;
+      if (state.ts) lastStateTs = state.ts;
       latest = state;
       stateListeners.forEach((fn) => {
         try {
@@ -112,7 +143,6 @@
     function emitCommand(cmd, meta) {
       if (!cmd || !cmd.cmd) return;
       if (cmd.room && cmd.room !== room) return;
-      // Dedupe BC+Peer: mismo ts se ignora; reloj desfasado solo si es claramente viejo
       if (cmd.ts && lastCmdTs && cmd.ts < lastCmdTs) return;
       if (cmd.ts && cmd.ts === lastCmdTs && cmd.nonce && cmd.nonce === lastCmdNonce) return;
       if (cmd.ts) lastCmdTs = cmd.ts;
@@ -127,9 +157,13 @@
     function emitControl(ctrl, meta) {
       if (!ctrl || !ctrl.action) return;
       if (ctrl.room && ctrl.room !== room) return;
-      // claims: aceptar el más reciente
       if (ctrl.ts && lastControlTs && ctrl.ts < lastControlTs) return;
-      if (ctrl.ts && ctrl.ts === lastControlTs && ctrl.nonce && ctrl.nonce === lastControlNonce) {
+      if (
+        ctrl.ts &&
+        ctrl.ts === lastControlTs &&
+        ctrl.nonce &&
+        ctrl.nonce === lastControlNonce
+      ) {
         return;
       }
       if (ctrl.ts) lastControlTs = ctrl.ts;
@@ -142,9 +176,20 @@
       });
     }
 
-    function readStorage() {
+    function handleIncoming(data, via) {
+      if (!data || !data.type) return;
+      if (data.type === "state") emitState(data, { via });
+      if (data.type === "command" && role === "deck") emitCommand(data, { via });
+      if (data.type === "control" && role === "notes") emitControl(data, { via });
+      // Deck no necesita control UI; reenvía por peer si aplica
+      if (data.type === "control" && role === "deck") {
+        fanoutPeer(data);
+      }
+    }
+
+    function readStorage(key) {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY + ":" + room);
+        const raw = localStorage.getItem(key + ":" + room);
         if (!raw) return null;
         return JSON.parse(raw);
       } catch (_) {
@@ -152,86 +197,61 @@
       }
     }
 
-    function writeStorage(state) {
+    function writeStorage(key, obj) {
       try {
-        localStorage.setItem(STORAGE_KEY + ":" + room, JSON.stringify(state));
+        localStorage.setItem(key + ":" + room, JSON.stringify(obj));
       } catch (_) { /* private mode */ }
     }
 
-    function readControlStorage() {
-      try {
-        const raw = localStorage.getItem(CONTROL_KEY + ":" + room);
-        if (!raw) return null;
-        return JSON.parse(raw);
-      } catch (_) {
-        return null;
-      }
-    }
-
     if (channel) {
-      channel.onmessage = (ev) => {
-        const data = ev.data;
-        if (!data) return;
-        if (data.type === "state") emitState(data, { via: "broadcast" });
-        if (data.type === "command") {
-          // Deck aplica; notas no reenvían
-          if (role === "deck") emitCommand(data, { via: "broadcast" });
-        }
-        if (data.type === "control") {
-          // Todas las notas + deck (relay)
-          if (role === "notes") emitControl(data, { via: "broadcast" });
-          if (role === "deck") {
-            // Reenviar a peers y a BC no (ya llegó por BC). Solo peers remotos.
-            fanoutPeer(data);
-            // No hace falta emitControl en deck salvo si quisiéramos HUD
-          }
-        }
-      };
+      channel.onmessage = (ev) => handleIncoming(ev.data, "broadcast");
     }
 
     global.addEventListener("storage", (e) => {
-      if (e.key === STORAGE_KEY + ":" + room && e.newValue) {
+      if (!e.newValue) return;
+      if (e.key === STORAGE_KEY + ":" + room) {
         try {
-          emitState(JSON.parse(e.newValue), { via: "storage" });
+          handleIncoming(JSON.parse(e.newValue), "storage");
         } catch (_) { /* ignore */ }
       }
-      if (e.key === COMMAND_KEY + ":" + room && e.newValue) {
+      if (e.key === COMMAND_KEY + ":" + room && role === "deck") {
         try {
-          if (role === "deck") emitCommand(JSON.parse(e.newValue), { via: "storage" });
+          handleIncoming(JSON.parse(e.newValue), "storage");
         } catch (_) { /* ignore */ }
       }
-      if (e.key === CONTROL_KEY + ":" + room && e.newValue) {
+      if (e.key === CONTROL_KEY + ":" + room && role === "notes") {
         try {
-          const data = JSON.parse(e.newValue);
-          if (role === "notes") emitControl(data, { via: "storage" });
-          if (role === "deck") fanoutPeer(data);
+          handleIncoming(JSON.parse(e.newValue), "storage");
         } catch (_) { /* ignore */ }
       }
     });
 
-    const boot = readStorage();
+    const boot = readStorage(STORAGE_KEY);
     if (boot) latest = boot;
-    const bootCtrl = readControlStorage();
+    const bootCtrl = readStorage(CONTROL_KEY);
     if (bootCtrl) latestControl = bootCtrl;
 
     function publish(state) {
       if (role !== "deck") return null;
       const payload = {
         ...state,
-        v: 2,
+        type: "state",
+        v: 3,
         source: "deck",
         room,
         ts: Date.now(),
       };
       latest = payload;
-      writeStorage(payload);
+      lastStateTs = payload.ts;
+      writeStorage(STORAGE_KEY, payload);
       if (channel) {
         try {
-          channel.postMessage({ type: "state", ...payload });
+          channel.postMessage(payload);
         } catch (_) { /* ignore */ }
       }
-      fanoutPeer({ type: "state", ...payload });
-      setStatus(peerConns.size ? "live+" + peerConns.size : "live");
+      mqttPublish(T.state, payload);
+      fanoutPeer(payload);
+      setStatus(mqttReady ? "online" : peerConns.size ? "live" : "local");
       return payload;
     }
 
@@ -239,7 +259,7 @@
       if (role !== "notes") return null;
       const payload = {
         type: "command",
-        v: 2,
+        v: 3,
         source: "notes",
         room,
         cmd,
@@ -252,23 +272,17 @@
           channel.postMessage(payload);
         } catch (_) { /* ignore */ }
       }
-      try {
-        localStorage.setItem(COMMAND_KEY + ":" + room, JSON.stringify(payload));
-      } catch (_) { /* ignore */ }
+      writeStorage(COMMAND_KEY, payload);
+      mqttPublish(T.cmd, payload);
       fanoutPeer(payload);
       return payload;
     }
 
-    /**
-     * Control exclusivo entre notas.
-     * action: "claim" | "release"
-     * controllerId, controllerName
-     */
     function sendControl(action, extra) {
       if (role !== "notes") return null;
       const payload = {
         type: "control",
-        v: 2,
+        v: 3,
         source: "notes",
         room,
         action,
@@ -284,10 +298,8 @@
           channel.postMessage(payload);
         } catch (_) { /* ignore */ }
       }
-      try {
-        localStorage.setItem(CONTROL_KEY + ":" + room, JSON.stringify(payload));
-      } catch (_) { /* ignore */ }
-      // Enviar al deck para que reenvíe a otros dispositivos
+      writeStorage(CONTROL_KEY, payload);
+      mqttPublish(T.control, payload);
       fanoutPeer(payload);
       return payload;
     }
@@ -319,10 +331,94 @@
 
     function onStatus(fn) {
       statusListeners.add(fn);
-      fn(status, { room, role });
+      fn(status, { room, role, mqtt: mqttReady, peer: peerReady });
       return () => statusListeners.delete(fn);
     }
 
+    // ── MQTT (multi-ubicación) ──────────────────────
+    async function startMqtt(urlIndex) {
+      const idx = urlIndex || 0;
+      if (idx >= MQTT_URLS.length) {
+        console.warn("[webflix-sync] MQTT no disponible en ningún broker");
+        setStatus(latest ? "local" : "wait");
+        return;
+      }
+      try {
+        await loadScript(MQTT_CDN, "mqtt");
+        const mqtt = global.mqtt;
+        if (!mqtt || !mqtt.connect) throw new Error("mqtt missing");
+
+        const clientId =
+          "wfx_" +
+          role.slice(0, 1) +
+          "_" +
+          room.slice(0, 12) +
+          "_" +
+          Math.random().toString(16).slice(2, 8);
+
+        const client = mqtt.connect(MQTT_URLS[idx], {
+          clientId,
+          clean: true,
+          reconnectPeriod: 2500,
+          connectTimeout: 12000,
+          protocolVersion: 4,
+        });
+
+        mqttClient = client;
+
+        client.on("connect", () => {
+          mqttReady = true;
+          console.info("[webflix-sync] MQTT online", MQTT_URLS[idx], "room=", room);
+          // Suscripciones por rol
+          if (role === "deck") {
+            client.subscribe(T.cmd, { qos: 0 });
+            client.subscribe(T.control, { qos: 0 });
+          } else {
+            client.subscribe(T.state, { qos: 0 });
+            client.subscribe(T.control, { qos: 0 });
+          }
+          // Deck: re-publicar estado actual con retain para late joiners
+          if (role === "deck" && latest) {
+            mqttPublish(T.state, latest);
+          }
+          // Notes: pedir nada; state retained llega solo
+          setStatus("online");
+        });
+
+        client.on("message", (topic, buf) => {
+          try {
+            const data = JSON.parse(String(buf));
+            handleIncoming(data, "mqtt");
+          } catch (_) { /* ignore */ }
+        });
+
+        client.on("reconnect", () => {
+          mqttReady = false;
+          setStatus("reconnect");
+        });
+
+        client.on("close", () => {
+          mqttReady = false;
+          setStatus(latest ? "local" : "wait");
+        });
+
+        client.on("error", (err) => {
+          console.warn("[webflix-sync] MQTT error", err && err.message);
+          try {
+            client.end(true);
+          } catch (_) { /* ignore */ }
+          mqttClient = null;
+          mqttReady = false;
+          // Probar siguiente broker
+          startMqtt(idx + 1);
+        });
+      } catch (e) {
+        console.warn("[webflix-sync] MQTT load fail", e);
+        startMqtt(idx + 1);
+      }
+    }
+
+    // ── PeerJS (refuerzo) ───────────────────────────
     function wirePeerConn(conn) {
       peerConns.add(conn);
       conn.on("data", (data) => {
@@ -335,7 +431,6 @@
         }
         if (data.type === "control") {
           if (role === "deck") {
-            // Relay a todos los demás peers + BC (por si hay tabs locales)
             peerConns.forEach((c) => {
               if (c !== conn && c.open) {
                 try {
@@ -343,105 +438,69 @@
                 } catch (_) { /* ignore */ }
               }
             });
-            if (channel) {
-              try {
-                channel.postMessage(data);
-              } catch (_) { /* ignore */ }
-            }
-            try {
-              localStorage.setItem(CONTROL_KEY + ":" + room, JSON.stringify(data));
-            } catch (_) { /* ignore */ }
           }
-          if (role === "notes") {
-            emitControl(data, { via: "peer" });
-          }
+          if (role === "notes") emitControl(data, { via: "peer" });
         }
         if (data.type === "hello" && role === "deck") {
           if (latest) {
             try {
-              conn.send({ type: "state", ...latest });
+              conn.send(latest);
             } catch (_) { /* ignore */ }
           }
-          // Si hay control activo, avisar al que llega
-          try {
-            const ctrl = readControlStorage();
-            if (ctrl && ctrl.action === "claim") conn.send(ctrl);
-          } catch (_) { /* ignore */ }
         }
       });
-      conn.on("close", () => {
-        peerConns.delete(conn);
-        if (role === "notes") setStatus("wait");
-        if (role === "deck") setStatus(peerConns.size ? "live+" + peerConns.size : "live");
-      });
-      conn.on("error", () => {
-        peerConns.delete(conn);
-      });
+      conn.on("close", () => peerConns.delete(conn));
+      conn.on("error", () => peerConns.delete(conn));
       if (role === "deck" && latest && conn.open) {
         try {
-          conn.send({ type: "state", ...latest });
+          conn.send(latest);
         } catch (_) { /* ignore */ }
       }
-      if (role === "deck") setStatus("live+" + peerConns.size);
-      if (role === "notes") setStatus("live");
+      peerReady = true;
     }
 
     async function startPeer() {
       try {
-        const Peer = await loadPeerScript();
+        await loadScript(PEER_CDN, "Peer");
+        const Peer = global.Peer;
         if (role === "deck") {
-          const id = peerIdForRoom(room);
-          peer = new Peer(id, { debug: 0 });
+          peer = new Peer(peerIdForRoom(room), { debug: 0 });
           peer.on("open", () => {
             peerReady = true;
-            setStatus("live");
           });
           peer.on("connection", (conn) => {
             conn.on("open", () => wirePeerConn(conn));
           });
           peer.on("error", (err) => {
             console.warn("[webflix-sync] peer deck:", err && err.type);
-            setStatus("local");
           });
         } else {
           peer = new Peer({ debug: 0 });
           peer.on("open", () => {
             peerReady = true;
-            const hostId = peerIdForRoom(room);
-            const conn = peer.connect(hostId, { reliable: true });
+            const conn = peer.connect(peerIdForRoom(room), { reliable: true });
             conn.on("open", () => {
               wirePeerConn(conn);
               try {
                 conn.send({ type: "hello", role: "notes" });
               } catch (_) { /* ignore */ }
             });
-            conn.on("error", () => setStatus("wait"));
           });
-          peer.on("error", (err) => {
-            console.warn("[webflix-sync] peer notes:", err && err.type);
-            setStatus(latest ? "local" : "wait");
-          });
+          peer.on("error", () => { /* silent */ });
           setInterval(() => {
             if (!peerReady || peerConns.size > 0) return;
             try {
               const conn = peer.connect(peerIdForRoom(room), { reliable: true });
               conn.on("open", () => wirePeerConn(conn));
             } catch (_) { /* ignore */ }
-          }, 4000);
+          }, 5000);
         }
-      } catch (e) {
-        console.warn("[webflix-sync] PeerJS no disponible", e);
-        setStatus(role === "deck" ? "local" : latest ? "local" : "wait");
-      }
+      } catch (_) { /* ignore */ }
     }
 
+    startMqtt(0);
     startPeer();
-
-    if (role === "notes") {
-      setStatus(latest ? "local" : "wait");
-    } else {
-      setStatus("local");
-    }
+    setStatus(latest ? "local" : "wait");
 
     return {
       role,
@@ -456,12 +515,14 @@
       getLatest: () => latest,
       getLatestControl: () => latestControl,
       getStatus: () => status,
+      isOnline: () => mqttReady,
     };
   }
 
   global.WebflixSync = {
     createBus,
     roomFromUrl,
+    DEFAULT_ROOM,
     STORAGE_KEY,
     CHANNEL,
   };

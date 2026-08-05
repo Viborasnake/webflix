@@ -17,7 +17,8 @@
         <span class="mark">W</span>
         <div class="brand-copy">
           <strong>WebFlix · Notas</strong>
-          <span id="sync-status" class="sync is-wait">Esperando presentación…</span>
+          <span id="sync-status" class="sync is-wait">Conectando…</span>
+          <span class="room-chip" id="room-chip" title="Todos deben usar el mismo room">room: —</span>
         </div>
       </div>
 
@@ -150,9 +151,9 @@
     </section>
 
     <footer class="foot">
-      <span><kbd>Q</kbd> Q&A · <kbd>C</kbd> control · <kbd>0</kbd> / <kbd>Shift+R</kbd> reiniciar sesión</span>
-      <span>← → navega · <kbd>L</kbd> seguir vivo · <kbd>Esc</kbd> soltar control</span>
-      <span>Nombre en URL: <code>?name=Tami</code> · room opcional</span>
+      <span><kbd>Q</kbd> Q&A · <kbd>C</kbd> control · <kbd>0</kbd> reiniciar sesión</span>
+      <span>Ubicaciones distintas: mismo <code>?room=</code> en deck y notas (MQTT global)</span>
+      <span>Ej: <code>?room=webflix-grupo5-eep&amp;name=Tami</code></span>
     </footer>
   </div>
 

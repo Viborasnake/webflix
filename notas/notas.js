@@ -145,23 +145,43 @@
 
   function setSyncLabel(mode, extra) {
     if (!syncStatus) return;
-    syncStatus.classList.remove("is-live", "is-wait", "is-solo", "is-free", "is-control");
+    syncStatus.classList.remove(
+      "is-live",
+      "is-wait",
+      "is-solo",
+      "is-free",
+      "is-control",
+      "is-online",
+      "is-reconnect"
+    );
     if (mode === "control") {
       syncStatus.classList.add("is-control");
       syncStatus.textContent = extra || "Tú controlas el deck";
+    } else if (mode === "online") {
+      syncStatus.classList.add("is-online");
+      syncStatus.textContent = extra || "Online global · en seguimiento";
     } else if (mode === "live") {
       syncStatus.classList.add("is-live");
       syncStatus.textContent = extra || "En seguimiento · presentación en vivo";
     } else if (mode === "free") {
       syncStatus.classList.add("is-free");
       syncStatus.textContent = extra || "Navegación libre · no afecta a otros";
-    } else if (mode === "solo") {
+    } else if (mode === "solo" || mode === "local") {
       syncStatus.classList.add("is-solo");
-      syncStatus.textContent = extra || "Sin señal del deck · modo local";
+      syncStatus.textContent = extra || "Sin red global · solo local / misma máquina";
+    } else if (mode === "reconnect") {
+      syncStatus.classList.add("is-reconnect");
+      syncStatus.textContent = extra || "Reconectando…";
     } else {
       syncStatus.classList.add("is-wait");
       syncStatus.textContent = extra || "Esperando presentación…";
     }
+  }
+
+  // Mostrar room compartido
+  if (bus && bus.room) {
+    const chip = $("room-chip");
+    if (chip) chip.textContent = "room: " + bus.room;
   }
 
   function otherHasControl() {
@@ -317,13 +337,17 @@
     updateControlButton();
     updateControlBar();
 
+    const online = bus && typeof bus.isOnline === "function" && bus.isOnline();
     if (controlMode) {
-      setSyncLabel("control", "Tú controlas el deck · " + SESSION_NAME);
+      setSyncLabel(
+        "control",
+        (online ? "Online · " : "") + "Tú controlas · " + SESSION_NAME
+      );
     } else if (otherHasControl()) {
       const n = remoteController.name || "Otro";
       setSyncLabel("free", n + " controla el deck");
     } else if (followLive && hasLive) {
-      setSyncLabel("live");
+      setSyncLabel(online ? "online" : "live");
     } else if (!followLive) {
       setSyncLabel(
         "free",
@@ -332,7 +356,7 @@
           : "Navegación libre · no afecta a otros"
       );
     } else if (!hasLive) {
-      setSyncLabel("wait");
+      setSyncLabel(online ? "online" : "wait", online ? "Online · esperando deck…" : undefined);
     }
   }
 
@@ -750,11 +774,18 @@
       bus.onControl((ctrl) => onRemoteControl(ctrl));
     }
     bus.onStatus((st) => {
-      if (controlMode) setSyncLabel("control", "Tú controlas el deck · " + SESSION_NAME);
-      else if (otherHasControl()) updateFollowUI();
+      if (controlMode) {
+        setSyncLabel(
+          "control",
+          (st === "online" ? "Online · " : "") + "Tú controlas · " + SESSION_NAME
+        );
+      } else if (otherHasControl()) updateFollowUI();
+      else if (st === "online") {
+        setSyncLabel("online", hasLive ? "Online global · en seguimiento" : "Online · esperando deck…");
+      } else if (st === "reconnect") setSyncLabel("reconnect");
       else if (!hasLive && (st === "wait" || st === "init")) setSyncLabel("wait");
       else if (!followLive) updateFollowUI();
-      else if (hasLive) setSyncLabel("live");
+      else if (hasLive) setSyncLabel(st === "local" ? "solo" : "live");
       else if (st === "local") setSyncLabel("solo");
     });
   } else {

@@ -360,8 +360,14 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case "n":
       case "N": {
-        const room = bus ? bus.room : "webflix-g5";
-        window.open(`notas/?room=${encodeURIComponent(room)}`, "webflix-notas");
+        const room =
+          (bus && bus.room) ||
+          (window.WebflixSync && window.WebflixSync.DEFAULT_ROOM) ||
+          "webflix-grupo5-eep";
+        window.open(
+          `notas/?room=${encodeURIComponent(room)}`,
+          "webflix-notas"
+        );
         break;
       }
       default:
@@ -408,4 +414,25 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) publish(true);
   });
+
+  // Estado de red global en el title del timer
+  if (bus && typeof bus.onStatus === "function") {
+    bus.onStatus((st, meta) => {
+      if (!timerEl) return;
+      const room = (meta && meta.room) || (bus && bus.room) || "";
+      const net =
+        st === "online"
+          ? "Online global"
+          : st === "reconnect"
+            ? "Reconectando…"
+            : "Local / misma red";
+      timerEl.title =
+        "T pause · R reset · Shift+R sesión 0 · " + net + " · room=" + room;
+    });
+  }
+
+  // Heartbeat de estado por si MQTT reconecta
+  setInterval(() => {
+    if (!document.hidden) publish(true);
+  }, 4000);
 });

@@ -121,6 +121,31 @@ body {
   color: #f0abfc;
 }
 
+.sync.is-online {
+  color: var(--green);
+}
+
+.sync.is-reconnect {
+  color: var(--amber);
+}
+
+.room-chip {
+  display: inline-block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--purple-soft);
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  border-radius: 6px;
+  padding: 1px 7px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .btn.control-toggle {
   border-color: rgba(240, 171, 252, 0.35);
   color: #e9d5ff;
