@@ -181,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setDemoLevel(level) {
-    const prev = demoLevel;
     demoLevel = Math.min(3, Math.max(1, level));
     document.querySelectorAll(".demo-level").forEach((el) => {
       el.classList.toggle("is-active", Number(el.dataset.level) === demoLevel);
@@ -190,11 +189,13 @@ document.addEventListener("DOMContentLoaded", () => {
       el.classList.toggle("is-on", Number(el.dataset.goto) === demoLevel);
     });
 
-    // Video solo en nivel 1
-    if (demoLevel === 1) {
-      playDemoVideo({ restart: prev !== 1 });
-    } else {
+    // Video solo en nivel 1 — nunca autoplay: Cris da play a mano (Space / P)
+    if (demoLevel !== 1) {
       pauseDemoVideo();
+    } else {
+      const v = getDemoVideo();
+      const overlay = v?.closest(".demo-level")?.querySelector(".demo-overlay");
+      if (overlay && v && v.paused) overlay.classList.remove("is-playing");
     }
     publish(true);
   }
@@ -242,13 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateSpeaker(slide);
 
-    // Demo video: play al entrar a la slide de Cris; pause al salir
-    if (DEMO_INDEX >= 0) {
-      if (current === DEMO_INDEX) {
-        if (demoLevel === 1) playDemoVideo({ restart: true });
-      } else {
-        pauseDemoVideo();
-      }
+    // Demo video: solo pausa al salir; play es manual (Space / P)
+    if (DEMO_INDEX >= 0 && current !== DEMO_INDEX) {
+      pauseDemoVideo();
     }
 
     publish(true);

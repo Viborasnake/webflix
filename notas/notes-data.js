@@ -211,7 +211,7 @@ window.WEBFLIX_NOTES = [
     ],
     highlight: [
       "⭐ Énfasis · video del flujo en el teléfono",
-      "Space / P = play-pause del video",
+      "Play manual: Space o P (no autoarranque)",
       "1 video · 2 capturas · 3 offline · D salta a esta slide",
     ],
     avoid: ["No decir que corre el motor real", "No improvisar fuera del flujo"],
