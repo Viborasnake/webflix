@@ -1,742 +1,795 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pitch Shark Tank · WebFlix · Experimentación, IA y Validación de Producto · FEN Universidad de Chile">
-    <title>WebFlix · Pitch Shark Tank | Grupo 5 · FEN Universidad de Chile</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WebFlix · Pitch Shark Tank · Grupo 5 · Validación de onboarding con preferencias tempranas">
+  <title>WebFlix · Pitch Shark Tank | Grupo 5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=google2">
 </head>
 <body>
-
-    <div id="presentation">
-        <div class="bg-atmosphere" aria-hidden="true">
-            <div class="bg-photo"></div>
-            <div class="bg-photo-glow"></div>
-            <div class="bg-vignette"></div>
-        </div>
-
-        <!-- Logo global (content slides) -->
-        <div class="deck-logo" id="deck-logo" hidden>
-            <span class="logo-mark">W</span>
-            <span class="logo-word">WebFlix</span>
-        </div>
-
-        <!-- 0 · Teaser — pregunta fuerza -->
-        <div class="slide slide-teaser" data-no-deck-logo>
-            <div class="teaser-stage">
-                <div class="cover-brand stagger d-1 teaser-brand">
-                    <span class="logo-mark">W</span>
-                    <span class="logo-word">WebFlix</span>
-                </div>
-
-                <p class="teaser-eyebrow stagger d-1">Antes de hablar de soluciones…</p>
-
-                <h1 class="teaser-question stagger d-2">
-                    Si un usuario nuevo no encuentra<br>
-                    <span class="grad">algo para él</span> en la primera sesión,<br>
-                    ¿para qué le sirve tu catálogo?
-                </h1>
-
-                <p class="teaser-hold stagger d-3">Esa duda abre el pitch.</p>
-                <p class="teaser-hint stagger d-4">Continuar →</p>
-            </div>
-        </div>
-
-        <!-- 1 · Portada de presentación -->
-        <div class="slide slide-cover" data-no-deck-logo>
-            <div class="cover-shell">
-                <header class="cover-brand stagger d-1">
-                    <span class="logo-mark">W</span>
-                    <span class="logo-word">WebFlix</span>
-                </header>
-
-                <div class="cover-body">
-                    <div class="cover-copy">
-                        <p class="cover-kicker stagger d-1">Pitch Shark Tank · Grupo 5</p>
-
-                        <h1 class="cover-title stagger d-2">
-                            El primer momento<br>
-                            de valor está&nbsp;<span class="grad">fallando</span>
-                        </h1>
-
-                        <p class="cover-subtitle stagger d-2">
-                            Validación de onboarding con preferencias tempranas · Caso Streaming
-                        </p>
-
-                        <div class="cover-team stagger d-3">
-                            <div class="presentan-row">
-                                <p class="presentan-label">Presentan</p>
-                                <span class="presentan-line" aria-hidden="true"></span>
-                            </div>
-                            <ul class="cover-team-row">
-                                <li class="home-chip" data-accent="purple">
-                                    <img class="home-chip-photo" src="assets/Erick.png" alt="">
-                                    <div class="home-chip-body">
-                                        <span class="cast-name">Erick Fuentealba</span>
-                                        <span class="cast-role">Abre el pitch</span>
-                                    </div>
-                                </li>
-                                <li class="home-chip" data-accent="cyan">
-                                    <img class="home-chip-photo" src="assets/Tami.png" alt="">
-                                    <div class="home-chip-body">
-                                        <span class="cast-name">Tamara Valdivia</span>
-                                        <span class="cast-role">Estrategia e hipótesis</span>
-                                    </div>
-                                </li>
-                                <li class="home-chip" data-accent="purple">
-                                    <img class="home-chip-photo" src="assets/Vale.png" alt="">
-                                    <div class="home-chip-body">
-                                        <span class="cast-name">Valeria Nieto</span>
-                                        <span class="cast-role">Metodología y métricas</span>
-                                    </div>
-                                </li>
-                                <li class="home-chip" data-accent="cyan">
-                                    <img class="home-chip-photo" src="assets/Cris.png" alt="">
-                                    <div class="home-chip-body">
-                                        <span class="cast-name">Cristian Pizarro</span>
-                                        <span class="cast-role">Demo y decisión</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <p class="cover-academic stagger d-4">
-                            FEN Universidad de Chile · Diplomado EEP · Era de la IA
-                        </p>
-                    </div>
-
-                    <aside class="cover-visual stagger d-3" aria-hidden="true">
-                        <div class="cover-phones-wrap">
-                            <img class="home-phones" src="assets/home-phones.jpg" alt="">
-                        </div>
-                    </aside>
-                </div>
-            </div>
-        </div>
-
-        <!-- 1 · Problema -->
-        <div class="slide">
-            <div class="slide-inner">
-                <div class="slide-head stagger d-1">
-                    <span class="badge">01 · Problema observable</span>
-                    <span class="slide-kicker">Conducta · No causa asumida</span>
-                </div>
-                <h1 class="h1-tight stagger d-1">El descubrimiento de valor <span class="grad">no ocurre a tiempo</span></h1>
-                <p class="lead stagger d-2">
-                    Un usuario no se suscribe para recorrer un catálogo interminable: se suscribe para
-                    <strong>encontrar rápido algo que quiera ver</strong>. En WebFlix, los nuevos usuarios consumen poco
-                    durante la primera semana y muchos abandonan <em>antes</em> de experimentar el valor del catálogo.
-                </p>
-
-                <div class="grid-3 stagger d-3 gap-md">
-                    <div class="card-box">
-                        <div class="card-icon">🎯</div>
-                        <h4>Momento de fricción</h4>
-                        <p class="compact">Inmediatamente después del registro o al crear un perfil <strong>sin historial</strong>: la plataforma aún no tiene señales individuales útiles.</p>
-                    </div>
-                    <div class="card-box">
-                        <div class="card-icon">🧭</div>
-                        <h4>Conducta observable</h4>
-                        <p class="compact">Sesiones cortas, bajo Watch Time, poca exploración efectiva y búsquedas o recorridos largos por categorías antes de reproducir.</p>
-                    </div>
-                    <div class="card-box">
-                        <div class="card-icon">⚠️</div>
-                        <h4>Sospecha (no conclusión)</h4>
-                        <p class="compact">El motor tarda en personalizar. Es un <strong>supuesto causal</strong> a validar — no lo presentamos como causa ya demostrada.</p>
-                    </div>
-                </div>
-
-                <div class="callout stagger d-4">
-                    <strong>Formulación defendible:</strong>
-                    el problema es que el <em>primer momento de valor</em> falla; la falta de señales explícitas es la hipótesis de trabajo, no un veredicto.
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <img class="speaker-avatar" src="assets/Erick.png" alt="Erick Fuentealba" width="40" height="40">
-                <div class="speaker-name">Erick Fuentealba</div>
-            </div>
-        </div>
-
-        <!-- 2 · Datos + Usuario -->
-        <div class="slide">
-            <div class="slide-inner">
-                <div class="slide-head stagger d-1">
-                    <span class="badge">02 · Datos y usuario</span>
-                    <span class="slide-kicker">Escala del caso · Segmento del experimento</span>
-                </div>
-                <h2 class="stagger d-1">La caída ya es visible — y tiene <span class="grad">dueño</span></h2>
-
-                <div class="kpi-strip stagger d-2">
-                    <div class="kpi">
-                        <div class="kpi-value accent-gradient">42% → 29%</div>
-                        <div class="kpi-label">Day-7 Retention</div>
-                        <div class="kpi-note">−13 pp · ≈ 31% caída relativa</div>
-                    </div>
-                    <div class="kpi">
-                        <div class="kpi-value">310 M</div>
-                        <div class="kpi-label">Suscriptores</div>
-                        <div class="kpi-note">~360 M MAU con perfiles</div>
-                    </div>
-                    <div class="kpi">
-                        <div class="kpi-value">18 años</div>
-                        <div class="kpi-label">En la industria</div>
-                        <div class="kpi-note">~11% crecimiento anual histórico</div>
-                    </div>
-                    <div class="kpi">
-                        <div class="kpi-value warn">↑ Churn</div>
-                        <div class="kpi-label">Primer mes</div>
-                        <div class="kpi-note">+ menor Watch Time y sesiones</div>
-                    </div>
-                </div>
-
-                <div class="grid-2 stagger d-3 gap-md align-start">
-                    <div class="card-box persona-card">
-                        <h4>Buyer persona · Nuevo usuario frustrado</h4>
-                        <ul class="dense">
-                            <li><strong>Comportamiento:</strong> sesiones cortas, bajo consumo y baja exploración en la primera semana.</li>
-                            <li><strong>Frustración:</strong> entra esperando “algo para mí” y recibe recomendaciones genéricas.</li>
-                            <li><strong>Riesgo:</strong> abandona antes del día 7 o cancela en el mes 1 sin confirmar valor.</li>
-                        </ul>
-                    </div>
-                    <div class="card-box">
-                        <h4>Segmentación del experimento</h4>
-                        <ul class="dense">
-                            <li><strong>Primario:</strong> recién suscritos con primer perfil y sin historial.</li>
-                            <li><strong>Secundario:</strong> perfiles nuevos en cuentas familiares — se reportan aparte.</li>
-                            <li><strong>Exclusión:</strong> historial previo, reactivados o quienes ya conocen el prototipo.</li>
-                        </ul>
-                        <p class="micro-note">Los 310 M dimensionan impacto potencial; <em>no</em> son el tamaño de la muestra.</p>
-                    </div>
-                </div>
-
-                <div class="footer-note stagger d-4">
-                    *Cifras del caso. En el pitch no afirmamos causalidad motor → Day-7 hasta tener experimentos controlados. Si no resolvemos, en 6 meses el crecimiento orgánico se debilita y sube el costo de adquirir y retener.
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <img class="speaker-avatar" src="assets/Erick.png" alt="Erick Fuentealba" width="40" height="40">
-                <div class="speaker-name">Erick Fuentealba</div>
-            </div>
-        </div>
-
-        <!-- 3 · Cadena de impacto -->
-        <div class="slide">
-            <div class="slide-inner">
-                <div class="slide-head stagger d-1">
-                    <span class="badge">03 · Cadena de impacto</span>
-                    <span class="slide-kicker">Qué validamos hoy vs. qué queda para después</span>
-                </div>
-                <h2 class="stagger d-1">Mecanismo de valor, no promesa de <span class="grad">retención</span></h2>
-                <p class="lead compact stagger d-2">
-                    Tres preferencias → señales iniciales → portada más relevante → menor tiempo a reproducir →
-                    mayor activación → mayor probabilidad de retorno → <strong>potencial</strong> impacto en Day-7.
-                </p>
-
-                <div class="impact-chain stagger d-2">
-                    <span class="chain-step">Preferencias</span>
-                    <span class="chain-arrow">→</span>
-                    <span class="chain-step">Relevancia</span>
-                    <span class="chain-arrow">→</span>
-                    <span class="chain-step">Reproducción</span>
-                    <span class="chain-arrow">→</span>
-                    <span class="chain-step">Activación</span>
-                    <span class="chain-arrow">→</span>
-                    <span class="chain-step">Retorno</span>
-                    <span class="chain-arrow">→</span>
-                    <span class="chain-step muted">Day-7*</span>
-                </div>
-
-                <div class="evidence-table stagger d-3">
-                    <div class="ev-row ev-head">
-                        <span>Eslabón</span>
-                        <span>Qué observa el experimento</span>
-                        <span>Evidencia</span>
-                    </div>
-                    <div class="ev-row">
-                        <span>Selección</span>
-                        <span>Finalización y tiempo de selección</span>
-                        <span class="tag tag-mod">Moderada</span>
-                    </div>
-                    <div class="ev-row">
-                        <span>Relevancia</span>
-                        <span>Score 4–5/5 y elección de contenido recomendado</span>
-                        <span class="tag tag-mod">Moderada</span>
-                    </div>
-                    <div class="ev-row">
-                        <span>Activación</span>
-                        <span>Reproducción válida, tiempo a 1ª play, Watch Time</span>
-                        <span class="tag tag-dir">Direccional</span>
-                    </div>
-                    <div class="ev-row">
-                        <span>Retorno 7d</span>
-                        <span>Retorno observado y sesiones en la semana</span>
-                        <span class="tag tag-exp">Exploratorio</span>
-                    </div>
-                    <div class="ev-row">
-                        <span>Day-7</span>
-                        <span>Se registra como señal; sin inferencia estadística</span>
-                        <span class="tag tag-low">No concluyente</span>
-                    </div>
-                </div>
-
-                <div class="grid-2 stagger d-4 gap-sm">
-                    <div class="risk-card">
-                        <h4>Riesgo de causalidad</h4>
-                        <p class="compact">El motor puede no ser el único driver (onboarding, catálogo, adquisición, región, competencia).</p>
-                    </div>
-                    <div class="risk-card risk-purple">
-                        <h4>Riesgo de fricción</h4>
-                        <p class="compact">Agregar un paso puede alargar el onboarding. Por eso la fricción es <strong>guardrail y criterio de refutación</strong>.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <img class="speaker-avatar" src="assets/Tami.png" alt="Tamara Valdivia" width="40" height="40">
-                <div class="speaker-name">Tamara Valdivia</div>
-            </div>
-        </div>
-
-        <!-- 4 · Hipótesis -->
-        <div class="slide">
-            <div class="slide-inner">
-                <div class="slide-head stagger d-1">
-                    <span class="badge">04 · Hipótesis activa</span>
-                    <span class="slide-kicker">Una sola · P1 · Wizard of Oz</span>
-                </div>
-                <h2 class="stagger d-1">Qué creemos — y por qué en <span class="grad">móvil</span></h2>
-
-                <div class="hypothesis-box stagger d-2">
-                    <p>
-                        <strong>Creemos que</strong> solicitar a usuarios nuevos la selección de
-                        <strong>tres preferencias</strong> durante un <strong>onboarding rediseñado</strong>
-                        generará recomendaciones iniciales percibidas como más relevantes y mejorará la
-                        <strong>activación de reproducción</strong>, <strong>sin agregar fricción significativa</strong>,
-                        porque la plataforma obtendrá señales explícitas <em>antes</em> de tener historial de visualización.
-                    </p>
-                </div>
-
-                <div class="grid-4 stagger d-3">
-                    <div class="mini-card">
-                        <span class="mini-label">Intervención</span>
-                        <strong>3 preferencias</strong>
-                        <span class="mini-desc">Géneros o títulos en onboarding</span>
-                    </div>
-                    <div class="mini-card">
-                        <span class="mini-label">Mecanismo</span>
-                        <strong>Señales iniciales</strong>
-                        <span class="mini-desc">Antes del cold start del motor</span>
-                    </div>
-                    <div class="mini-card">
-                        <span class="mini-label">Resultado</span>
-                        <strong>Relevancia + play</strong>
-                        <span class="mini-desc">Activación en sesión 1</span>
-                    </div>
-                    <div class="mini-card">
-                        <span class="mini-label">Guardrail</span>
-                        <strong>Sin fricción</strong>
-                        <span class="mini-desc">≤30s · ≥80% completa</span>
-                    </div>
-                </div>
-
-                <div class="grid-2 stagger d-4 gap-md align-start">
-                    <div class="card-box">
-                        <h4>¿Por qué móvil?</h4>
-                        <ul class="dense">
-                            <li>Es el contexto real de descubrimiento y registro para la mayoría de usuarios nuevos.</li>
-                            <li>Interacción breve y táctil: alinea con el umbral de <strong>&lt; 30 segundos</strong>.</li>
-                            <li>Alcance técnico del MVP más ágil que desktop bajo restricciones de tiempo del equipo.</li>
-                            <li><strong>Misma condición:</strong> control y experimental usan el mismo dispositivo para no sesgar.</li>
-                        </ul>
-                    </div>
-                    <div class="card-box">
-                        <h4>Qué queda fuera de esta hipótesis</h4>
-                        <ul class="dense">
-                            <li><strong>H2</strong> Patrones de usuarios similares → señal exploratoria vía perfiles predefinidos.</li>
-                            <li><strong>H3</strong> Procesamiento en tiempo real → spike técnico (latencia, p95, errores).</li>
-                            <li><strong>H4–H7</strong> Tendencias regionales, metadatos, UX de home, viabilidad económica → backlog / fase 2.</li>
-                        </ul>
-                        <p class="micro-note">No mostramos 3 hipótesis de onboarding casi idénticas: una activa, el resto en roadmap.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <img class="speaker-avatar" src="assets/Tami.png" alt="Tamara Valdivia" width="40" height="40">
-                <div class="speaker-name">Tamara Valdivia</div>
-            </div>
-        </div>
-
-        <!-- 5 · Experimento -->
-        <div class="slide">
-            <div class="slide-inner">
-                <div class="slide-head stagger d-1">
-                    <span class="badge">05 · Experimento</span>
-                    <span class="slide-kicker">Deseabilidad + usabilidad · No factibilidad del motor</span>
-                </div>
-                <h2 class="stagger d-1">Wizard of Oz mínimo, con <span class="grad">comparación real</span></h2>
-                <p class="lead compact stagger d-2">
-                    Primero validamos que la <strong>señal explícita produce valor</strong>.
-                    Todavía no construimos el sistema que la automatiza.
-                </p>
-
-                <div class="grid-2 stagger d-2 gap-md align-start">
-                    <div class="compare-card compare-control">
-                        <span class="compare-label">Control</span>
-                        <h4>Sin selección de preferencias</h4>
-                        <ul class="dense">
-                            <li>Onboarding actual / sin paso de gustos</li>
-                            <li>Portada genérica o por tendencias</li>
-                            <li>Mismo diseño, catálogo y nº de tarjetas</li>
-                        </ul>
-                        <p class="micro-note">Establece tasa base de play, tiempo y Watch Time.</p>
-                    </div>
-                    <div class="compare-card compare-exp">
-                        <span class="compare-label">Experimental</span>
-                        <h4>3 preferencias + portada curada</h4>
-                        <ul class="dense">
-                            <li>Selección breve de géneros/títulos</li>
-                            <li>Portada curada por perfil predefinido</li>
-                            <li>Usuario percibe “recomendación automática”</li>
-                        </ul>
-                        <p class="micro-note">Mide el efecto direccional de la señal explícita.</p>
-                    </div>
-                </div>
-
-                <div class="grid-3 stagger d-3 gap-sm">
-                    <div class="stat-tile">
-                        <span class="stat-label">Muestra</span>
-                        <strong>30–50</strong>
-                        <span class="stat-desc">~15–25 por brazo · direccional</span>
-                    </div>
-                    <div class="stat-tile">
-                        <span class="stat-label">Duración</span>
-                        <strong>14 días</strong>
-                        <span class="stat-desc">Sesión 1 + seguimiento 7d + análisis</span>
-                    </div>
-                    <div class="stat-tile">
-                        <span class="stat-label">Aprender</span>
-                        <strong>4 preguntas</strong>
-                        <span class="stat-desc">¿Aceptan? ¿Rápido? ¿Relevante? ¿Reproducen?</span>
-                    </div>
-                </div>
-
-                <div class="var-row stagger d-4">
-                    <div>
-                        <span class="var-type">Independiente</span>
-                        <p>Presencia de selección + portada curada</p>
-                    </div>
-                    <div>
-                        <span class="var-type">Dependientes</span>
-                        <p>Finalización, tiempo, abandono, play válido, tiempo a play, WT, relevancia, retorno</p>
-                    </div>
-                    <div>
-                        <span class="var-type">Controladas</span>
-                        <p>Región, catálogo, dispositivo, nº recs, diseño, criterio de play válido</p>
-                    </div>
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <img class="speaker-avatar" src="assets/Vale.png" alt="Valeria Nieto" width="40" height="40">
-                <div class="speaker-name">Valeria Nieto</div>
-            </div>
-        </div>
-
-        <!-- 6 · Operación e instrumentación -->
-        <div class="slide">
-            <div class="slide-inner">
-                <div class="slide-head stagger d-1">
-                    <span class="badge">06 · Operación</span>
-                    <span class="slide-kicker">Cómo simula el WoZ · Qué medimos · Cómo se construyó</span>
-                </div>
-                <h2 class="stagger d-1">Detrás del velo y delante del <span class="grad">evento</span></h2>
-
-                <div class="grid-2 stagger d-2 gap-md align-start">
-                    <div class="card-box">
-                        <h4>Wizard of Oz — protocolo</h4>
-                        <ol class="steps">
-                            <li>El usuario declara 3 preferencias en el prototipo móvil.</li>
-                            <li>El equipo captura la selección y la mapea a un <strong>perfil predefinido</strong>.</li>
-                            <li>Se prepara una <strong>portada curada</strong> con reglas documentadas y repertorio limitado.</li>
-                            <li>El usuario ve “recomendaciones automáticas” y puede reproducir.</li>
-                        </ol>
-                        <p class="micro-note">La curación manual es un <em>techo de valor</em>, no promesa de precisión del motor futuro.</p>
-                    </div>
-                    <div class="card-box">
-                        <h4>Instrumentación del flujo</h4>
-                        <ul class="metrics-list dense">
-                            <li><code>preference_selection_started</code></li>
-                            <li><code>preference_selection_completed</code> + duración</li>
-                            <li><code>onboarding_abandoned</code></li>
-                            <li><code>content_selected</code> / recomendado vs no</li>
-                            <li><code>valid_play_started</code> (umbral definido)</li>
-                            <li><code>watch_time</code> sesión 1 · <code>day_return</code> D1–D7</li>
-                        </ul>
-                        <p class="micro-note">+ encuesta breve de relevancia percibida (escala 1–5) y diario ligero de retorno.</p>
-                    </div>
-                </div>
-
-                <div class="grid-3 stagger d-3 gap-sm">
-                    <div class="card-box compact-card">
-                        <h4>Calendario</h4>
-                        <ul class="dense tiny">
-                            <li><strong>D1–2:</strong> recluta, consentimiento, asignación</li>
-                            <li><strong>D3–4:</strong> primeras sesiones</li>
-                            <li><strong>D4–11:</strong> seguimiento 7 días</li>
-                            <li><strong>D12–14:</strong> análisis y decisión</li>
-                        </ul>
-                    </div>
-                    <div class="card-box compact-card">
-                        <h4>Herramienta + IA</h4>
-                        <ul class="dense tiny">
-                            <li><strong>Figma Make</strong> + Design System WebFlix</li>
-                            <li>Prompts de contexto, interfaz y componentes</li>
-                            <li>Artefacto mínimo: no producto completo</li>
-                            <li>Respaldo: video + capturas locales</li>
-                        </ul>
-                    </div>
-                    <div class="card-box compact-card">
-                        <h4>En paralelo</h4>
-                        <ul class="dense tiny">
-                            <li><strong>Spike técnico</strong> de factibilidad</li>
-                            <li>Metadatos, integración, latencia p95</li>
-                            <li>Errores y capacidad de captura de señales</li>
-                            <li>Fuera del alcance del WoZ</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="footer-note stagger d-4">
-                    *Riesgos operativos mitigados: reglas de curación documentadas, mismos controles de dispositivo/catálogo, recordatorios de seguimiento y plan B si falla la demo.
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <img class="speaker-avatar" src="assets/Vale.png" alt="Valeria Nieto" width="40" height="40">
-                <div class="speaker-name">Valeria Nieto</div>
-            </div>
-        </div>
-
-        <!-- 7 · Demo -->
-        <div class="slide">
-            <div class="slide-inner grid-2 gap-lg align-center">
-                <div class="stagger d-1">
-                    <div class="slide-head">
-                        <span class="badge">07 · Artefacto</span>
-                        <span class="slide-kicker">Flujo crítico a demostrar</span>
-                    </div>
-                    <h2>Del perfil vacío al <span class="grad">primer play</span></h2>
-                    <p class="lead compact">
-                        El prototipo solo necesita representar con claridad el tramo que prueba la hipótesis — no un app completo.
-                    </p>
-
-                    <ol class="flow-steps">
-                        <li>
-                            <span class="flow-num">1</span>
-                            <div>
-                                <strong>Perfil nuevo</strong>
-                                <span>Sin historial · cold start</span>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="flow-num">2</span>
-                            <div>
-                                <strong>Tres preferencias</strong>
-                                <span>Selección breve · meta ≤ 30s</span>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="flow-num">3</span>
-                            <div>
-                                <strong>Portada curada</strong>
-                                <span>Señales → contenido percibido como “para mí”</span>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="flow-num">4</span>
-                            <div>
-                                <strong>Reproducción válida</strong>
-                                <span>Activación en la primera sesión</span>
-                            </div>
-                        </li>
-                    </ol>
-
-                    <div class="callout callout-tight">
-                        Contingencia en vivo: iframe → video/GIF → capturas.
-                        Atajos <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> · <kbd>D</kbd> salta a esta slide.
-                    </div>
-                </div>
-
-                <div class="stagger d-2 demo-col">
-                    <div class="mobile-mockup" id="demo-mockup">
-                        <div class="mockup-label">[ SIMULACIÓN WIZARD OF OZ ]</div>
-                        <div class="mockup-content level-1 is-active" data-demo-level="1">
-                            <p class="mockup-placeholder">Iframe<br>Figma Make / Lovable</p>
-                            <p class="mockup-hint">Nivel 1 · interactivo</p>
-                        </div>
-                        <div class="mockup-content level-2" data-demo-level="2">
-                            <p class="mockup-placeholder">GIF / Video<br>local</p>
-                            <p class="mockup-hint">Nivel 2 · respaldo</p>
-                        </div>
-                        <div class="mockup-content level-3" data-demo-level="3">
-                            <p class="mockup-placeholder">Imágenes<br>estáticas del flujo</p>
-                            <p class="mockup-hint">Nivel 3 · offline</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <img class="speaker-avatar" src="assets/Cris.png" alt="Cristian Pizarro" width="40" height="40">
-                <div class="speaker-name">Cristian Pizarro</div>
-            </div>
-        </div>
-
-        <!-- 8 · Decisión -->
-        <div class="slide slide-scrollable">
-            <div class="slide-inner">
-                <div class="slide-head stagger d-1">
-                    <span class="badge">08 · Decisión</span>
-                    <span class="slide-kicker">Criterios · Escenarios · Confiabilidad · Cierre</span>
-                </div>
-                <h2 class="stagger d-1">Cómo sabremos si <span class="grad">avanzar</span></h2>
-                <p class="lead compact stagger d-1">
-                    Aprendemos si los usuarios aceptan declarar preferencias sin fricción y si eso construye
-                    una experiencia <strong>más relevante y accionable</strong> en la primera sesión.
-                </p>
-
-                <div class="criteria-grid stagger d-2">
-                    <div class="card-box">
-                        <h4 class="accent-cyan">Guardrails de fricción</h4>
-                        <ul class="dense">
-                            <li>≥ <strong>80%</strong> completa la selección</li>
-                            <li>Mediana de tiempo ≤ <strong>30 s</strong></li>
-                            <li>Abandono no empeora vs control (tol. ≤ 5 pp)</li>
-                        </ul>
-                    </div>
-                    <div class="card-box card-box-highlight">
-                        <h4 class="accent-purple">Señal principal</h4>
-                        <ul class="dense">
-                            <li>Reproducción válida mejora ≥ <strong>15%</strong> vs control</li>
-                            <li>Meta direccional: ≥ <strong>65%</strong> inicia play válido</li>
-                        </ul>
-                    </div>
-                    <div class="card-box">
-                        <h4>Señales de soporte</h4>
-                        <ul class="dense">
-                            <li>Tiempo a 1ª play &lt; 3 min y mejor que control</li>
-                            <li>Watch Time sesión 1 +10% vs control</li>
-                            <li>Relevancia: ≥ 75% con score 4–5</li>
-                            <li>Retorno 7d: exploratorio (no sustituto de Day-7)</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="grid-3 stagger d-3 decision-grid">
-                    <div class="decision-card decision-confirm">
-                        <strong>✅ Confirma</strong>
-                        <span>Guardrails OK + relevancia y activación mejoran vs control → automatizar versión mínima y A/B a escala.</span>
-                    </div>
-                    <div class="decision-card decision-inconclusive">
-                        <strong>⚠️ Inconcluso</strong>
-                        <span>Señales mixtas (ej. sube relevancia pero no el play, o hay fricción) → iterar preferencias, perfiles o portada y repetir.</span>
-                    </div>
-                    <div class="decision-card decision-refute">
-                        <strong>❌ Refuta</strong>
-                        <span>Aumenta abandono o no mueve relevancia/play/WT → abandonar selección explícita y probar otra palanca.</span>
-                    </div>
-                </div>
-
-                <div class="closing-bar stagger d-4">
-                    <div class="closing-quote">
-                        “No demostramos todavía que recuperaremos el Day-7. Validamos el mecanismo y los leading indicators que podrían moverlo. Day-7 es outcome de negocio de la fase 2 a escala.”
-                    </div>
-                    <div class="closing-meta">
-                        <span>Confiabilidad: fricción moderada · activación direccional · Day-7 no concluyente · factibilidad = spike paralelo</span>
-                    </div>
-                </div>
-            </div>
-            <div class="speaker-tag">
-                <img class="speaker-avatar" src="assets/Cris.png" alt="Cristian Pizarro" width="40" height="40">
-                <div class="speaker-name">Cristian Pizarro</div>
-            </div>
-        </div>
-
-        <!-- 9 · Cierre -->
-        <div class="slide slide-thanks">
-            <div class="thanks-stage">
-                <div class="cover-brand stagger d-1 thanks-brand">
-                    <span class="logo-mark">W</span>
-                    <span class="logo-word">WebFlix</span>
-                </div>
-
-                <p class="cover-kicker stagger d-1">Pitch Shark Tank · Grupo 5</p>
-
-                <h1 class="thanks-title stagger d-2">
-                    Muchas <span class="grad">gracias</span>
-                </h1>
-
-                <p class="thanks-sub stagger d-2">
-                    ¿Preguntas?
-                </p>
-
-                <ul class="home-roster thanks-roster stagger d-3">
-                    <li class="home-person" data-accent="purple">
-                        <div class="home-avatar thanks-avatar">
-                            <img src="assets/Erick.png" alt="Erick Fuentealba">
-                        </div>
-                        <div class="home-person-text">
-                            <span class="cast-name">Erick Fuentealba</span>
-                            <span class="cast-role">Problema · Datos</span>
-                        </div>
-                    </li>
-                    <li class="home-person" data-accent="cyan">
-                        <div class="home-avatar thanks-avatar">
-                            <img src="assets/Tami.png" alt="Tamara Valdivia">
-                        </div>
-                        <div class="home-person-text">
-                            <span class="cast-name">Tamara Valdivia</span>
-                            <span class="cast-role">Estrategia · Hipótesis</span>
-                        </div>
-                    </li>
-                    <li class="home-person" data-accent="purple">
-                        <div class="home-avatar thanks-avatar">
-                            <img src="assets/Vale.png" alt="Valeria Nieto">
-                        </div>
-                        <div class="home-person-text">
-                            <span class="cast-name">Valeria Nieto</span>
-                            <span class="cast-role">Experimento · Métricas</span>
-                        </div>
-                    </li>
-                    <li class="home-person" data-accent="cyan">
-                        <div class="home-avatar thanks-avatar">
-                            <img src="assets/Cris.png" alt="Cristian Pizarro">
-                        </div>
-                        <div class="home-person-text">
-                            <span class="cast-name">Cristian Pizarro</span>
-                            <span class="cast-role">Demo · Decisión</span>
-                        </div>
-                    </li>
-                </ul>
-
-                <footer class="home-foot thanks-foot stagger d-4">
-                    <span>FEN Universidad de Chile</span>
-                    <span class="home-foot-dot" aria-hidden="true"></span>
-                    <span>Diplomado EEP · Era de la IA</span>
-                </footer>
-            </div>
-        </div>
-
-        <div class="pitch-timer" id="pitch-timer" data-state="ok" title="Meta 8 min · Máx 10 min · (T) start/pause · (R) reset">
-            <span class="pitch-timer-label">Tiempo</span>
-            <span class="pitch-timer-time" id="pitch-timer-time">00:00</span>
-            <span class="pitch-timer-meta">meta 8′ · máx 10′</span>
-        </div>
-
-        <div class="progress-track">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        <div class="slide-counter" id="slide-counter">01 / 10</div>
-        <div class="nav-hint">Clic / Flechas · (T) Timer · (R) Reset · (D) Demo · (F) Fullscreen</div>
+  <div id="deck" class="deck">
+    <div class="atmosphere" aria-hidden="true">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="orb orb-c"></div>
+      <div class="vignette"></div>
     </div>
 
-    <script src="script.js"></script>
+    <header class="chrome-logo" id="chrome-logo" hidden>
+      <span class="mark">W</span>
+      <span class="word">WebFlix</span>
+    </header>
+
+    <!-- ════════════════════════════════════
+         01 · PORTADA (hook Figma + rigor)
+    ════════════════════════════════════ -->
+    <section class="slide is-active" data-theme="immersive" data-no-logo data-speaker="Erick">
+      <div class="cover-stage">
+        <header class="cover-bar">
+          <div class="brand-row cover-brand">
+            <span class="mark">W</span>
+            <span class="word">WebFlix</span>
+          </div>
+          <p class="cover-bar-eyebrow">Grupo 5 · Pitch Shark Tank · 10 min</p>
+        </header>
+
+        <div class="cover-body">
+          <div class="cover-copy">
+            <p class="cover-context">¿Cómo recomendar bien si la plataforma aún no conoce a quien acaba de llegar?</p>
+            <h1 class="cover-hook">
+              Perdemos <em>1 de cada 3</em><br>
+              usuarios<br>
+              <em class="hook-accent">antes de que la app los conozca.</em>
+            </h1>
+            <p class="cover-thesis">
+              No necesitamos adivinar mejor: necesitamos una <strong>primera señal útil</strong>
+              (3 preferencias) antes de que el usuario abandone.
+            </p>
+          </div>
+
+          <aside class="cover-visual" aria-hidden="true">
+            <div class="cover-phone">
+              <div class="cover-phone-glow"></div>
+              <div class="cover-phone-frame">
+                <div class="cover-phone-notch"></div>
+                <div class="cover-phone-ui">
+                  <span class="cover-phone-label">Elige 3 gustos</span>
+                  <div class="cover-chips">
+                    <span class="chip on">Acción</span>
+                    <span class="chip">Romance</span>
+                    <span class="chip on">Sci-Fi</span>
+                  </div>
+                  <div class="cover-chips">
+                    <span class="chip">Drama</span>
+                    <span class="chip on">Thriller</span>
+                    <span class="chip">Comedia</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <footer class="cover-footer">
+          <div class="cover-kpis">
+            <div class="kpi-item">
+              <b>310M</b>
+              <span>Suscriptores</span>
+            </div>
+            <div class="kpi-item danger">
+              <b>−13 pp</b>
+              <span>Day-7 Retention</span>
+            </div>
+            <div class="kpi-item">
+              <b>10 min</b>
+              <span>Para convencerte</span>
+            </div>
+          </div>
+          <p class="cover-meta-inline">
+            Experimentación, IA y Validación
+            <span class="meta-dot" aria-hidden="true">·</span>
+            FEN Universidad de Chile
+            <span class="meta-dot" aria-hidden="true">·</span>
+            Diplomado EEP
+          </p>
+        </footer>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         02 · EQUIPO
+    ════════════════════════════════════ -->
+    <section class="slide" data-theme="immersive" data-no-logo data-speaker="Erick">
+      <div class="stage stage-center">
+        <p class="eyebrow anim" style="--d:0">Grupo 5 · 4 expositores · Todos hablan</p>
+        <h2 class="display-md anim" style="--d:1">El equipo detrás del experimento</h2>
+        <div class="story-rail anim" style="--d:2" aria-hidden="true">
+          <div class="story-step c-purple"><span>01</span><b>Problema</b></div>
+          <div class="story-join"></div>
+          <div class="story-step c-amber"><span>02</span><b>Hipótesis</b></div>
+          <div class="story-join"></div>
+          <div class="story-step c-cyan"><span>03</span><b>Experimento</b></div>
+          <div class="story-join"></div>
+          <div class="story-step c-green"><span>04</span><b>Decisión</b></div>
+        </div>
+
+        <div class="team-grid anim" style="--d:3">
+          <article class="team-card c-purple">
+            <img src="assets/Erick.png" alt="Erick Fuentealba">
+            <h3>Erick</h3>
+            <p class="role">Abre el pitch</p>
+            <ul>
+              <li>Problema</li>
+              <li>Evidencia</li>
+              <li>Usuario</li>
+            </ul>
+          </article>
+          <article class="team-card c-amber">
+            <img src="assets/Tami.png" alt="Tamara Valdivia">
+            <h3>Tamara</h3>
+            <p class="role">Estrategia</p>
+            <ul>
+              <li>Hipótesis</li>
+              <li>Mecanismo</li>
+              <li>Móvil</li>
+            </ul>
+          </article>
+          <article class="team-card c-cyan">
+            <img src="assets/Vale.png" alt="Valeria Nieto">
+            <h3>Valeria</h3>
+            <p class="role">Experimento</p>
+            <ul>
+              <li>Diseño A/B</li>
+              <li>WoZ</li>
+              <li>Métricas</li>
+            </ul>
+          </article>
+          <article class="team-card c-green">
+            <img src="assets/Cris.png" alt="Cristian Pizarro">
+            <h3>Cristian</h3>
+            <p class="role">Demo y cierre</p>
+            <ul>
+              <li>Artefacto</li>
+              <li>Decisión</li>
+              <li>El Ask</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         03 · PROBLEMA
+    ════════════════════════════════════ -->
+    <section class="slide" data-speaker="Erick">
+      <div class="stage">
+        <header class="slide-head anim" style="--d:0">
+          <span class="badge">01 · Problema</span>
+          <span class="kicker">Conducta observable · No causa asumida</span>
+        </header>
+
+        <h2 class="title anim" style="--d:1">
+          El reto no es atraer usuarios:<br>
+          es lograr que <span class="grad">vuelvan</span>
+        </h2>
+        <p class="lead tight anim" style="--d:1">
+          La primera semana perdió capacidad de convertir curiosidad en hábito.
+          Day-7 cayó <strong>42% → 29%</strong> (−13 pp) · también ↓ Watch Time, ↓ sesiones y ↑ churn mes 1.
+        </p>
+
+        <div class="logic-row anim" style="--d:2">
+          <article class="logic-card fact">
+            <span class="logic-n">1</span>
+            <span class="logic-tag">Hecho</span>
+            <h3>Retención D7 cae 13 pp</h3>
+            <p>Problema de negocio demostrado por el caso.</p>
+          </article>
+          <div class="logic-join" aria-hidden="true">→</div>
+          <article class="logic-card assume">
+            <span class="logic-n">2</span>
+            <span class="logic-tag">Supuesto</span>
+            <h3>Baja relevancia inicial</h3>
+            <p>Sospecha causal — no veredicto. También pueden influir catálogo, precio o fricción.</p>
+          </article>
+          <div class="logic-join" aria-hidden="true">→</div>
+          <article class="logic-card ask">
+            <span class="logic-n">3</span>
+            <span class="logic-tag">Pregunta</span>
+            <h3>¿3 señales bastan?</h3>
+            <p>¿Pueden mejorar play y retorno sin sumar fricción?</p>
+          </article>
+        </div>
+
+        <p class="journey-label anim" style="--d:3">Cadena no virtuosa · hoy</p>
+        <div class="journey anim" style="--d:3" role="list" aria-label="Cadena no virtuosa del problema">
+          <div class="j-step" role="listitem" data-n="1">
+            <span class="j-num">1</span>
+            <div class="j-body"><b>Registro</b><i>Perfil vacío</i></div>
+          </div>
+          <div class="j-connector" aria-hidden="true"><span></span></div>
+          <div class="j-step bad" role="listitem" data-n="2">
+            <span class="j-num">2</span>
+            <div class="j-body"><b>Home genérica</b><i>Sin señales</i></div>
+          </div>
+          <div class="j-connector" aria-hidden="true"><span></span></div>
+          <div class="j-step bad" role="listitem" data-n="3">
+            <span class="j-num">3</span>
+            <div class="j-body"><b>Scroll / búsqueda</b><i>Fricción</i></div>
+          </div>
+          <div class="j-connector warn" aria-hidden="true"><span></span></div>
+          <div class="j-step end" role="listitem" data-n="4">
+            <span class="j-num">4</span>
+            <div class="j-body"><b>Abandono</b><i>Antes del valor</i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         04 · USUARIO + STAKES
+    ════════════════════════════════════ -->
+    <section class="slide" data-speaker="Erick">
+      <div class="stage">
+        <header class="slide-head anim" style="--d:0">
+          <span class="badge">02 · Usuario y urgencia</span>
+          <span class="kicker">Quién · Por qué importa · Escala</span>
+        </header>
+        <h2 class="title anim" style="--d:1">
+          El nuevo usuario <span class="grad">frustrado</span>
+        </h2>
+
+        <div class="split anim" style="--d:2">
+          <div class="glass persona">
+            <span class="tag cyan">Buyer persona</span>
+            <h3>Entra esperando “algo para mí”.<br>Recibe genérico.</h3>
+            <dl class="facts">
+              <div>
+                <dt>Comportamiento</dt>
+                <dd>Sesiones cortas, bajo consumo y baja exploración en la primera semana.</dd>
+              </div>
+              <div>
+                <dt>Frustración</dt>
+                <dd>Quiere confirmar valor rápido; el catálogo no se siente personal.</dd>
+              </div>
+              <div>
+                <dt>Riesgo</dt>
+                <dd>Abandona antes del día 7 o cancela en el mes 1 sin descubrir el catálogo.</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="stack stack-seg">
+            <article class="seg-card primary">
+              <div class="seg-card-head">
+                <span class="seg-ico" aria-hidden="true">◎</span>
+                <span class="seg-tag">Segmento del experimento</span>
+              </div>
+              <h4>Recién suscritos · primer perfil · sin historial</h4>
+              <p>Secundario: perfiles familiares nuevos <em>(se reportan aparte)</em>. Excluye historial previo y reactivados.</p>
+            </article>
+            <article class="seg-card scale">
+              <div class="seg-card-head">
+                <span class="seg-ico" aria-hidden="true">◉</span>
+                <span class="seg-tag">Escala del caso</span>
+              </div>
+              <div class="seg-nums">
+                <div class="seg-num">
+                  <b>310 M</b>
+                  <span>Suscriptores</span>
+                </div>
+                <div class="seg-num-div" aria-hidden="true"></div>
+                <div class="seg-num">
+                  <b>~360 M</b>
+                  <span>MAU</span>
+                </div>
+              </div>
+              <p>Dimensionan impacto potencial. <strong>No</strong> son el tamaño de la muestra del experimento.</p>
+            </article>
+            <article class="seg-card urgency">
+              <div class="seg-card-head">
+                <span class="seg-ico warn" aria-hidden="true">⚠</span>
+                <span class="seg-tag warn">Si no actuamos · 6 meses</span>
+              </div>
+              <div class="seg-impact">
+                <span class="impact-pill down">↓ Crecimiento orgánico</span>
+                <span class="impact-pill up">↑ CAC</span>
+              </div>
+              <p>Más gasto en adquisición para sostener la base mientras se pierde al usuario nuevo.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         05 · HIPÓTESIS
+    ════════════════════════════════════ -->
+    <section class="slide" data-speaker="Tamara">
+      <div class="stage">
+        <header class="slide-head anim" style="--d:0">
+          <span class="badge">03 · Hipótesis activa</span>
+          <span class="kicker">Una sola · P1 · Priorizada</span>
+        </header>
+        <h2 class="title anim" style="--d:1">
+          Qué creemos — y qué <span class="grad">no</span> prometemos
+        </h2>
+
+        <div class="formula anim" style="--d:2" aria-hidden="true">
+          <div class="f-box"><span>Si</span><b>3 preferencias</b><i>en onboarding</i></div>
+          <div class="f-op">→</div>
+          <div class="f-box"><span>Entonces</span><b>Más relevancia</b><i>+ más play</i></div>
+          <div class="f-op">+</div>
+          <div class="f-box guard"><span>Sin</span><b>Fricción</b><i>≤30s · ≥80%</i></div>
+        </div>
+
+        <div class="hypo anim" style="--d:2">
+          <p>
+            <strong>Creemos que</strong> solicitar a usuarios nuevos
+            <strong>tres preferencias</strong> en un onboarding rediseñado
+            generará recomendaciones iniciales más relevantes y mejorará la
+            <strong>activación de reproducción</strong>,
+            <strong>sin fricción significativa</strong>,
+            porque obtendremos señales explícitas <em>antes</em> de tener historial.
+          </p>
+        </div>
+
+        <div class="quad anim" style="--d:3">
+          <div class="q">
+            <span class="q-ico" aria-hidden="true">①</span>
+            <span>Intervención</span>
+            <b>3 preferencias</b>
+            <i>Géneros o títulos</i>
+          </div>
+          <div class="q">
+            <span class="q-ico" aria-hidden="true">②</span>
+            <span>Mecanismo</span>
+            <b>Señales iniciales</b>
+            <i>Antes del cold start</i>
+          </div>
+          <div class="q">
+            <span class="q-ico" aria-hidden="true">③</span>
+            <span>Resultado</span>
+            <b>Relevancia + play</b>
+            <i>Activación sesión 1</i>
+          </div>
+          <div class="q highlight">
+            <span class="q-ico" aria-hidden="true">④</span>
+            <span>Guardrail</span>
+            <b>Sin fricción</b>
+            <i>≤ 30 s · ≥ 80% completa</i>
+          </div>
+        </div>
+
+        <div class="prio-row anim" style="--d:4">
+          <div class="prio-card">
+            <span class="prio-n">01</span>
+            <h3>Impacto</h3>
+            <p>Ataca la experiencia que <strong>precede</strong> a la retención D7.</p>
+          </div>
+          <div class="prio-card">
+            <span class="prio-n">02</span>
+            <h3>Incertidumbre</h3>
+            <p>¿Tres elecciones entregan <strong>señal suficiente</strong>?</p>
+          </div>
+          <div class="prio-card">
+            <span class="prio-n">03</span>
+            <h3>Esfuerzo</h3>
+            <p>Se prueba <strong>sin</strong> desarrollar un algoritmo real (WoZ).</p>
+          </div>
+          <div class="prio-card highlight">
+            <span class="prio-n">★</span>
+            <h3>Prioridad alta</h3>
+            <p>Resultado accionable: automatizar, iterar o descartar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         06 · MECANISMO + HONESTIDAD
+    ════════════════════════════════════ -->
+    <section class="slide" data-speaker="Tamara">
+      <div class="stage">
+        <header class="slide-head anim" style="--d:0">
+          <span class="badge">04 · Mecanismo</span>
+          <span class="kicker">Qué valida el experimento vs. qué queda después</span>
+        </header>
+        <h2 class="title anim" style="--d:1">
+          Cadena de valor, no promesa de <span class="grad">retención</span>
+        </h2>
+
+        <div class="phase-labels anim" style="--d:2">
+          <span class="phase now">Validamos hoy</span>
+          <span class="phase later">Fase 2 · a escala</span>
+        </div>
+        <div class="chain anim" style="--d:2">
+          <div class="node on"><span class="n-ico">◎</span><b>3 prefs</b><i>Señal</i></div>
+          <div class="line"></div>
+          <div class="node on"><span class="n-ico">★</span><b>Relevancia</b><i>Portada</i></div>
+          <div class="line"></div>
+          <div class="node on"><span class="n-ico">▶</span><b>Play</b><i>Activación</i></div>
+          <div class="line"></div>
+          <div class="node on"><span class="n-ico">↻</span><b>Retorno</b><i>7 días*</i></div>
+          <div class="line muted"></div>
+          <div class="node muted"><span class="n-ico">📊</span><b>Day-7</b><i>Fase 2</i></div>
+        </div>
+
+        <div class="table anim" style="--d:3">
+          <div class="tr head">
+            <span>Eslabón</span>
+            <span>Qué observa el experimento</span>
+            <span>Evidencia</span>
+          </div>
+          <div class="tr"><span>Selección</span><span>Finalización y tiempo</span><span class="tag mod">Moderada</span></div>
+          <div class="tr"><span>Relevancia</span><span>Score 4–5 y elección de recomendado</span><span class="tag mod">Moderada</span></div>
+          <div class="tr"><span>Activación</span><span>Play válido, tiempo a play, Watch Time</span><span class="tag dir">Direccional</span></div>
+          <div class="tr"><span>Retorno 7d</span><span>Retorno observado en la semana</span><span class="tag exp">Exploratorio</span></div>
+          <div class="tr"><span>Day-7</span><span>Señal; sin inferencia estadística con n=30–50</span><span class="tag low">No concluyente</span></div>
+        </div>
+
+        <div class="split-sm anim" style="--d:4">
+          <div class="risk">
+            <h4>Riesgo de causalidad</h4>
+            <p>El motor puede no ser el único driver (onboarding, catálogo, adquisición, región, competencia).</p>
+          </div>
+          <div class="risk purple">
+            <h4>Riesgo de fricción</h4>
+            <p>Agregar un paso puede alargar el onboarding. Por eso la fricción es <strong>guardrail y criterio de refutación</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         07 · EXPERIMENTO
+    ════════════════════════════════════ -->
+    <section class="slide" data-speaker="Valeria">
+      <div class="stage">
+        <header class="slide-head anim" style="--d:0">
+          <span class="badge">05 · Experimento</span>
+          <span class="kicker">Deseabilidad + usabilidad · No factibilidad del motor</span>
+        </header>
+        <h2 class="title anim" style="--d:1">
+          Wizard of Oz mínimo, con <span class="grad">comparación real</span>
+        </h2>
+        <p class="lead tight anim" style="--d:2">
+          Primero validamos que la <strong>señal explícita produce valor</strong>.
+          Todavía no construimos el sistema que la automatiza.
+        </p>
+
+        <div class="compare anim" style="--d:2">
+          <div class="arm">
+            <span class="arm-l">Control</span>
+            <div class="arm-viz" aria-hidden="true">
+              <div class="mini-screen dull">
+                <span class="ms-bar"></span>
+                <span class="ms-row"></span>
+                <span class="ms-row"></span>
+                <span class="ms-label">Portada genérica</span>
+              </div>
+            </div>
+            <h3>Sin selección de preferencias</h3>
+            <ul class="bullets">
+              <li>Onboarding actual / sin paso de gustos</li>
+              <li>Portada genérica o por tendencias</li>
+              <li>Mismo diseño, catálogo y nº de tarjetas</li>
+            </ul>
+            <p class="note">Tasa base de play, tiempo y Watch Time.</p>
+          </div>
+          <div class="vs">VS</div>
+          <div class="arm exp">
+            <span class="arm-badge">La apuesta</span>
+            <span class="arm-l">Experimental</span>
+            <div class="arm-viz" aria-hidden="true">
+              <div class="mini-screen lit">
+                <span class="ms-chips"><i></i><i class="on"></i><i class="on"></i></span>
+                <span class="ms-row on"></span>
+                <span class="ms-row on"></span>
+                <span class="ms-label">Portada curada</span>
+              </div>
+            </div>
+            <h3>3 swipes + portada curada</h3>
+            <ul class="bullets">
+              <li>Swipe breve: me gusta / descartar</li>
+              <li>Portada curada por perfil predefinido</li>
+              <li>Usuario percibe “recomendación automática”</li>
+            </ul>
+            <p class="note">Efecto direccional de la señal explícita.</p>
+          </div>
+        </div>
+
+        <div class="swipe-flow anim" style="--d:3">
+          <div class="swipe-step">
+            <span class="sw-n">01</span>
+            <b>3 swipes</b>
+            <i>Derecha: me gusta · Izquierda: descartar</i>
+          </div>
+          <div class="swipe-arr" aria-hidden="true">›</div>
+          <div class="swipe-step">
+            <span class="sw-n">02</span>
+            <b>Perfil inicial</b>
+            <i>Tres señales explícitas de preferencia</i>
+          </div>
+          <div class="swipe-arr" aria-hidden="true">›</div>
+          <div class="swipe-step">
+            <span class="sw-n">03</span>
+            <b>Home curado</b>
+            <i>Curación manual que simula el valor futuro</i>
+          </div>
+          <div class="swipe-arr" aria-hidden="true">›</div>
+          <div class="swipe-step">
+            <span class="sw-n">04</span>
+            <b>Medición 7d</b>
+            <i>Misma medición en control y experimental</i>
+          </div>
+        </div>
+
+        <div class="stat-row anim" style="--d:4">
+          <div class="stat"><span>Muestra</span><b>30–50</b><i>~15–25 por brazo · direccional</i></div>
+          <div class="stat"><span>Duración</span><b>14 días</b><i>7d por persona · 2 semanas de ejecución</i></div>
+          <div class="stat"><span>Aprendemos</span><b>4 preguntas</b><i>¿Aceptan? ¿Rápido? ¿Relevante? ¿Play?</i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         08 · MÉTRICAS + DECISIÓN
+    ════════════════════════════════════ -->
+    <section class="slide" data-speaker="Valeria">
+      <div class="stage">
+        <header class="slide-head anim" style="--d:0">
+          <span class="badge">06 · Evidencia y decisión</span>
+          <span class="kicker">Cadena de señales · Reglas antes de mirar datos</span>
+        </header>
+        <h2 class="title anim" style="--d:1">
+          Medimos una cadena. <span class="grad">Decidimos con reglas.</span>
+        </h2>
+
+        <div class="evidence-chain anim" style="--d:2">
+          <div class="ev-pill"><span>Resultado</span><b>Retención D7*</b><i>Fase 2 · exploratorio hoy</i></div>
+          <div class="ev-pill hot"><span>Señal temprana</span><b>Play recomendado</b><i>+15% vs control</i></div>
+          <div class="ev-pill"><span>Diagnóstico</span><b>Tiempo · WT · sesiones</b><i>−15% tiempo · +10% WT</i></div>
+          <div class="ev-pill cyan"><span>Resguardo</span><b>Fin del onboarding</b><i>≥80% · ≤30s · −8% abandono</i></div>
+          <div class="ev-pill"><span>Cualitativo</span><b>Relevancia 1–5</b><i>+ por qué</i></div>
+        </div>
+
+        <div class="matrix anim" style="--d:3">
+          <div class="matrix-corner" aria-hidden="true">
+            <span class="mx">Valor →</span>
+            <span class="my">↑ Fricción</span>
+          </div>
+          <div class="matrix-cell go">
+            <strong>Avanzar</strong>
+            <span>Mayor valor · baja fricción → MVP automatizado + A/B a escala</span>
+          </div>
+          <div class="matrix-cell simplify">
+            <strong>Simplificar</strong>
+            <span>Hay valor · sube fricción → reducir el onboarding y re-testear</span>
+          </div>
+          <div class="matrix-cell reform">
+            <strong>Reformular</strong>
+            <span>Poco valor · poca fricción → revisar la causa del problema</span>
+          </div>
+          <div class="matrix-cell kill">
+            <strong>Descartar</strong>
+            <span>Empeora la experiencia → no escalar esta solución</span>
+          </div>
+        </div>
+
+        <div class="limits-row anim" style="--d:4">
+          <div class="limit"><b>Manual ≠ automático</b><span>Si la curación funciona, aún hay que probar el MVP</span></div>
+          <div class="limit"><b>Señal ≠ certeza</b><span>30–50 personas orientan; no prueban escala</span></div>
+          <div class="limit"><b>Perfil ≠ suscriptor</b><span>Perfil familiar nuevo ≠ cliente nuevo</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         09 · DEMO
+    ════════════════════════════════════ -->
+    <section class="slide" data-speaker="Cristian" data-demo>
+      <div class="stage stage-demo">
+        <div class="demo-copy anim" style="--d:0">
+          <header class="slide-head">
+            <span class="badge">07 · Artefacto</span>
+            <span class="kicker">Flujo crítico · Design System WebFlix</span>
+          </header>
+          <h2 class="title">Del perfil vacío al <span class="grad">primer play</span></h2>
+          <p class="lead tight">
+            Tres decisiones visibles; curación manual detrás. La IA aceleró el proceso —
+            <strong>no reemplaza la evidencia</strong> de usuarios.
+          </p>
+
+          <ol class="flow">
+            <li><span class="fn">1</span><div><strong>Swipe × 3</strong><i>Me gusta / descartar · ≤ 30 s</i></div></li>
+            <li><span class="fn">2</span><div><strong>Perfil inicial</strong><i>Tres señales explícitas</i></div></li>
+            <li><span class="fn">3</span><div><strong>Home curado</strong><i>WoZ: “recomendación automática”</i></div></li>
+            <li><span class="fn">4</span><div><strong>Play válido</strong><i>Activación sesión 1</i></div></li>
+          </ol>
+
+          <div class="ai-tools">
+            <div class="ai-t"><b>ChatGPT</b><span>Problema · hipótesis · guion</span></div>
+            <div class="ai-t"><b>Figma Make</b><span>UI · patrones · flujo</span></div>
+            <div class="ai-t"><b>Stitch</b><span>Exploración visual rápida</span></div>
+          </div>
+
+          <div class="callout">
+            Contingencia: iframe → video/GIF → capturas.
+            <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> · <kbd>D</kbd> salta aquí.
+          </div>
+        </div>
+
+        <div class="demo-device anim" style="--d:2" id="demo-device">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="demo-level is-active" data-level="1">
+                <img src="assets/home-phones.png" alt="Prototipo WebFlix">
+                <div class="demo-overlay">
+                  <span class="demo-badge">Nivel 1 · Interactivo</span>
+                  <p>Prototipo en vivo</p>
+                  <small>Figma Make · DS WebFlix</small>
+                </div>
+              </div>
+              <div class="demo-level" data-level="2">
+                <img src="assets/home-phones.png" alt="Video">
+                <div class="demo-overlay">
+                  <span class="demo-badge">Nivel 2 · Video</span>
+                  <p>GIF / Video local</p>
+                  <small>Si falla la red</small>
+                </div>
+              </div>
+              <div class="demo-level" data-level="3">
+                <img src="assets/home-phones.png" alt="Capturas">
+                <div class="demo-overlay">
+                  <span class="demo-badge">Nivel 3 · Offline</span>
+                  <p>Capturas del flujo</p>
+                  <small>Plan B</small>
+                </div>
+              </div>
+            </div>
+            <div class="phone-bar"></div>
+          </div>
+          <div class="demo-dots">
+            <button type="button" class="dot is-on" data-goto="1" aria-label="Nivel 1"></button>
+            <button type="button" class="dot" data-goto="2" aria-label="Nivel 2"></button>
+            <button type="button" class="dot" data-goto="3" aria-label="Nivel 3"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         10 · EL ASK (honesto)
+    ════════════════════════════════════ -->
+    <section class="slide" data-speaker="Cristian">
+      <div class="stage">
+        <header class="slide-head anim" style="--d:0">
+          <span class="badge">08 · El Ask</span>
+          <span class="kicker">Acceso y aprendizaje · No presupuesto de motor</span>
+        </header>
+        <h2 class="title anim" style="--d:1">
+          Bajo riesgo. Alto aprendizaje.<br>
+          <span class="grad">Pedimos acceso, no un rebuild.</span>
+        </h2>
+        <p class="lead tight anim" style="--d:2">
+          El costo de este experimento es menor al costo de seguir sobre-adquiriendo
+          para compensar churn temprano. No pedimos reescribir el motor hoy.
+        </p>
+
+        <div class="ask-grid anim" style="--d:2">
+          <div class="ask-card">
+            <span class="ask-n" style="--c:#a78bfa">01</span>
+            <div>
+              <h3>Aval para ejecutar el experimento</h3>
+              <p>Autorización para reclutar 30–50 usuarios nuevos y exponer el onboarding modificado durante 2 semanas.</p>
+            </div>
+          </div>
+          <div class="ask-card">
+            <span class="ask-n" style="--c:#22d3ee">02</span>
+            <div>
+              <h3>Acceso a datos de analítica</h3>
+              <p>Watch Time, tasa de play día 1 y señales de retorno del segmento nuevo — para instrumentar y comparar brazos.</p>
+            </div>
+          </div>
+          <div class="ask-card">
+            <span class="ask-n" style="--c:#fbbf24">03</span>
+            <div>
+              <h3>Soporte técnico del prototipo</h3>
+              <p>Instrumentar eventos del WoZ y preparar el spike de factibilidad en paralelo (latencia, metadatos, errores).</p>
+            </div>
+          </div>
+          <div class="ask-card">
+            <span class="ask-n" style="--c:#4ade80">04</span>
+            <div>
+              <h3>Checkpoint de decisión en 14 días</h3>
+              <p>Revisión go / iterate / kill con los criterios ya definidos. Solo si confirma: automatizar mínimo y A/B a escala.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="next-steps anim" style="--d:3">
+          <div class="ns"><span>01</span><b>Línea base</b><i>Recluta · consentimiento · tasas actuales</i></div>
+          <div class="ns"><span>02</span><b>Ejecutar 2 semanas</b><i>Control vs experimental · 7d/persona</i></div>
+          <div class="ns"><span>03</span><b>Analizar la cadena</b><i>Play · fricción · retorno · cuali</i></div>
+          <div class="ns"><span>04</span><b>Automatizar si hay señal</b><i>Solo con valor y baja fricción</i></div>
+        </div>
+        <p class="quote-bar anim" style="--d:4">
+          “No necesitamos un algoritmo más complejo primero. Necesitamos saber si tres señales bastan.”
+        </p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         11 · CIERRE
+    ════════════════════════════════════ -->
+    <section class="slide" data-theme="immersive" data-no-logo data-speaker="Cristian">
+      <div class="stage stage-center">
+        <p class="eyebrow anim" style="--d:0">WebFlix · Grupo 5</p>
+        <h1 class="display-xl anim" style="--d:1">Gracias.</h1>
+        <p class="display-sub anim" style="--d:2">¿Preguntas?</p>
+
+        <div class="team-grid thanks anim" style="--d:3">
+          <article class="team-card c-purple sm">
+            <img src="assets/Erick.png" alt="Erick">
+            <h3>Erick</h3>
+            <p class="role">Problema · Evidencia</p>
+          </article>
+          <article class="team-card c-amber sm">
+            <img src="assets/Tami.png" alt="Tamara">
+            <h3>Tamara</h3>
+            <p class="role">Hipótesis · Mecanismo</p>
+          </article>
+          <article class="team-card c-cyan sm">
+            <img src="assets/Vale.png" alt="Valeria">
+            <h3>Valeria</h3>
+            <p class="role">Experimento · Métricas</p>
+          </article>
+          <article class="team-card c-green sm">
+            <img src="assets/Cris.png" alt="Cristian">
+            <h3>Cristian</h3>
+            <p class="role">Demo · Ask</p>
+          </article>
+        </div>
+
+        <div class="story-rail close-rail anim" style="--d:4" aria-hidden="true">
+          <div class="story-step c-purple"><span>1</span><b>Problema</b></div>
+          <div class="story-join"></div>
+          <div class="story-step c-amber"><span>2</span><b>Hipótesis</b></div>
+          <div class="story-join"></div>
+          <div class="story-step c-cyan"><span>3</span><b>WoZ</b></div>
+          <div class="story-join"></div>
+          <div class="story-step c-green"><span>4</span><b>Decisión</b></div>
+        </div>
+        <p class="close-line anim" style="--d:4">
+          Day-7 es el outcome de la fase 2 — no la promesa de hoy.
+        </p>
+      </div>
+    </section>
+
+    <!-- Chrome UI -->
+    <div class="speaker-tag" id="speaker-tag" hidden>
+      <img id="speaker-img" src="" alt="">
+      <span id="speaker-name"></span>
+    </div>
+
+    <!-- Timer siempre visible · T pause · R reset · H extras presentador -->
+    <div class="timer" id="timer" data-state="ok" title="T pause · R reset">
+      <span class="timer-time" id="timer-time">00:00</span>
+    </div>
+
+    <div class="hud" id="hud" hidden>
+      <div class="counter" id="counter">01 / 11</div>
+      <div class="nav-hint">H ocultar · T pause · R reset · D demo · F fullscreen</div>
+    </div>
+
+    <div class="progress"><div class="progress-fill" id="progress"></div></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

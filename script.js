@@ -1,78 +1,79 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const slides = document.querySelectorAll('.slide');
-  const progressBar = document.getElementById('progress-bar');
-  const slideCounter = document.getElementById('slide-counter');
-  const deckLogo = document.getElementById('deck-logo');
-  const demoLevels = document.querySelectorAll('[data-demo-level]');
-  const timerEl = document.getElementById('pitch-timer');
-  const timerTimeEl = document.getElementById('pitch-timer-time');
+/* WebFlix Pitch Deck · navigation, timer, demo levels */
 
-  let currentSlide = 0;
-  let currentDemoLevel = 1;
+document.addEventListener("DOMContentLoaded", () => {
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  const progress = document.getElementById("progress");
+  const counter = document.getElementById("counter");
+  const chromeLogo = document.getElementById("chrome-logo");
+  const speakerTag = document.getElementById("speaker-tag");
+  const speakerImg = document.getElementById("speaker-img");
+  const speakerName = document.getElementById("speaker-name");
+  const hudEl = document.getElementById("hud");
+  const timerEl = document.getElementById("timer");
+  const timerTime = document.getElementById("timer-time");
 
-  // 0 teaser · 1 portada · … · demo = 8
-  const DEMO_SLIDE_INDEX = 8;
-  const COVER_SLIDE_INDEX = 1;
+  const SPEAKERS = {
+    Erick: { name: "Erick Fuentealba", img: "assets/Erick.png" },
+    Tamara: { name: "Tamara Valdivia", img: "assets/Tami.png" },
+    Valeria: { name: "Valeria Nieto", img: "assets/Vale.png" },
+    Cristian: { name: "Cristian Pizarro", img: "assets/Cris.png" },
+  };
+
+  const DEMO_INDEX = slides.findIndex((s) => s.hasAttribute("data-demo"));
   const total = slides.length;
+  let current = 0;
+  let demoLevel = 1;
+  let hudVisible = false;
+  let timerArmed = false; // auto-start once when leaving cover
 
-  // Timer: meta 8 min, máximo 10 min
+  // Timer: meta 8 min, max 10 min
   const WARN_MS = 8 * 60 * 1000;
   const DANGER_MS = 10 * 60 * 1000;
   let timerStartedAt = null;
-  let timerAccumulatedMs = 0;
+  let timerAccumulated = 0;
   let timerRunning = false;
   let timerRaf = null;
 
   function pad(n) {
-    return String(n).padStart(2, '0');
+    return String(n).padStart(2, "0");
   }
 
   function formatMs(ms) {
-    const totalSec = Math.floor(ms / 1000);
-    const m = Math.floor(totalSec / 60);
-    const s = totalSec % 60;
-    return `${pad(m)}:${pad(s)}`;
+    const sec = Math.floor(ms / 1000);
+    return `${pad(Math.floor(sec / 60))}:${pad(sec % 60)}`;
   }
 
-  function getElapsedMs() {
-    if (!timerRunning || timerStartedAt == null) return timerAccumulatedMs;
-    return timerAccumulatedMs + (Date.now() - timerStartedAt);
+  function elapsed() {
+    if (!timerRunning || timerStartedAt == null) return timerAccumulated;
+    return timerAccumulated + (Date.now() - timerStartedAt);
   }
 
   function timerState(ms) {
-    if (ms >= DANGER_MS) return 'danger';
-    if (ms >= WARN_MS) return 'warn';
-    return 'ok';
+    if (ms >= DANGER_MS) return "danger";
+    if (ms >= WARN_MS) return "warn";
+    return "ok";
   }
 
   function renderTimer() {
-    const elapsed = getElapsedMs();
-    if (timerTimeEl) timerTimeEl.textContent = formatMs(elapsed);
-    if (timerEl) timerEl.dataset.state = timerState(elapsed);
-  }
-
-  function tickTimer() {
-    renderTimer();
-    if (timerRunning) {
-      timerRaf = requestAnimationFrame(tickTimer);
-    }
+    const ms = elapsed();
+    if (timerTime) timerTime.textContent = formatMs(ms);
+    if (timerEl) timerEl.dataset.state = timerState(ms);
+    if (timerRunning) timerRaf = requestAnimationFrame(renderTimer);
   }
 
   function startTimer() {
     if (timerRunning) return;
     timerRunning = true;
     timerStartedAt = Date.now();
-    if (timerRaf) cancelAnimationFrame(timerRaf);
-    timerRaf = requestAnimationFrame(tickTimer);
+    renderTimer();
   }
 
   function pauseTimer() {
     if (!timerRunning) return;
-    timerAccumulatedMs = getElapsedMs();
+    timerAccumulated = elapsed();
     timerRunning = false;
     timerStartedAt = null;
     if (timerRaf) cancelAnimationFrame(timerRaf);
-    timerRaf = null;
     renderTimer();
   }
 
@@ -84,162 +85,197 @@ document.addEventListener('DOMContentLoaded', () => {
   function resetTimer() {
     timerRunning = false;
     timerStartedAt = null;
-    timerAccumulatedMs = 0;
+    timerAccumulated = 0;
+    timerArmed = false;
     if (timerRaf) cancelAnimationFrame(timerRaf);
-    timerRaf = null;
     renderTimer();
   }
 
-  /** Arranca el timer al salir del teaser + portada (primera vez) */
-  function maybeAutoStartTimer() {
-    if (
-      currentSlide > COVER_SLIDE_INDEX &&
-      timerAccumulatedMs === 0 &&
-      !timerRunning &&
-      timerStartedAt == null
-    ) {
+  /** Arranca el cronómetro la primera vez que salimos de la portada (slide 2+). */
+  function maybeArmTimer(index) {
+    if (index >= 1 && !timerArmed) {
+      timerArmed = true;
       startTimer();
     }
   }
 
-  function updateSlides() {
-    slides.forEach((slide, index) => {
-      slide.classList.toggle('active', index === currentSlide);
-    });
-
-    const progress = ((currentSlide + 1) / total) * 100;
-    if (progressBar) progressBar.style.width = `${progress}%`;
-    if (slideCounter) {
-      slideCounter.textContent = `${pad(currentSlide + 1)} / ${pad(total)}`;
-    }
-    // Logo global solo en slides de contenido (después de teaser + portada)
-    if (deckLogo) {
-      deckLogo.hidden = currentSlide <= COVER_SLIDE_INDEX;
-    }
-    maybeAutoStartTimer();
+  function setHud(visible) {
+    hudVisible = visible;
+    if (hudEl) hudEl.hidden = !visible;
+    // speaker tag only in presenter extras
+    if (!visible && speakerTag) speakerTag.hidden = true;
+    else if (visible) updateSpeaker(slides[current]);
   }
 
-  function nextSlide() {
-    if (currentSlide < total - 1) {
-      currentSlide++;
-      updateSlides();
-    }
-  }
-
-  function prevSlide() {
-    if (currentSlide > 0) {
-      currentSlide--;
-      updateSlides();
-    }
-  }
-
-  function goToSlide(index) {
-    if (index >= 0 && index < total) {
-      currentSlide = index;
-      updateSlides();
-    }
+  function toggleHud() {
+    setHud(!hudVisible);
   }
 
   function setDemoLevel(level) {
-    currentDemoLevel = level;
-    demoLevels.forEach((el) => {
-      el.classList.toggle('is-active', Number(el.dataset.demoLevel) === level);
+    demoLevel = Math.min(3, Math.max(1, level));
+    document.querySelectorAll(".demo-level").forEach((el) => {
+      el.classList.toggle("is-active", Number(el.dataset.level) === demoLevel);
+    });
+    document.querySelectorAll(".dot").forEach((el) => {
+      el.classList.toggle("is-on", Number(el.dataset.goto) === demoLevel);
     });
   }
 
-  function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch((err) => {
-        console.log(`Error al intentar activar pantalla completa: ${err.message}`);
-      });
-    } else {
-      document.exitFullscreen();
+  function updateSpeaker(slide) {
+    if (!hudVisible || !speakerTag) {
+      if (speakerTag) speakerTag.hidden = true;
+      return;
     }
+    const key = slide.dataset.speaker;
+    const info = key && SPEAKERS[key];
+    if (!info || slide.dataset.theme === "immersive") {
+      speakerTag.hidden = true;
+      return;
+    }
+    speakerImg.src = info.img;
+    speakerImg.alt = info.name;
+    speakerName.textContent = info.name;
+    speakerTag.hidden = false;
   }
 
-  function isInteractiveTarget(target) {
-    const tag = target.tagName ? target.tagName.toLowerCase() : '';
-    return tag === 'a' || tag === 'button' || tag === 'input' || tag === 'textarea' || tag === 'iframe';
+  function goTo(index) {
+    if (index < 0 || index >= total) return;
+
+    if (index !== current) {
+      slides[current].classList.remove("is-active");
+      current = index;
+      slides[current].classList.add("is-active");
+    } else if (!slides[current].classList.contains("is-active")) {
+      slides[current].classList.add("is-active");
+    }
+
+    maybeArmTimer(current);
+
+    const slide = slides[current];
+    const pct = ((current + 1) / total) * 100;
+    if (progress) progress.style.width = `${pct}%`;
+    if (counter) {
+      counter.textContent = `${pad(current + 1)} / ${pad(total)}`;
+    }
+
+    const hideLogo = slide.hasAttribute("data-no-logo");
+    if (chromeLogo) chromeLogo.hidden = hideLogo;
+
+    updateSpeaker(slide);
   }
 
-  document.addEventListener('keydown', (e) => {
+  function next() {
+    goTo(Math.min(total - 1, current + 1));
+  }
+
+  function prev() {
+    goTo(Math.max(0, current - 1));
+  }
+
+  document.getElementById("deck").addEventListener("click", (e) => {
+    if (e.target.closest("button, a, kbd, .dot, .timer, .speaker-tag, .hud, #timer")) return;
+    const x = e.clientX / window.innerWidth;
+    if (x < 0.22) prev();
+    else next();
+  });
+
+  document.querySelectorAll(".dot").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setDemoLevel(Number(btn.dataset.goto));
+    });
+  });
+
+  document.addEventListener("keydown", (e) => {
+    const tag = (e.target && e.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+
     switch (e.key) {
-      case 'ArrowRight':
-      case 'PageDown':
+      case "ArrowRight":
+      case "ArrowDown":
+      case " ":
+      case "PageDown":
         e.preventDefault();
-        nextSlide();
+        next();
         break;
-      case ' ':
+      case "ArrowLeft":
+      case "ArrowUp":
+      case "PageUp":
+      case "Backspace":
         e.preventDefault();
-        nextSlide();
+        prev();
         break;
-      case 'ArrowLeft':
-      case 'PageUp':
+      case "Home":
         e.preventDefault();
-        prevSlide();
+        goTo(0);
         break;
-      case 'Home':
+      case "End":
         e.preventDefault();
-        goToSlide(0);
+        goTo(total - 1);
         break;
-      case 'End':
-        e.preventDefault();
-        goToSlide(total - 1);
+      case "h":
+      case "H":
+        toggleHud();
         break;
-      case 'd':
-      case 'D':
-        goToSlide(DEMO_SLIDE_INDEX);
-        break;
-      case '1':
-      case '2':
-      case '3':
-        setDemoLevel(Number(e.key));
-        if (currentSlide !== DEMO_SLIDE_INDEX) goToSlide(DEMO_SLIDE_INDEX);
-        break;
-      case 'f':
-      case 'F':
-        toggleFullScreen();
-        break;
-      case 't':
-      case 'T':
-        e.preventDefault();
+      case "t":
+      case "T":
         toggleTimer();
         break;
-      case 'r':
-      case 'R':
-        e.preventDefault();
+      case "r":
+      case "R":
         resetTimer();
+        if (current >= 1) {
+          timerArmed = true;
+          startTimer();
+        }
+        break;
+      case "d":
+      case "D":
+        if (DEMO_INDEX >= 0) goTo(DEMO_INDEX);
+        break;
+      case "1":
+      case "2":
+      case "3":
+        if (current === DEMO_INDEX) setDemoLevel(Number(e.key));
+        break;
+      case "f":
+      case "F":
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen?.();
+        } else {
+          document.exitFullscreen?.();
+        }
         break;
       default:
         break;
     }
   });
 
-  document.addEventListener('mousedown', (e) => {
-    if (isInteractiveTarget(e.target)) return;
-    if (e.target.closest && e.target.closest('#demo-mockup')) return;
-    if (e.target.closest && e.target.closest('#pitch-timer')) {
-      // Clic en timer: pause/play
-      toggleTimer();
-      return;
-    }
-    if (e.button === 0) nextSlide();
-  });
+  let touchX = null;
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+      touchX = e.changedTouches[0].screenX;
+    },
+    { passive: true }
+  );
+  document.addEventListener(
+    "touchend",
+    (e) => {
+      if (touchX == null) return;
+      const dx = e.changedTouches[0].screenX - touchX;
+      if (Math.abs(dx) > 50) {
+        if (dx < 0) next();
+        else prev();
+      }
+      touchX = null;
+    },
+    { passive: true }
+  );
 
-  let touchstartX = 0;
-  let touchendX = 0;
-
-  document.addEventListener('touchstart', (e) => {
-    touchstartX = e.changedTouches[0].screenX;
-  }, { passive: true });
-
-  document.addEventListener('touchend', (e) => {
-    touchendX = e.changedTouches[0].screenX;
-    if (touchendX < touchstartX - 50) nextSlide();
-    if (touchendX > touchstartX + 50) prevSlide();
-  }, { passive: true });
-
-  setDemoLevel(currentDemoLevel);
+  // Init — timer visible; extras de presentador ocultos
+  setHud(false);
+  goTo(0);
   renderTimer();
-  updateSlides();
+  setDemoLevel(1);
 });
