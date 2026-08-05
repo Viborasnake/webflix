@@ -877,27 +877,49 @@ body {
   gap: 0;
 }
 
-/* Párrafos seguidos: flujo de guion, no lista con cortes */
-.say-body p {
-  font-size: 15.5px;
-  line-height: 1.62;
-  color: rgba(248, 250, 252, 0.92);
-  margin: 0;
-  padding: 0.55rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+.say-line {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.say-body p:first-child {
+.say-line:first-child {
   padding-top: 0;
 }
 
-.say-body p:last-child {
+.say-line:last-child {
   padding-bottom: 0;
   border-bottom: none;
 }
 
-.say-body p::before {
-  content: none;
+/* Parlamento (guion) */
+.say-text {
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: rgba(248, 250, 252, 0.92);
+  margin: 0;
+}
+
+/* Hint: frase directa de la slideshow */
+.say-hint {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #c4b5fd;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.say-hint-lab {
+  display: inline-block;
+  margin-right: 0.45rem;
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(167, 139, 250, 0.75);
+  vertical-align: 0.05em;
 }
 
 .tips-grid {

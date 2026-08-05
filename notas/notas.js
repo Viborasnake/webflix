@@ -446,7 +446,16 @@
     }
 
     const say = $("now-say");
-    say.innerHTML = (note.say || []).map((line) => `<p>${line}</p>`).join("");
+    say.innerHTML = (note.say || [])
+      .map((line) => {
+        const text = typeof line === "string" ? line : line.text || "";
+        const hint = typeof line === "string" ? "" : line.hint || "";
+        const hintHtml = hint
+          ? `<span class="say-hint"><span class="say-hint-lab">En slide</span>${hint}</span>`
+          : "";
+        return `<div class="say-line"><p class="say-text">${text}</p>${hintHtml}</div>`;
+      })
+      .join("");
     fillList($("now-highlight"), note.highlight);
     fillList($("now-avoid"), note.avoid);
     renderGlossary(note);
