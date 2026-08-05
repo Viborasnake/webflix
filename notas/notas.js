@@ -724,6 +724,14 @@
 
   function onLiveState(state) {
     if (!state || typeof state.slide !== "number") return;
+
+    // Solo el deck en modo "Emitir" mueve las notas.
+    // Así un revisor que navega el pitch no te saca del guion.
+    // (Estados viejos sin broadcast se ignoran.)
+    if (state.broadcast !== true) {
+      return;
+    }
+
     hasLive = true;
 
     // Reinicio total desde el deck
@@ -775,12 +783,18 @@
         );
       } else if (otherHasControl()) updateFollowUI();
       else if (st === "online") {
-        setSyncLabel("online", hasLive ? "Online global · en seguimiento" : "Online · esperando deck…");
+        setSyncLabel(
+          "online",
+          hasLive
+            ? "Online · siguiendo al presentador"
+            : "Online · esperando Emitir en el deck…"
+        );
       } else if (st === "reconnect") setSyncLabel("reconnect");
-      else if (!hasLive && (st === "wait" || st === "init")) setSyncLabel("wait");
-      else if (!followLive) updateFollowUI();
+      else if (!hasLive && (st === "wait" || st === "init")) {
+        setSyncLabel("wait", "Esperando deck en modo Emitir…");
+      } else if (!followLive) updateFollowUI();
       else if (hasLive) setSyncLabel(st === "local" ? "solo" : "live");
-      else if (st === "local") setSyncLabel("solo");
+      else if (st === "local") setSyncLabel("solo", "Local · sin presentador emitiendo");
     });
   } else {
     setSyncLabel("solo", "Sync no cargó · solo local");

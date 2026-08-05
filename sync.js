@@ -1,9 +1,10 @@
 /**
  * WebFlix pitch sync bus — multi-ubicación
  * ─────────────────────────────────────────────
- * DECK publica estado (slide + timer).
- * NOTAS escuchan; browse libre es local.
- * NOTAS en control envían COMMANDS al deck.
+ * DECK en modo PRESENTAR (Emitir) publica estado (slide + timer).
+ * DECK en modo revisar NO publica → no mueve /notas.
+ * NOTAS solo siguen estados con broadcast:true.
+ * NOTAS browse libre es local; en control envían COMMANDS al deck.
  * CONTROL exclusivo entre notas (claim/release/clear).
  *
  * Transportes (en paralelo):
@@ -12,13 +13,13 @@
  *  3) PeerJS (opcional, refuerzo misma red)
  *
  * URLs simples: /  y  /notas/  (mismo room por defecto).
- * Opcional: ?room=codigo si quieren otra sala.
+ * Opcional: ?room=codigo · deck ?present=1 para emitir.
  */
 (function (global) {
-  const CHANNEL = "webflix-pitch-sync-v3";
-  const STORAGE_KEY = "webflix-pitch-state-v3";
-  const COMMAND_KEY = "webflix-pitch-cmd-v3";
-  const CONTROL_KEY = "webflix-pitch-control-v3";
+  const CHANNEL = "webflix-pitch-sync-v4";
+  const STORAGE_KEY = "webflix-pitch-state-v4";
+  const COMMAND_KEY = "webflix-pitch-cmd-v4";
+  const CONTROL_KEY = "webflix-pitch-control-v4";
   /** Room por defecto del equipo (cámbialo si hay interferencia) */
   const DEFAULT_ROOM = "webflix-grupo5-eep";
   const MQTT_CDN = "https://unpkg.com/mqtt@5.10.4/dist/mqtt.min.js";
@@ -48,7 +49,8 @@
   function topics(room) {
     const base = "webflix/" + room;
     return {
-      state: base + "/state",
+      // v4: solo presentadores emiten; invalida retain viejo de revisores
+      state: base + "/state-v4",
       cmd: base + "/cmd",
       control: base + "/control",
     };
@@ -377,11 +379,11 @@
             client.subscribe(T.state, { qos: 0 });
             client.subscribe(T.control, { qos: 0 });
           }
-          // Deck: re-publicar estado actual con retain para late joiners
-          if (role === "deck" && latest) {
-            mqttPublish(T.state, latest);
-          }
-          // Notes: pedir nada; state retained llega solo
+          // Deck: NO re-publicar bootstrap de localStorage al conectar.
+          // Solo el modo "Emitir" del deck hace publish() (heartbeat).
+          // Si re-publicáramos aquí, un revisor re-emitiría el último estado
+          // y movería las notas de todo el equipo.
+          // Notes: state retained del presentador llega solo
           setStatus("online");
         });
 

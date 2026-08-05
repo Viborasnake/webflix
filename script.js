@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const hudEl = document.getElementById("hud");
   const timerEl = document.getElementById("timer");
   const timerTime = document.getElementById("timer-time");
+  const btnPresent = document.getElementById("btn-present");
+  const presentLabel = document.getElementById("present-label");
 
   const SPEAKERS = {
     Erick: { name: "Erick Fuentealba", img: "assets/Erick.png" },
@@ -40,6 +42,75 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastPublishAt = 0;
   /** Se incrementa en cada reinicio total para que las notas limpien control */
   let sessionEpoch = 0;
+
+  /**
+   * Solo el deck en modo PRESENTAR emite slide/timer a /notas.
+   * Por defecto OFF: revisar el deck no mueve las notas de nadie.
+   * Activa con ?present=1, tecla E, o el botón "Emitir".
+   */
+  const PRESENT_KEY = "webflix-deck-present";
+  function readPresentFlag() {
+    try {
+      const q = new URLSearchParams(window.location.search);
+      if (q.get("present") === "1" || q.get("emit") === "1") return true;
+      if (q.get("present") === "0" || q.get("review") === "1") return false;
+      return sessionStorage.getItem(PRESENT_KEY) === "1";
+    } catch (_) {
+      return false;
+    }
+  }
+  let isPresenter = readPresentFlag();
+
+  function getPresenterId() {
+    try {
+      let id = sessionStorage.getItem("webflix-deck-pid");
+      if (!id) {
+        id =
+          (crypto.randomUUID && crypto.randomUUID()) ||
+          "d-" + Math.random().toString(36).slice(2, 10);
+        sessionStorage.setItem("webflix-deck-pid", id);
+      }
+      return id;
+    } catch (_) {
+      return "d-" + Math.random().toString(36).slice(2, 10);
+    }
+  }
+  const PRESENTER_ID = getPresenterId();
+
+  function updatePresentUI() {
+    if (btnPresent) {
+      btnPresent.classList.toggle("is-on", isPresenter);
+      btnPresent.setAttribute("aria-pressed", isPresenter ? "true" : "false");
+      btnPresent.title = isPresenter
+        ? "E · Dejar de emitir (las notas dejan de seguir este deck)"
+        : "E · Emitir a /notas. Apagado = revisar sin mover las notas de nadie";
+    }
+    if (presentLabel) {
+      presentLabel.textContent = isPresenter ? "Emitiendo" : "Revisar";
+    }
+  }
+
+  function setPresenter(on, opts) {
+    const next = !!on;
+    const forcePublish = opts && opts.forcePublish;
+    if (next === isPresenter && !forcePublish) {
+      updatePresentUI();
+      return;
+    }
+    isPresenter = next;
+    try {
+      sessionStorage.setItem(PRESENT_KEY, isPresenter ? "1" : "0");
+    } catch (_) { /* private mode */ }
+    updatePresentUI();
+    if (isPresenter) {
+      // Anuncia este deck como fuente de verdad
+      publish(true);
+    }
+  }
+
+  function togglePresenter() {
+    setPresenter(!isPresenter);
+  }
 
   function pad(n) {
     return String(n).padStart(2, "0");
@@ -73,11 +144,16 @@ document.addEventListener("DOMContentLoaded", () => {
       timerArmed,
       sessionEpoch,
       speaker: slides[current] && slides[current].dataset.speaker,
+      // Las notas solo siguen estados con broadcast:true (modo presentador)
+      broadcast: true,
+      presenterId: PRESENTER_ID,
     };
   }
 
   function publish(force) {
     if (!bus) return;
+    // Revisores: navegan en silencio. Solo el presentador mueve /notas.
+    if (!isPresenter) return;
     const now = Date.now();
     // Throttle heartbeats; siempre forzar en cambios de slide
     if (!force && now - lastPublishAt < 400) return;
@@ -343,7 +419,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.getElementById("deck").addEventListener("click", (e) => {
-    if (e.target.closest("button, a, kbd, .dot, .timer, .speaker-tag, .hud, #timer")) return;
+    if (
+      e.target.closest(
+        "button, a, kbd, .dot, .timer, .speaker-tag, .hud, #timer, .present-btn, .deck-top-right"
+      )
+    )
+      return;
     const x = e.clientX / window.innerWidth;
     if (x < 0.22) prev();
     else next();
@@ -524,6 +605,11 @@ document.addEventListener("DOMContentLoaded", () => {
           toggleDemoVideo();
         }
         break;
+      case "e":
+      case "E":
+        e.preventDefault();
+        togglePresenter();
+        break;
       case "f":
       case "F":
         if (!document.fullscreenElement) {
@@ -565,6 +651,14 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   setHud(false);
+  updatePresentUI();
+  if (btnPresent) {
+    btnPresent.addEventListener("click", (e) => {
+      e.stopPropagation();
+      togglePresenter();
+    });
+  }
+
   // Init limpio: portada, timer en 0, demo 1 (sin armar cronómetro)
   demoLevel = 1;
   document.querySelectorAll(".demo-level").forEach((el) => {
@@ -575,6 +669,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   goTo(0, { noArm: true });
   renderTimer();
+  // Solo emite si este deck es el presentador (no al revisar)
   publish(true);
 
   // Re-publicar al recuperar foco (clientes que se reconectan)
@@ -593,12 +688,18 @@ document.addEventListener("DOMContentLoaded", () => {
           : st === "reconnect"
             ? "Reconectando…"
             : "Local / misma red";
+      const mode = isPresenter ? "Emitiendo → notas" : "Solo revisar";
       timerEl.title =
-        "T pause · R reset · Shift+R sesión 0 · " + net + " · room=" + room;
+        "T pause · R reset · E emitir · Shift+R sesión 0 · " +
+        mode +
+        " · " +
+        net +
+        " · room=" +
+        room;
     });
   }
 
-  // Heartbeat de estado por si MQTT reconecta
+  // Heartbeat de estado por si MQTT reconecta (solo presentador)
   setInterval(() => {
     if (!document.hidden) publish(true);
   }, 4000);
