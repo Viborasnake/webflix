@@ -21,8 +21,12 @@ window.WEBFLIX_NOTES = [
         hint: "Perdemos 1 de cada 3 usuarios antes de que la app los conozca.",
       },
     ],
-    highlight: ["Saludo + equipo en una frase", "Pausa tras el hook"],
-    avoid: ["No alargar el saludo", "No prometer Day-7 hoy"],
+    highlight: [
+      "Saludo + equipo en una frase",
+      "Pausa tras el hook",
+      "Opcional, 1 frase: “también construimos el design system de WebFlix”",
+    ],
+    avoid: ["No alargar el saludo", "No prometer Day-7 hoy", "No detenerse en la marca"],
     glossary: ["Day-7", "cold-start", "primer-momento-valor", "outcome"],
   },
   {
