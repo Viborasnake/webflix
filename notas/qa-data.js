@@ -166,12 +166,12 @@ window.WEBFLIX_QA = {
       cat: "falacia",
       tag: "Trampa",
       who: "Cris",
-      q: "“Es un pitch de IA, no de experimentación.”",
+      q: "“Esto es solo un demo de IA, no experimentación.”",
       pista:
         "IA = copiloto de proceso. El centro es hipótesis falsable, control vs experimental, umbrales y decisión predefinida. Sin evidencia de usuarios no hay claim.",
     },
 
-    // ── Coherencia del pitch ────────────────────────
+    // ── Coherencia del argumento ────────────────────────
     {
       id: "coh-arco",
       cat: "coherencia",
