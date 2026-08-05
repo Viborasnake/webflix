@@ -171,8 +171,9 @@ document.addEventListener("DOMContentLoaded", () => {
     speakerTag.hidden = false;
   }
 
-  function goTo(index) {
+  function goTo(index, opts) {
     if (index < 0 || index >= total) return;
+    const noArm = opts && opts.noArm;
 
     if (index !== current) {
       slides[current].classList.remove("is-active");
@@ -182,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
       slides[current].classList.add("is-active");
     }
 
-    maybeArmTimer(current);
+    if (!noArm) maybeArmTimer(current);
 
     const slide = slides[current];
     const pct = ((current + 1) / total) * 100;
@@ -195,6 +196,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (chromeLogo) chromeLogo.hidden = hideLogo;
 
     updateSpeaker(slide);
+    publish(true);
+  }
+
+  /** Reinicio total: portada, timer 00:00, demo nivel 1, sin armar cronómetro */
+  function resetSession() {
+    resetTimer();
+    setDemoLevel(1);
+    goTo(0, { noArm: true });
     publish(true);
   }
 
@@ -229,6 +238,9 @@ document.addEventListener("DOMContentLoaded", () => {
             timerArmed = true;
             startTimer();
           }
+          break;
+        case "session-reset":
+          resetSession();
           break;
         case "demo-level":
           if (typeof cmd.level === "number") setDemoLevel(cmd.level);
@@ -290,10 +302,21 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case "r":
       case "R":
-        resetTimer();
-        if (current >= 1) {
-          timerArmed = true;
-          startTimer();
+        if (e.shiftKey) {
+          e.preventDefault();
+          resetSession();
+        } else {
+          resetTimer();
+          if (current >= 1) {
+            timerArmed = true;
+            startTimer();
+          }
+        }
+        break;
+      case "0":
+        if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+          e.preventDefault();
+          resetSession();
         }
         break;
       case "d":

@@ -500,12 +500,40 @@
 
   function sendCmd(cmd, extra) {
     if (!bus || typeof bus.sendCommand !== "function") return;
-    if (!controlMode) return; // solo el dueño del control mueve el deck
+    // session-reset puede mandarlo cualquiera; el resto solo con control
+    if (cmd !== "session-reset" && !controlMode) return;
     bus.sendCommand(cmd, {
       controllerId: SESSION_ID,
       controllerName: SESSION_NAME,
       ...extra,
     });
+  }
+
+  /** Reinicio total local + deck: slide 0, timer 00:00, sin control, seguimiento */
+  function resetSessionAll() {
+    const ok = window.confirm(
+      "¿Reiniciar la sesión desde cero?\n\n• Slide 01 (portada)\n• Timer 00:00\n• Se suelta el control remoto\n• Afecta al deck y a todos en la sala"
+    );
+    if (!ok) return;
+
+    // Local
+    if (controlMode) releaseControlBroadcast();
+    controlMode = false;
+    stopHeartbeat();
+    followLive = true;
+    liveAdvancedWhileBrowsing = false;
+    viewSlide = 0;
+    liveSlide = 0;
+    hasLive = true;
+    timerRunning = false;
+    timerStartedAt = null;
+    timerAccumulated = 0;
+    if (timerRaf) cancelAnimationFrame(timerRaf);
+    renderTimer();
+
+    // Deck + otros
+    sendCmd("session-reset");
+    renderView();
   }
 
   /** Navegación: libre (solo local) o control (mueve el deck) */
@@ -710,6 +738,7 @@
 
   const btnTimer = $("btn-timer");
   const btnReset = $("btn-reset");
+  const btnSessionReset = $("btn-session-reset");
   if (btnTimer) {
     btnTimer.addEventListener("click", () => {
       if (!controlMode) setControlMode(true);
@@ -721,6 +750,9 @@
       if (!controlMode) setControlMode(true);
       sendCmd("timer-reset");
     });
+  }
+  if (btnSessionReset) {
+    btnSessionReset.addEventListener("click", () => resetSessionAll());
   }
 
   document.addEventListener("keydown", (e) => {
@@ -788,9 +820,18 @@
         break;
       case "r":
       case "R":
-        if (controlMode) {
+        if (e.shiftKey) {
+          e.preventDefault();
+          resetSessionAll();
+        } else if (controlMode) {
           e.preventDefault();
           sendCmd("timer-reset");
+        }
+        break;
+      case "0":
+        if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+          e.preventDefault();
+          resetSessionAll();
         }
         break;
       default:

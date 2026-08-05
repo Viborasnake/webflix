@@ -37,8 +37,11 @@
         </button>
         <button type="button" class="btn" id="btn-prev" title="Anterior">←</button>
         <button type="button" class="btn" id="btn-next" title="Siguiente">→</button>
-        <button type="button" class="btn ghost" id="btn-timer" title="T · solo en control">T</button>
-        <button type="button" class="btn ghost" id="btn-reset" title="R · solo en control">R</button>
+        <button type="button" class="btn ghost" id="btn-timer" title="T · pause/play timer (con control)">T</button>
+        <button type="button" class="btn ghost" id="btn-reset" title="R · reinicia timer y reanuda si ya salieron de portada">R</button>
+        <button type="button" class="btn danger-ghost" id="btn-session-reset" title="Shift+R o 0 · slide 01, timer 00:00, todo limpio">
+          Reiniciar 0
+        </button>
       </div>
     </header>
 
@@ -147,7 +150,7 @@
     </section>
 
     <footer class="foot">
-      <span><kbd>Q</kbd> Q&A · <kbd>C</kbd> tomar / soltar control (uno a la vez)</span>
+      <span><kbd>Q</kbd> Q&A · <kbd>C</kbd> control · <kbd>0</kbd> / <kbd>Shift+R</kbd> reiniciar sesión</span>
       <span>← → navega · <kbd>L</kbd> seguir vivo · <kbd>Esc</kbd> soltar control</span>
       <span>Nombre en URL: <code>?name=Tami</code> · room opcional</span>
     </footer>

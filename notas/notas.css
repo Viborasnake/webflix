@@ -129,6 +129,20 @@ body {
   white-space: nowrap;
 }
 
+.btn.danger-ghost {
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #fecaca;
+  background: rgba(50, 12, 16, 0.55);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.btn.danger-ghost:hover {
+  border-color: rgba(248, 113, 113, 0.7);
+  background: rgba(80, 16, 20, 0.75);
+  color: #fff;
+}
+
 .btn.control-toggle.is-on,
 .btn.control-toggle[aria-pressed="true"] {
   background: #a855f7;
