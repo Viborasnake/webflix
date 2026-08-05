@@ -323,19 +323,43 @@ body {
 
 .cover-phone {
   position: relative;
-  width: min(200px, 22vw);
+  width: min(220px, 24vw);
   max-height: 100%;
 }
 
 .cover-phone-glow {
   position: absolute;
-  inset: -15% -25%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.32), transparent 65%);
+  inset: -12% -22%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.36), transparent 65%);
   filter: blur(28px);
   z-index: 0;
   pointer-events: none;
 }
 
+/* Captura real del prototipo (portada) */
+.cover-phone--shot {
+  width: min(240px, 26vw);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover-phone-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(460px, 56vh);
+  object-fit: contain;
+  border-radius: 28px;
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 36px rgba(139, 92, 246, 0.22));
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Legacy mock (si se reutiliza en otro slide) */
 .cover-phone-frame {
   position: relative;
   z-index: 1;
