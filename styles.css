@@ -282,15 +282,18 @@ body {
   color: #f8fafc;
 }
 
-/* Orden fijo de lectura (4 líneas) */
+/* Orden fijo:
+   Perdemos
+   1 de cada 3 usuarios
+   antes de que la app
+   los conozca. */
 .cover-hook em {
   font-style: normal;
   color: #f87171;
-  white-space: nowrap; /* “1 de cada 3” no se parte */
+  white-space: nowrap;
 }
 
 .cover-hook em.hook-accent {
-  display: inline;
   font-style: italic;
   color: #f87171;
   white-space: normal;
