@@ -26,9 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let hudVisible = false;
   let timerArmed = false; // auto-start once when leaving cover
 
-  // Timer: meta 8 min, max 10 min
-  const WARN_MS = 8 * 60 * 1000;
-  const DANGER_MS = 10 * 60 * 1000;
+  // Timer: meta ~9:45 pitch v2, max 10:30
+  const WARN_MS = 9 * 60 * 1000 + 30 * 1000;
+  const DANGER_MS = 10 * 60 * 1000 + 30 * 1000;
   let timerStartedAt = null;
   let timerAccumulated = 0;
   let timerRunning = false;
