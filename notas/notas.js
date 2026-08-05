@@ -50,9 +50,12 @@
   const qaIntro = $("qa-intro");
 
   const QA = window.WEBFLIX_QA || { filters: [], torpedos: [], intro: "" };
+  const GLOSSARY = window.WEBFLIX_GLOSSARY || {};
+  const GLOSSARY_CORE = window.WEBFLIX_GLOSSARY_CORE || [];
   let qaOpen = false;
   let qaFilter = "all";
   let qaAutoOpenedForClose = false;
+  const glossaryChips = $("glossary-chips");
 
   function pad(n) {
     return String(n).padStart(2, "0");
@@ -208,6 +211,36 @@
     el.innerHTML = (items || []).map((t) => `<li>${t}</li>`).join("") || "<li>—</li>";
   }
 
+  function renderGlossary(note) {
+    if (!glossaryChips) return;
+    const keys = [];
+    const seen = new Set();
+    const pushKey = (k) => {
+      if (!k || seen.has(k) || !GLOSSARY[k]) return;
+      seen.add(k);
+      keys.push(k);
+    };
+    // Primero términos de la slide; luego core si faltan y hay espacio visual
+    (note.glossary || []).forEach(pushKey);
+    GLOSSARY_CORE.forEach(pushKey);
+
+    if (!keys.length) {
+      glossaryChips.innerHTML =
+        '<p class="gloss-def">Sin términos extra en esta slide.</p>';
+      return;
+    }
+
+    glossaryChips.innerHTML = keys
+      .map((k) => {
+        const g = GLOSSARY[k];
+        return `<div class="gloss-item">
+          <div class="gloss-term">${g.term}</div>
+          <div class="gloss-def">${g.def}</div>
+        </div>`;
+      })
+      .join("");
+  }
+
   function renderQaFilters() {
     if (!qaFilters) return;
     const filters = QA.filters || [];
@@ -292,6 +325,7 @@
     say.innerHTML = (note.say || []).map((line) => `<p>${line}</p>`).join("");
     fillList($("now-highlight"), note.highlight);
     fillList($("now-avoid"), note.avoid);
+    renderGlossary(note);
 
     const past = [];
     for (let i = viewSlide - 1; i >= 0 && past.length < 2; i--) past.push(NOTES[i]);

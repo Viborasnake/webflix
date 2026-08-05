@@ -154,6 +154,81 @@ body {
   flex-wrap: wrap;
 }
 
+/* ── Glosario por slide ── */
+.glossary {
+  margin-top: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(167, 139, 250, 0.22);
+  background: rgba(12, 10, 22, 0.65);
+  padding: 12px 14px 14px;
+}
+
+.glossary-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.glossary-head h2 {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple-soft);
+  font-weight: 700;
+}
+
+.glossary-sub {
+  font-size: 11px;
+  color: var(--dim);
+  font-weight: 500;
+}
+
+.glossary-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gloss-item {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 32%) 1fr;
+  gap: 10px 12px;
+  align-items: start;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gloss-term {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  color: #e9d5ff;
+  line-height: 1.3;
+}
+
+.gloss-term code,
+.gloss-term .g-em {
+  color: var(--cyan);
+  font-weight: 800;
+}
+
+.gloss-def {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .gloss-item {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
 /* ── Q&A torpedos ── */
 .btn.qa-toggle {
   border-color: rgba(34, 211, 238, 0.4);

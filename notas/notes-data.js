@@ -25,6 +25,14 @@ window.WEBFLIX_NOTES = [
       "No prometer recuperar Day-7 hoy",
       "No alargar el saludo",
     ],
+    glossary: [
+      "Day-7",
+      "cold-start",
+      "primer-momento-valor",
+      "outcome",
+      "activacion",
+      "relevancia",
+    ],
   },
   {
     id: 1,
@@ -49,6 +57,16 @@ window.WEBFLIX_NOTES = [
     avoid: [
       "No decir “el algoritmo está roto”",
       "No vender Day-7 como resultado de este test",
+    ],
+    glossary: [
+      "Day-7",
+      "pp",
+      "caida-relativa",
+      "MAU",
+      "activacion",
+      "relevancia",
+      "outcome",
+      "supuesto",
     ],
   },
   {
@@ -75,6 +93,13 @@ window.WEBFLIX_NOTES = [
       "No culpar al catálogo como única causa",
       "No saltar a la solución sin las 3 fricciones",
     ],
+    glossary: [
+      "cold-start",
+      "friccion",
+      "onboarding",
+      "supuesto",
+      "sesion-cero",
+    ],
   },
   {
     id: 3,
@@ -99,6 +124,16 @@ window.WEBFLIX_NOTES = [
     avoid: [
       "No vender H·A / H·B como parte del test de hoy",
       "No tocar motor ni catálogo en el alcance",
+    ],
+    glossary: [
+      "H-A",
+      "H-B",
+      "H-C",
+      "guardrail",
+      "<30s",
+      "redisenar-no-agregar",
+      "falsable",
+      "onboarding",
     ],
   },
   {
@@ -128,6 +163,19 @@ window.WEBFLIX_NOTES = [
       "No hablar de significancia a escala WebFlix",
       "No confundir curación manual con producto final",
     ],
+    glossary: [
+      "WoZ",
+      "longitudinal",
+      "control",
+      "experimental",
+      "guardrail",
+      "<30s",
+      "play-valido",
+      "Watch-Time",
+      "umbral",
+      "n-direccional",
+      "refutacion",
+    ],
   },
   {
     id: 5,
@@ -150,6 +198,12 @@ window.WEBFLIX_NOTES = [
     ],
     avoid: [
       "No vender la demo de IA como validación de usuarios",
+    ],
+    glossary: [
+      "copiloto",
+      "supuesto",
+      "cold-start",
+      "falsable",
     ],
   },
   {
@@ -180,6 +234,17 @@ window.WEBFLIX_NOTES = [
       "No improvisar features fuera del tramo crítico",
       "No decir que ya corre el motor real",
     ],
+    glossary: [
+      "WoZ",
+      "tramo-critico",
+      "Ley-Jakob",
+      "affordance",
+      "guardrail",
+      "<30s",
+      "play-valido",
+      "Watch-Time",
+      "control",
+    ],
   },
   {
     id: 7,
@@ -206,6 +271,16 @@ window.WEBFLIX_NOTES = [
       "NUNCA presentar simulados como campo real",
       "No vender Day-7 como prueba de plataforma",
     ],
+    glossary: [
+      "simulacion",
+      "play-valido",
+      "Watch-Time",
+      "guardrail",
+      "intencion-declarada",
+      "exploratoria",
+      "Day-7",
+      "n-direccional",
+    ],
   },
   {
     id: 8,
@@ -231,6 +306,15 @@ window.WEBFLIX_NOTES = [
       "No pedir “arreglar el algoritmo” sin el puente del piloto",
       "No reabrir todo el pitch en el ask",
     ],
+    glossary: [
+      "confirma",
+      "perseverar",
+      "piloto",
+      "sesion-cero",
+      "mezcla-senales",
+      "guardrail",
+      "refutacion",
+    ],
   },
   {
     id: 9,
@@ -255,6 +339,15 @@ window.WEBFLIX_NOTES = [
       "No inventar cifras fuera de slide",
       "No presentar simulados como estudio real",
       "No defender el Plan B como claim de hoy — es contingencia",
+    ],
+    glossary: [
+      "piloto",
+      "Plan-B-Exp2",
+      "simulacion",
+      "Day-7",
+      "confirma",
+      "guardrail",
+      "H-C",
     ],
   },
 ];
