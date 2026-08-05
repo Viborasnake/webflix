@@ -151,14 +151,31 @@ document.addEventListener("DOMContentLoaded", () => {
     return document.getElementById("demo-video");
   }
 
+  function getDemoLevelEl() {
+    const v = getDemoVideo();
+    return v ? v.closest(".demo-level") : null;
+  }
+
+  function setDemoPlayingUI(playing) {
+    const level = getDemoLevelEl();
+    const btn = document.getElementById("demo-play-btn");
+    if (level) level.classList.toggle("is-playing", !!playing);
+    if (btn) {
+      const icon = btn.querySelector(".demo-play-icon");
+      const label = btn.querySelector(".demo-play-label");
+      if (icon) icon.textContent = playing ? "❚❚" : "▶";
+      if (label) label.textContent = playing ? "Pause" : "Play";
+      btn.setAttribute("aria-label", playing ? "Pausar video" : "Reproducir video");
+    }
+  }
+
   function pauseDemoVideo() {
     const v = getDemoVideo();
     if (!v) return;
     try {
       v.pause();
     } catch (_) { /* ignore */ }
-    const overlay = v.closest(".demo-level")?.querySelector(".demo-overlay");
-    if (overlay) overlay.classList.remove("is-playing");
+    setDemoPlayingUI(false);
   }
 
   function playDemoVideo({ restart } = {}) {
@@ -167,10 +184,14 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       if (restart) v.currentTime = 0;
       const p = v.play();
-      if (p && typeof p.catch === "function") p.catch(() => { /* autoplay blocked */ });
-      const overlay = v.closest(".demo-level")?.querySelector(".demo-overlay");
-      if (overlay) overlay.classList.add("is-playing");
-    } catch (_) { /* ignore */ }
+      if (p && typeof p.then === "function") {
+        p.then(() => setDemoPlayingUI(true)).catch(() => setDemoPlayingUI(false));
+      } else {
+        setDemoPlayingUI(!v.paused);
+      }
+    } catch (_) {
+      setDemoPlayingUI(false);
+    }
   }
 
   function toggleDemoVideo() {
@@ -189,13 +210,12 @@ document.addEventListener("DOMContentLoaded", () => {
       el.classList.toggle("is-on", Number(el.dataset.goto) === demoLevel);
     });
 
-    // Video solo en nivel 1 — nunca autoplay: Cris da play a mano (Space / P)
+    // Video solo en nivel 1 — play siempre manual (botón / Space / P)
     if (demoLevel !== 1) {
       pauseDemoVideo();
     } else {
       const v = getDemoVideo();
-      const overlay = v?.closest(".demo-level")?.querySelector(".demo-overlay");
-      if (overlay && v && v.paused) overlay.classList.remove("is-playing");
+      setDemoPlayingUI(v && !v.paused);
     }
     publish(true);
   }
@@ -335,6 +355,34 @@ document.addEventListener("DOMContentLoaded", () => {
       setDemoLevel(Number(btn.dataset.goto));
     });
   });
+
+  // Play manual del video de Cris (botón + clic en el video)
+  const demoPlayBtn = document.getElementById("demo-play-btn");
+  const demoVideo = getDemoVideo();
+  if (demoPlayBtn) {
+    demoPlayBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleDemoVideo();
+    });
+  }
+  if (demoVideo) {
+    demoVideo.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleDemoVideo();
+    });
+    demoVideo.addEventListener("play", () => setDemoPlayingUI(true));
+    demoVideo.addEventListener("pause", () => setDemoPlayingUI(false));
+    demoVideo.addEventListener("ended", () => {
+      setDemoPlayingUI(false);
+      try {
+        demoVideo.currentTime = 0;
+      } catch (_) { /* ignore */ }
+    });
+    demoVideo.addEventListener("error", () => {
+      console.warn("[webflix] No se pudo cargar el video del experimento");
+      setDemoPlayingUI(false);
+    });
+  }
 
   document.addEventListener("keydown", (e) => {
     const tag = (e.target && e.target.tagName) || "";

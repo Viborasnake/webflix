@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=v3pitch">
+  <link rel="stylesheet" href="styles.css?v=v3video2">
 </head>
 <body>
   <div id="deck" class="deck">
@@ -513,15 +513,18 @@
                 <video
                   id="demo-video"
                   class="demo-video"
-                  src="assets/experimento-flujo.mp4"
+                  src="assets/experimento-flujo.mp4?v=1"
                   playsinline
-                  preload="auto"
+                  preload="metadata"
                   poster="assets/home-phones.png"
                 ></video>
-                <div class="demo-overlay demo-overlay--soft">
-                  <span class="demo-badge">Nivel 1 · Video del flujo</span>
-                  <p>Experimento narrado</p>
-                  <small>Tú das play · Space / P</small>
+                <button type="button" class="demo-play-btn" id="demo-play-btn" aria-label="Reproducir video">
+                  <span class="demo-play-icon" aria-hidden="true">▶</span>
+                  <span class="demo-play-label">Play</span>
+                </button>
+                <div class="demo-overlay demo-overlay--soft" id="demo-video-overlay">
+                  <span class="demo-badge">Video del flujo</span>
+                  <small>Clic / Space / P</small>
                 </div>
               </div>
               <div class="demo-level" data-level="2">
@@ -730,6 +733,6 @@
   </div>
 
   <script src="sync.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=v3video2"></script>
 </body>
 </html>
