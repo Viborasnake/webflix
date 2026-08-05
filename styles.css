@@ -338,72 +338,173 @@ body {
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* Cris · herramientas: 2 capturas DS, compactas */
+/* Cris · herramientas: showcase DS con 2 capturas */
 .tools-head {
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
 }
 
 .tools-head .title {
   margin-bottom: 0;
+  font-size: clamp(1.55rem, 2.6vw, 2.05rem);
+  line-height: 1.15;
 }
 
-.ds-duo {
+.ds-showcase {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 0.65rem;
-  margin: 0.15rem 0 0.45rem;
-  max-height: 148px;
+  grid-template-columns: 0.92fr 1.28fr;
+  gap: 0.7rem;
+  margin: 0.35rem 0 0.55rem;
+  padding: 0.45rem;
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 140% at 12% 0%, rgba(139, 92, 246, 0.14), transparent 55%),
+    radial-gradient(100% 120% at 88% 100%, rgba(34, 211, 238, 0.08), transparent 50%),
+    rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(167, 139, 250, 0.22);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.35) inset,
+    0 18px 40px rgba(0, 0, 0, 0.28);
 }
 
-.ds-card {
+.ds-panel {
   margin: 0;
   min-width: 0;
-  border-radius: 14px;
+  border-radius: 13px;
   overflow: hidden;
-  border: 1px solid rgba(167, 139, 250, 0.26);
-  background: #0a0a12;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #05050a;
   position: relative;
-  height: 132px;
+  height: 198px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 
-.ds-card img {
+.ds-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 7, 11, 0.55) 0%,
+    transparent 28%,
+    transparent 72%,
+    rgba(7, 7, 11, 0.35) 100%
+  );
+  z-index: 1;
+}
+
+.ds-panel img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
 }
 
-.ds-card:first-child img {
-  object-position: center 48%;
+.ds-panel--brand img {
+  object-position: center 46%;
+  transform: scale(1.02);
 }
 
-.ds-card:last-child img {
-  object-position: center 38%;
+.ds-panel--ui img {
+  object-position: center 42%;
+  transform: scale(1.04);
 }
 
-.ds-card figcaption {
+.ds-panel figcaption {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0.45rem 0.7rem 0.4rem;
+  top: 0.55rem;
+  left: 0.55rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.22rem 0.5rem 0.22rem 0.28rem;
+  border-radius: 999px;
+  background: rgba(7, 7, 11, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.ds-tag {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.4rem;
+  height: 1.15rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  font-family: var(--display);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f5f3ff;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.85), rgba(34, 211, 238, 0.55));
+}
+
+.ds-panel--ui .ds-tag {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.75), rgba(139, 92, 246, 0.55));
+}
+
+.ds-cap {
   font-family: var(--display);
   font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.78);
-  background: linear-gradient(180deg, transparent, rgba(7, 7, 11, 0.88));
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+}
+
+.tools-grid--compact {
+  margin: 0.35rem 0 0.55rem;
+  gap: 0.65rem;
+}
+
+.tools-grid--compact .tool-card {
+  padding: 0.85rem 0.95rem;
+}
+
+.tools-grid--compact .tool-card h3 {
+  font-size: 0.98rem;
+  margin-bottom: 0.28rem;
+}
+
+.tools-grid--compact .tool-card p {
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.tools-grid--compact .tool-ico {
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
+  margin-bottom: 0.45rem;
+}
+
+@media (max-width: 1000px) {
+  .ds-showcase {
+    grid-template-columns: 1fr 1.15fr;
+  }
+
+  .ds-panel {
+    height: 168px;
+  }
 }
 
 @media (max-width: 900px) {
-  .ds-duo {
+  .ds-showcase {
     grid-template-columns: 1fr 1fr;
-    max-height: 120px;
+    gap: 0.5rem;
+    padding: 0.35rem;
   }
 
-  .ds-card {
-    height: 108px;
+  .ds-panel {
+    height: 140px;
+  }
+
+  .ds-cap {
+    display: none;
   }
 }
 

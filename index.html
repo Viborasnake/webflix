@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=v3ds2">
+  <link rel="stylesheet" href="styles.css?v=v3ds3">
 </head>
 <body>
   <div id="deck" class="deck">
@@ -425,7 +425,7 @@
           </h2>
           <p class="cover-ds tools-ds" title="Design System WebFlix">
             <span class="cover-ds-label">DS</span>
-            Identidad y design system WebFlix — base del prototipo
+            Identidad y design system — base del prototipo
             <span class="cover-ds-swatches" aria-hidden="true">
               <i style="--c:#07070B"></i>
               <i style="--c:#8B5CF6"></i>
@@ -434,18 +434,24 @@
           </p>
         </div>
 
-        <aside class="ds-duo anim" style="--d:1" aria-label="Design system WebFlix">
-          <figure class="ds-card">
-            <img src="assets/ds-brand.jpg" alt="Identidad visual WebFlix" width="1000" height="560">
-            <figcaption>Marca · historia de color</figcaption>
+        <aside class="ds-showcase anim" style="--d:1" aria-label="Design system WebFlix">
+          <figure class="ds-panel ds-panel--brand">
+            <img src="assets/ds-brand-pitch.jpg" alt="Identidad visual WebFlix: logo y historia de color" width="1800" height="1064" loading="eager">
+            <figcaption>
+              <span class="ds-tag">Brand</span>
+              <span class="ds-cap">Identidad + color</span>
+            </figcaption>
           </figure>
-          <figure class="ds-card">
-            <img src="assets/ds-patterns.jpg" alt="Patrones de interfaz del onboarding" width="1000" height="580">
-            <figcaption>Patrones · flujo de onboarding</figcaption>
+          <figure class="ds-panel ds-panel--ui">
+            <img src="assets/ds-patterns-pitch.jpg" alt="Patrones de interfaz: onboarding en cuatro pantallas" width="1940" height="979" loading="eager">
+            <figcaption>
+              <span class="ds-tag">UI</span>
+              <span class="ds-cap">Onboarding en 4 pasos</span>
+            </figcaption>
           </figure>
         </aside>
 
-        <div class="tools-grid anim" style="--d:2">
+        <div class="tools-grid tools-grid--compact anim" style="--d:2">
           <article class="tool-card">
             <span class="tool-ico">✦</span>
             <h3>Figma AI</h3>
