@@ -180,7 +180,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.75rem;
+  /* Ritmo de lectura: bloques con aire, no micro-gaps que fragmentan */
+  gap: 0.95rem;
 }
 
 /* Logo chrome no pisa badge/título en slides de contenido */
@@ -259,16 +260,17 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.85rem;
+  gap: 1rem;
   min-width: 0;
-  max-width: 36rem;
+  max-width: 38rem;
 }
 
 .cover-context {
   margin: 0;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.4);
-  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 .cover-hook {
@@ -276,8 +278,8 @@ body {
   padding: 0;
   font-family: var(--display);
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.08;
+  letter-spacing: -0.03em;
+  line-height: 1.14;
   font-size: clamp(1.9rem, 3.8vw, 3.25rem);
   color: #f8fafc;
 }
@@ -300,11 +302,11 @@ body {
 }
 
 .cover-thesis {
-  margin: 0;
-  max-width: 34ch;
-  font-size: 15px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.42);
+  margin: 0.15rem 0 0;
+  max-width: 52ch;
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.52);
 }
 
 .cover-thesis strong {
@@ -683,15 +685,18 @@ body {
   font-family: var(--display);
   font-size: clamp(1.55rem, 3vw, 2.35rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.12;
+  letter-spacing: -0.028em;
+  line-height: 1.18;
+  /* Une título + lead como un solo bloque de lectura */
+  margin-bottom: 0.15rem;
 }
 
 .lead {
-  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
-  color: var(--text-2);
-  max-width: 62ch;
-  line-height: 1.55;
+  font-size: clamp(0.97rem, 1.2vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.58);
+  max-width: 58ch;
+  line-height: 1.62;
+  margin-top: 0;
 }
 
 .lead.center {
@@ -700,7 +705,7 @@ body {
 }
 
 .lead.tight {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.45rem;
 }
 
 .lead strong {
@@ -712,27 +717,30 @@ body {
 .slide-head {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem 1rem;
   flex-wrap: wrap;
+  margin-bottom: 0.15rem;
 }
 
 .badge {
   display: inline-flex;
-  padding: 0.32rem 0.7rem;
+  padding: 0.28rem 0.65rem;
   border-radius: 999px;
   font-family: var(--display);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #e9d5ff;
-  background: rgba(139, 92, 246, 0.16);
-  border: 1px solid rgba(139, 92, 246, 0.32);
+  background: rgba(139, 92, 246, 0.14);
+  border: 1px solid rgba(139, 92, 246, 0.22);
 }
 
 .kicker {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: var(--text-3);
+  letter-spacing: 0.01em;
+  font-weight: 500;
 }
 
 /* KPI strip cover */
@@ -965,18 +973,18 @@ body {
 
 /* Glass cards */
 .glass {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border: 1px solid var(--border);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius);
-  padding: 1.15rem 1.2rem;
+  padding: 1.15rem 1.25rem;
 }
 
 .glass.compact {
-  padding: 1rem 1.1rem;
+  padding: 1.05rem 1.15rem;
 }
 
 .glass.warn {
-  border-color: rgba(251, 191, 36, 0.28);
+  border-color: rgba(251, 191, 36, 0.22);
 }
 
 .glass h3,
@@ -984,14 +992,14 @@ body {
   font-family: var(--display);
   font-size: 0.98rem;
   font-weight: 600;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   letter-spacing: -0.015em;
 }
 
 .glass p {
-  font-size: 0.88rem;
-  color: var(--text-2);
-  line-height: 1.5;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.58;
 }
 
 .glass p strong {
@@ -1524,9 +1532,10 @@ body {
 }
 
 .hypo p {
-  font-size: 1.02rem;
-  line-height: 1.55;
-  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 72ch;
 }
 
 .hypo strong {
@@ -1536,17 +1545,17 @@ body {
 .quad {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.7rem;
+  gap: 0.55rem;
 }
 
 .q {
   padding: 0.95rem 1rem;
   border-radius: var(--radius-sm);
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.28rem;
 }
 
 .q.highlight {
@@ -1580,26 +1589,26 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.48rem;
 }
 
 .bullets li {
-  font-size: 0.88rem;
-  color: var(--text-2);
-  padding-left: 0.9rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.58);
+  padding-left: 0.95rem;
   position: relative;
-  line-height: 1.4;
+  line-height: 1.55;
 }
 
 .bullets li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.5em;
-  width: 5px;
-  height: 5px;
+  top: 0.55em;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: var(--purple);
+  background: rgba(167, 139, 250, 0.75);
 }
 
 .bullets li strong {
@@ -2435,32 +2444,32 @@ body {
 }
 
 .glass.compact .compact {
-  font-size: 0.85rem;
-  color: var(--text-2);
-  line-height: 1.45;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.58;
   margin: 0;
 }
 
 .friction-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.85rem;
-  margin: 0.5rem 0 0.85rem;
+  gap: 0.7rem;
+  margin: 0.35rem 0 0.55rem;
 }
 
 .friction-card {
   position: relative;
-  padding: 1.15rem 1.15rem 1.05rem;
+  padding: 1.15rem 1.2rem 1.1rem;
   border-radius: 16px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
-  border: 1px solid var(--border);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012));
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .friction-card .fr-n {
   font-family: var(--display);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   color: var(--purple-soft);
 }
 
@@ -2468,26 +2477,27 @@ body {
   font-family: var(--display);
   font-size: 1.05rem;
   font-weight: 700;
-  margin: 0.4rem 0 0.45rem;
+  margin: 0.35rem 0 0.5rem;
   letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
 .friction-card p {
-  font-size: 0.86rem;
-  color: var(--text-2);
-  line-height: 1.45;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.56);
+  line-height: 1.55;
   margin: 0;
 }
 
 .insight-bar {
-  padding: 0.9rem 1.15rem;
+  padding: 0.95rem 1.2rem;
   border-radius: 12px;
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.12), rgba(34, 211, 238, 0.06));
-  border: 1px solid rgba(139, 92, 246, 0.28);
-  font-size: 0.9rem;
-  color: var(--text);
-  line-height: 1.5;
-  margin-bottom: 0.75rem;
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.1), rgba(34, 211, 238, 0.05));
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.58;
+  margin-bottom: 0.55rem;
 }
 
 .insight-bar strong {
@@ -3710,4 +3720,125 @@ body {
   .display-xl {
     font-size: clamp(1.9rem, 8vw, 2.6rem);
   }
+}
+
+/* ══════════════════════════════════════════════════
+   Lectura continua · menos cortes visuales
+   (solo layout/ritmo; sin cambiar copy)
+══════════════════════════════════════════════════ */
+:root {
+  --border: rgba(255, 255, 255, 0.055);
+  --text-2: rgba(255, 255, 255, 0.58);
+}
+
+/* Título y lead se leen como un bloque; el resto se separa con aire */
+.stage > .title + .lead,
+.stage > .title + .lead.tight {
+  margin-top: 0.2rem;
+}
+
+.stage > .kpi-hero,
+.stage > .friction-grid,
+.stage > .hypo,
+.stage > .compare,
+.stage > .tools-grid,
+.stage > .results-grid,
+.stage > .learn-row,
+.stage > .decision-hero,
+.stage > .split-sm,
+.stage > .insight-bar,
+.stage > .prio-row,
+.stage > .quad,
+.stage > .criteria-strip,
+.stage > .stat-row,
+.stage > .next-steps,
+.stage > .ask-close,
+.stage > .journey,
+.stage > .journey-label {
+  margin-top: 0.15rem;
+}
+
+/* Cards: menos “marco” que interrumpe la vista */
+.arm,
+.prio-card,
+.tool-card,
+.res-card,
+.learn,
+.ns,
+.mini-stat {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.tool-card p,
+.prio-card p,
+.arm .bullets,
+.res-card .res-detail,
+.decision-hero p,
+.ask-close {
+  line-height: 1.55;
+}
+
+.decision-hero p,
+.ask-close,
+.hypo p,
+.insight-bar,
+.sim-banner {
+  line-height: 1.6;
+}
+
+.sim-banner {
+  line-height: 1.55;
+  font-size: 0.92rem;
+}
+
+/* Journey: menos ruido tipográfico */
+.journey-label {
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}
+
+.j-body b {
+  letter-spacing: -0.01em;
+}
+
+.j-body i {
+  line-height: 1.35;
+}
+
+/* Strip de criterios: lectura en fila sin tanto “caja suelta” */
+.criteria-strip {
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.cs {
+  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.6rem 0.65rem;
+}
+
+.cs span {
+  line-height: 1.35;
+  font-size: 0.7rem;
+}
+
+/* Flow del prototipo: ítems más legibles en secuencia */
+.flow li {
+  line-height: 1.45;
+}
+
+.flow li i {
+  line-height: 1.4;
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.callout {
+  line-height: 1.55;
+}
+
+/* Cover footer meta: una línea más suave */
+.cover-meta-inline {
+  line-height: 1.45;
+  letter-spacing: 0.01em;
 }
