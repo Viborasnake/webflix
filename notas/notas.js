@@ -8,11 +8,12 @@
   const WARN_MS = 7 * 60 * 1000;
   const DANGER_MS = 8 * 60 * 1000 + 30 * 1000;
 
-  // Vista local
+  // Vista local — cada pestaña de notas es independiente por defecto.
+  // Solo se alinea al deck si el usuario aprieta "Seguir presentación" (o toma control).
   let viewSlide = 0;
-  // Slide en vivo del deck
+  // Slide en vivo del deck (solo referencia; no mueve la vista si followLive=false)
   let liveSlide = 0;
-  let followLive = true;
+  let followLive = false;
   let controlMode = false; // true = ←→ mueven el deck (solo uno a la vez)
   let hasLive = false;
   let liveAdvancedWhileBrowsing = false;
@@ -297,25 +298,27 @@
   }
 
   function updateFollowUI() {
-    // En control: siempre alineado al vivo (tú eres el driver)
-    const desynced = !followLive && !controlMode;
+    // Libre por defecto: la barra ofrece "Seguir presentación" hasta que el usuario opte in
+    const freeBrowse = !followLive && !controlMode;
     if (followBar) {
-      followBar.hidden = !desynced;
+      followBar.hidden = !freeBrowse;
     }
     if (liveHint) {
       const liveNote = NOTES[liveSlide];
       const title = liveNote ? liveNote.title : "—";
-      liveHint.textContent = hasLive
-        ? `La presentación está en ${pad(liveSlide + 1)} · ${title}`
-        : "Aún no hay señal del deck";
+      if (!hasLive) {
+        liveHint.textContent =
+          "Tus notas no se mueven solas. Cuando el deck emita, puedes seguirlo aquí.";
+      } else if (viewSlide === liveSlide) {
+        liveHint.textContent = `Presentación en ${pad(liveSlide + 1)} · ${title} (mismo slide; aún en libre)`;
+      } else {
+        liveHint.textContent = `Presentación en ${pad(liveSlide + 1)} · ${title}`;
+      }
     }
     if (nowBadge) {
       if (controlMode) {
         nowBadge.textContent = "CONTROL";
         nowBadge.className = "pill control";
-      } else if (otherHasControl()) {
-        nowBadge.textContent = "REMOTO";
-        nowBadge.className = "pill free";
       } else if (followLive && hasLive) {
         nowBadge.textContent = "EN VIVO";
         nowBadge.className = "pill live";
@@ -337,20 +340,28 @@
         "control",
         (online ? "Online · " : "") + "Tú controlas · " + SESSION_NAME
       );
-    } else if (otherHasControl()) {
-      const n = remoteController.name || "Otro";
-      setSyncLabel("free", n + " controla el deck");
     } else if (followLive && hasLive) {
-      setSyncLabel(online ? "online" : "live");
+      setSyncLabel(
+        online ? "online" : "live",
+        online ? "Online · siguiendo presentación" : "Siguiendo presentación"
+      );
     } else if (!followLive) {
+      const n =
+        otherHasControl() && remoteController
+          ? remoteController.name + " controla el deck · "
+          : "";
       setSyncLabel(
         "free",
-        liveAdvancedWhileBrowsing
-          ? "Navegación libre · la presentación avanzó"
-          : "Navegación libre · no afecta a otros"
+        n +
+          (liveAdvancedWhileBrowsing
+            ? "Tus notas (libre) · la presentación avanzó"
+            : "Tus notas (libre) · pulsa Seguir para alinear")
       );
     } else if (!hasLive) {
-      setSyncLabel(online ? "online" : "wait", online ? "Online · esperando deck…" : undefined);
+      setSyncLabel(
+        online ? "online" : "wait",
+        online ? "Online · notas en libre" : undefined
+      );
     }
   }
 
@@ -571,7 +582,7 @@
     });
   }
 
-  /** Reinicio total local + deck: slide 0, timer 00:00, sin control, seguimiento */
+  /** Reinicio total local + deck: slide 0, timer 00:00, sin control */
   function resetSessionAll() {
     const ok = window.confirm(
       "¿Reiniciar la sesión desde cero?\n\n• Slide 01 (portada)\n• Timer 00:00\n• Se suelta el control remoto\n• Afecta al deck y a todos en la sala"
@@ -581,7 +592,8 @@
     // Limpiar control de toda la sala
     clearControlGlobal();
 
-    followLive = true;
+    // Esta pestaña vuelve a portada en libre (no en seguimiento automático)
+    followLive = false;
     liveAdvancedWhileBrowsing = false;
     viewSlide = 0;
     liveSlide = 0;
@@ -619,17 +631,16 @@
       return;
     }
 
-    // Browse libre
+    // Browse libre: nunca re-engancha el seguimiento solo por coincidir de slide
     viewSlide = index;
-    if (hasLive && viewSlide === liveSlide) {
-      followLive = true;
-      liveAdvancedWhileBrowsing = false;
-    } else {
-      followLive = false;
+    followLive = false;
+    if (hasLive && viewSlide !== liveSlide) {
+      liveAdvancedWhileBrowsing = true;
     }
     renderView();
   }
 
+  /** Opt-in: el usuario pide alinear sus notas al deck */
   function resumeFollow() {
     if (controlMode) {
       releaseControlBroadcast();
@@ -637,7 +648,7 @@
     controlMode = false;
     followLive = true;
     liveAdvancedWhileBrowsing = false;
-    viewSlide = liveSlide;
+    viewSlide = hasLive ? liveSlide : viewSlide;
     renderView();
   }
 
@@ -649,11 +660,11 @@
     }
 
     if (next) {
-      // Tomar control: los demás lo pierden al recibir el claim
+      // Tomar control implica alinear (tú eres el driver del deck)
       controlMode = true;
       followLive = true;
       liveAdvancedWhileBrowsing = false;
-      viewSlide = liveSlide;
+      viewSlide = hasLive ? liveSlide : viewSlide;
       claimControlBroadcast();
       sendCmd("goto", {
         slide: viewSlide,
@@ -661,7 +672,9 @@
         controllerName: SESSION_NAME,
       });
     } else {
+      // Al soltar control, volver a libre en el slide actual (no arrastrar al vivo)
       controlMode = false;
+      followLive = false;
       releaseControlBroadcast();
     }
     renderView();
@@ -684,7 +697,7 @@
 
     if (ctrl.action === "clear") {
       clearControlLocal();
-      followLive = true;
+      // No forzar seguimiento: cada pestaña se queda donde estaba
       renderView();
       return;
     }
@@ -703,8 +716,8 @@
       if (wasMine) {
         controlMode = false;
         stopHeartbeat();
-        followLive = true;
-        viewSlide = liveSlide;
+        // Quedarse en libre en el slide actual — no saltar al vivo
+        followLive = false;
         takeoverToastUntil = Date.now() + 8000;
       } else {
         takeoverToastUntil = Date.now() + 5000;
@@ -734,7 +747,7 @@
 
     hasLive = true;
 
-    // Reinicio total desde el deck
+    // Reinicio total desde el deck: actualiza reloj/live; solo mueve la vista si ya se optó a seguir
     if (
       typeof state.sessionEpoch === "number" &&
       state.sessionEpoch > 0 &&
@@ -742,14 +755,16 @@
     ) {
       lastSessionEpoch = state.sessionEpoch;
       clearControlLocal();
-      followLive = true;
-      liveAdvancedWhileBrowsing = false;
-      viewSlide = Math.min(TOTAL - 1, Math.max(0, state.slide));
-      liveSlide = viewSlide;
+      liveSlide = Math.min(TOTAL - 1, Math.max(0, state.slide));
       applyTimerFromLive(state);
-      // Cerrar Q&A al reiniciar
       if (qaOpen) setQaOpen(false, { manual: true });
       qaAutoOpenedForClose = false;
+      if (controlMode || followLive) {
+        viewSlide = liveSlide;
+        liveAdvancedWhileBrowsing = false;
+      } else {
+        liveAdvancedWhileBrowsing = viewSlide !== liveSlide;
+      }
       renderView();
       return;
     }
@@ -758,6 +773,7 @@
     const changed = nextLive !== liveSlide;
     liveSlide = nextLive;
 
+    // Timer del deck siempre (contexto compartido); la slide solo si follow/control
     applyTimerFromLive(state);
 
     if (controlMode || followLive) {
@@ -781,19 +797,19 @@
           "control",
           (st === "online" ? "Online · " : "") + "Tú controlas · " + SESSION_NAME
         );
-      } else if (otherHasControl()) updateFollowUI();
-      else if (st === "online") {
+      } else if (!followLive) {
+        updateFollowUI();
+      } else if (st === "online") {
         setSyncLabel(
           "online",
           hasLive
-            ? "Online · siguiendo al presentador"
+            ? "Online · siguiendo presentación"
             : "Online · esperando Emitir en el deck…"
         );
       } else if (st === "reconnect") setSyncLabel("reconnect");
       else if (!hasLive && (st === "wait" || st === "init")) {
         setSyncLabel("wait", "Esperando deck en modo Emitir…");
-      } else if (!followLive) updateFollowUI();
-      else if (hasLive) setSyncLabel(st === "local" ? "solo" : "live");
+      } else if (hasLive) setSyncLabel(st === "local" ? "solo" : "live");
       else if (st === "local") setSyncLabel("solo", "Local · sin presentador emitiendo");
     });
   } else {
@@ -936,15 +952,10 @@
           setQaOpen(false, { manual: true });
         } else if (controlMode) {
           e.preventDefault();
-          // setControlMode(false) ya libera control
+          // Suelta control y queda en libre (no salta al vivo)
           setControlMode(false);
-          followLive = true;
-          viewSlide = liveSlide;
-          renderView();
-        } else if (!followLive) {
-          e.preventDefault();
-          resumeFollow();
         }
+        // Esc ya no fuerza "Seguir": el follow es solo L / botón
         break;
       case "t":
       case "T":

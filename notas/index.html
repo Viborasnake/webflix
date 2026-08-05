@@ -57,14 +57,14 @@
       </button>
     </div>
 
-    <!-- Barra cuando sales del seguimiento (browse libre) -->
-    <div class="follow-bar" id="follow-bar" hidden>
+    <!-- Libre por defecto: cada sesión de notas es independiente hasta que se opte a seguir -->
+    <div class="follow-bar" id="follow-bar">
       <div class="follow-copy">
-        <strong>Navegación libre</strong>
-        <span id="live-hint">La presentación sigue en otro slide</span>
+        <strong>Tus notas (libre)</strong>
+        <span id="live-hint">No se mueven solas. Pulsa Seguir solo si quieres alinearlas al deck.</span>
       </div>
       <div class="follow-actions">
-        <button type="button" class="btn follow-btn" id="btn-follow" title="Tecla L o Esc">
+        <button type="button" class="btn follow-btn" id="btn-follow" title="Tecla L · alinear esta pestaña al deck">
           Seguir presentación
         </button>
       </div>
@@ -152,8 +152,8 @@
 
     <footer class="foot">
       <span><kbd>Q</kbd> Q&A · <kbd>C</kbd> control · <kbd>0</kbd> reiniciar sesión</span>
-      <span>← → navega · <kbd>L</kbd> seguir · <kbd>Esc</kbd> soltar control</span>
-      <span>Deck en «Emitir» mueve estas notas · revisar el pitch no las mueve</span>
+      <span>← → tus notas · <kbd>L</kbd> seguir presentación · <kbd>Esc</kbd> soltar control</span>
+      <span>Cada pestaña es libre hasta que pulses «Seguir presentación»</span>
     </footer>
   </div>
 
@@ -161,6 +161,6 @@
   <script src="notes-data.js"></script>
   <script src="glossary-data.js"></script>
   <script src="qa-data.js"></script>
-  <script src="notas.js?v=v3present1"></script>
+  <script src="notas.js?v=v3free1"></script>
 </body>
 </html>
