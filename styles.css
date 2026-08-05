@@ -293,9 +293,9 @@ body {
   white-space: nowrap;
 }
 
-.cover-hook em.hook-accent {
-  font-style: italic;
-  color: #f87171;
+.cover-hook .hook-white {
+  color: #f8fafc;
+  font-style: normal;
   white-space: normal;
 }
 
