@@ -1,68 +1,68 @@
-/* Q&A · pistas + métricas (negocio vs experimento) */
+/* Q&A · pistas en lenguaje natural + métricas */
 window.WEBFLIX_QA = {
   intro:
-    "Pistas para el cierre. No leas en voz alta: ancla, responde en una idea, cierra. Quién responde según el tema. Arriba: métricas de negocio vs del experimento.",
+    "Respuestas listas para decir en voz alta. No leas todo: elige la idea, suéltala con calma y cierra. Quién responde va en cada tarjeta.",
   /** Referencia rápida en el panel Q&A */
   metricas: {
     negocio: {
       title: "Negocio",
-      subtitle: "Outcome que importa a la compañía · no es KPI primario de este test",
+      subtitle: "Lo que le importa a la compañía — no es el KPI principal de este test",
       items: [
         {
           name: "Day-7 Retention",
           meta: "42% → 29%",
-          note: "Outcome de negocio. −13 pp (≈31% relativa). El experimento le apunta, no lo mueve directo.",
+          note: "Bajó trece puntos. Eso es lo que queremos recuperar a nivel negocio. Este experimento no lo mueve directo: le apunta.",
         },
         {
           name: "Escala",
           meta: "~310M MAU",
-          note: "Contexto de impacto: con esta base, cada punto de retención importa.",
+          note: "Es el tamaño del barco: con tantos usuarios, cada punto de retención pesa mucho.",
         },
         {
           name: "Problema de negocio",
           meta: "Cold start / descubrimiento",
-          note: "Pocos se activan en el 1er momento de valor → peor personalización → menos Day-7.",
+          note: "El usuario nuevo no logra su primer momento de valor, el sistema no lo conoce y se va antes de que la app aprenda.",
         },
         {
           name: "Day-7 en cohorte (exploratorio)",
           meta: "29% → 33%",
-          note: "Solo señal con n chica. Luz verde para seguir mirando, no victoria estadística.",
+          note: "Con poca gente es solo una luz verde para seguir mirando, no una victoria estadística.",
         },
       ],
     },
     experimento: {
       title: "Experimento",
-      subtitle: "KPIs del test · umbrales predefinidos · n = 30–50 · WoZ",
+      subtitle: "Lo que medimos en el test · metas que fijamos antes · 30–50 usuarios · WoZ",
       items: [
         {
           name: "Completa selección",
           meta: "≥80% en <30 s",
-          note: "Primario · fricción del onboarding rediseñado. Sim: 84% / 22 s.",
+          note: "¿El swipe es liviano de verdad? En la simulación: 84% lo completó en unos 22 segundos.",
         },
         {
           name: "Play válido (s1)",
           meta: "≥65%",
-          note: "Primario · activación en 1ª sesión. Sim: 69%. Tiempo a 1ª play meta <3 min · sim 2:40.",
+          note: "¿Se activan en la primera sesión? Meta 65%; en simulación 69%. Queremos la primera play en menos de 3 minutos.",
         },
         {
           name: "Watch Time (s1)",
           meta: "+10% vs control",
-          note: "Primario · profundidad de uso vs onboarding de hoy. Sim: +12%.",
+          note: "¿Miran más que con el onboarding de hoy? Meta +10%; en simulación +12%.",
         },
         {
           name: "Relevancia percibida",
           meta: "≥75% notas 4–5",
-          note: "Primario · “¿estas recomendaciones son para mí?”. Sim: 78%.",
+          note: "¿Sienten que “esto es para mí”? Meta 75%; en simulación 78%.",
         },
         {
           name: "Intención de volver",
           meta: "+15% (cualitativa)",
-          note: "Secundaria · declarada, no retención observada. Sim: +17%.",
+          note: "Es lo que dicen, no lo que hacen. Sirve como señal, no como prueba de retención. Simulación +17%.",
         },
         {
           name: "Guardrail / refutación",
           meta: "Abandono no sube",
-          note: "Si el swipe fricciona o no se cumplen umbrales → hipótesis refutada → tablero.",
+          note: "Si el swipe molesta o no cumplimos las metas, la hipótesis cae y volvemos al tablero.",
         },
       ],
     },
@@ -85,7 +85,7 @@ window.WEBFLIX_QA = {
       who: "Erick / Vale",
       q: "¿Por qué no miden Day-7 como KPI principal del experimento?",
       pista:
-        "Day-7 es el outcome de negocio. Hoy validamos los pasos previos: activación y relevancia en la 1ª sesión. Con n=30–50 no se prueba retención a escala. Lo declaramos desde el minuto uno.",
+        "Porque Day-7 es el resultado de negocio que nos importa a largo plazo, pero hoy estamos mirando los pasos de antes: si la gente se activa y si siente que le recomendamos bien en la primera sesión. Con 30 a 50 personas no puedes demostrar retención a escala. Eso lo dijimos desde el principio.",
     },
     {
       id: "n-chica",
@@ -94,7 +94,7 @@ window.WEBFLIX_QA = {
       who: "Tami / Vale",
       q: "¿30–50 usuarios no es muy poco?",
       pista:
-        "Es direccional, no prueba de plataforma. Buscamos señal para decidir (automatizar / iterar / descartar), no significancia a escala WebFlix. El next step es muestra representativa por región.",
+        "Es poco a propósito. No estamos probando toda la plataforma: buscamos una señal para decidir si seguimos, iteramos o descartamos. El siguiente paso es una muestra más grande y representativa por región.",
     },
     {
       id: "simulados",
@@ -103,7 +103,7 @@ window.WEBFLIX_QA = {
       who: "Vale",
       q: "¿Estos resultados son reales o inventados?",
       pista:
-        "Simulados para el ejercicio, coherentes con los umbrales de éxito predefinidos. No son campo en producción. La lógica de decisión (confirma / refuta) sí es la que usaríamos con datos reales.",
+        "Son simulados para el ejercicio, pensados en línea con las metas que fijamos antes. No son datos de producción. Lo que sí es real es la lógica: con números de campo usaríamos la misma regla de confirma o refuta.",
     },
     {
       id: "woz",
@@ -112,7 +112,7 @@ window.WEBFLIX_QA = {
       who: "Tami / Cris",
       q: "¿Por qué Wizard of Oz y no el motor real?",
       pista:
-        "La incertidumbre hoy es de deseabilidad y usabilidad, no de factibilidad. Probamos la idea antes de ingeniería. El WoZ es techo de valor, no promesa del motor.",
+        "Porque la duda de hoy no es si el motor se puede construir: es si al usuario le sirve y le gusta el flujo. Probamos la idea barato, a mano, antes de gastar ingeniería. Eso es el techo de valor, no la promesa del algoritmo final.",
     },
     {
       id: "tres-prefs",
@@ -121,7 +121,7 @@ window.WEBFLIX_QA = {
       who: "Tami",
       q: "¿Por qué 3 a 5 preferencias?",
       pista:
-        "Rango mínimo suficiente vs fricción. Swipe hasta acumular 3–5. Guardrail <30 s: si tarda más, se refuta. No es un paso nuevo: es el onboarding actual rediseñado.",
+        "Porque es el mínimo que creemos suficiente para recomendar bien, sin alargar el onboarding. El usuario hace swipe hasta juntar de 3 a 5. Si tarda más de 30 segundos, la hipótesis se cae. No inventamos un paso nuevo: rediseñamos el que ya existe.",
     },
     {
       id: "motor-roto",
@@ -130,7 +130,7 @@ window.WEBFLIX_QA = {
       who: "Erick",
       q: "¿El algoritmo está roto?",
       pista:
-        "No. Tarda en aprender por pocas señales (cold start). Problema de velocidad de personalización, no de oferta ni de “motor malo”. Supuesto a validar, no veredicto.",
+        "No decimos que esté roto. Decimos que aprende lento porque al usuario nuevo le faltan señales. Es un problema de velocidad de personalización, no de catálogo ni de “motor malo”. Eso es un supuesto: por eso lo estamos validando.",
     },
 
     // ── No tan obvias ───────────────────────────────
@@ -141,7 +141,7 @@ window.WEBFLIX_QA = {
       who: "Erick / Tami",
       q: "¿Cómo saben que no es precio, catálogo o UX general?",
       pista:
-        "No lo “sabemos”: lo tratamos como supuesto. Control = onboarding de hoy (largo); experimental = swipe liviano. Atribuimos diferencia al rediseño, no al azar. Otros drivers pueden convivir; este test aísla una palanca.",
+        "No lo sabemos a ciencia cierta: lo tratamos como supuesto. Por eso comparamos onboarding de hoy contra onboarding rediseñado. Si hay diferencia, la atribuimos al rediseño. Precio o catálogo pueden importar también; este test mira una palanca a la vez.",
     },
     {
       id: "familiares",
@@ -150,7 +150,7 @@ window.WEBFLIX_QA = {
       who: "Vale / Erick",
       q: "¿Qué pasa con perfiles nuevos en planes familiares?",
       pista:
-        "También son cold start (sin historial del perfil). Riesgo distinto: mezcla de señales entre perfiles. Por eso van en el alcance y en next steps con prueba específica.",
+        "También son usuarios sin historial propio. El riesgo extra es que se mezclen señales entre perfiles de la misma cuenta. Por eso los incluimos en el alcance y en los próximos pasos con una prueba específica.",
     },
     {
       id: "sesgo-woz",
@@ -159,7 +159,7 @@ window.WEBFLIX_QA = {
       who: "Tami / Cris",
       q: "¿La curación manual no infla los resultados?",
       pista:
-        "Sí puede ser techo de valor. Por eso no prometemos el motor automático con estos números. Si ni con curación hay lift, la idea muere barato. Si hay lift, el piloto con motor real es el siguiente test.",
+        "Puede inflarlos: es el mejor escenario posible. Por eso no prometemos el motor automático con estos números. Si ni con curación a mano hay mejora, la idea muere barato. Si hay mejora, el siguiente test es con motor de verdad.",
     },
     {
       id: "intencion",
@@ -168,7 +168,7 @@ window.WEBFLIX_QA = {
       who: "Vale",
       q: "¿Por qué cuentan “intención de volver”?",
       pista:
-        "Secundaria y cualitativa: es declarada, no retención observada. No la ponemos al mismo nivel que play válido o Watch Time. Solo señal de percepción de valor.",
+        "Es una señal de cómo se sienten, no de si vuelven de verdad. No la ponemos al mismo nivel que el play válido o el tiempo de mira. Solo ayuda a leer si perciben valor.",
     },
     {
       id: "ia-evidencia",
@@ -177,7 +177,7 @@ window.WEBFLIX_QA = {
       who: "Cris",
       q: "¿La IA validó la hipótesis?",
       pista:
-        "No. Aceleró mapa de supuestos, copy y maquetas. El insight clave (señales tempranas, no motor roto) salió al desafiar intuiciones. La evidencia la pone el experimento con usuarios.",
+        "No. La IA nos ayudó a ir más rápido: mapa de supuestos, textos, maquetas. El giro importante —que faltan señales tempranas, no que el motor esté roto— salió al cuestionar nuestras intuiciones. La evidencia la pone el experimento con usuarios.",
     },
     {
       id: "una-h",
@@ -186,7 +186,7 @@ window.WEBFLIX_QA = {
       who: "Tami",
       q: "¿Por qué no probaron varias hipótesis a la vez?",
       pista:
-        "Una palanca clara: impacto, incertidumbre y bajo esfuerzo. H·A (similares) y H·B (sesión cero en tiempo real) quedan en backlog / spike. Evita confusión de atribución.",
+        "Porque si mueves varias cosas a la vez no sabes qué funcionó. Elegimos la más barata y clara de probar: onboarding liviano. Las otras —usuarios similares y sesión cero en tiempo real— quedan para después.",
     },
 
     // ── Falacias / trampas de lógica ────────────────
@@ -197,7 +197,7 @@ window.WEBFLIX_QA = {
       who: "Vale",
       q: "“Entonces ya recuperaron el Day-7.”",
       pista:
-        "NO. 29→33 es exploratorio con n chica. Luz verde para seguir mirando, no victoria estadística ni recuperación del negocio. Outcome de negocio ≠ resultado de este test.",
+        "No. El 29 a 33 es exploratorio, con poca gente. Es permiso para seguir investigando, no para decir que recuperamos el negocio. Day-7 de la compañía y resultado de este test no son lo mismo.",
     },
     {
       id: "fal-post-hoc",
@@ -206,7 +206,7 @@ window.WEBFLIX_QA = {
       who: "Erick",
       q: "“Si cae Day-7, el motor es la causa.”",
       pista:
-        "Post hoc. Day-7 cae es hecho; la causa es supuesto. Catálogo, precio, fricción de producto también pueden influir. Por eso el experimento aísla señales tempranas con control.",
+        "Cuidado: que caiga Day-7 es un hecho; que la causa sea el motor es un supuesto. También puede ser catálogo, precio o fricción de producto. Por eso diseñamos un test que aísla las señales tempranas con un grupo control.",
     },
     {
       id: "fal-generalizar",
@@ -215,7 +215,7 @@ window.WEBFLIX_QA = {
       who: "Tami / Vale",
       q: "“Si funciona en 40 users, funciona en 310 M.”",
       pista:
-        "No generalizamos. 310 M dimensiona impacto potencial. El piloto y la muestra regional son el puente. Hoy: decisión de producto, no rollout global.",
+        "No extrapolamos así. Los 310 millones nos dicen por qué vale la pena el esfuerzo. El puente es un piloto con muestra regional. Hoy decidimos producto, no un lanzamiento global.",
     },
     {
       id: "fal-mas-pasos",
@@ -224,7 +224,7 @@ window.WEBFLIX_QA = {
       who: "Tami",
       q: "“Están agregando fricción al onboarding.”",
       pista:
-        "Rediseñar, no agregar. El paso de géneros ya existe y está mal hecho. Guardrail: si >30 s o sube abandono → refutada. La fricción es criterio de muerte, no detalle estético.",
+        "Al revés: rediseñamos un paso que ya existe y hoy está pesado. Si tarda más de 30 segundos o sube el abandono, la hipótesis se refuta. La fricción es criterio de muerte, no un detalle de diseño.",
     },
     {
       id: "fal-todo-ia",
@@ -233,7 +233,7 @@ window.WEBFLIX_QA = {
       who: "Cris",
       q: "“Esto es solo un demo de IA, no experimentación.”",
       pista:
-        "IA = copiloto de proceso. El centro es hipótesis falsable, control vs experimental, umbrales y decisión predefinida. Sin evidencia de usuarios no hay claim.",
+        "La IA fue copiloto del proceso. El centro es una hipótesis que se puede fallar, un control contra un experimental, umbrales claros y una decisión antes de mirar los datos. Sin usuarios no hay claim.",
     },
 
     // ── Coherencia del argumento ────────────────────────
@@ -244,7 +244,7 @@ window.WEBFLIX_QA = {
       who: "Cualquiera",
       q: "¿Cómo se conectan las 4 voces?",
       pista:
-        "Erick: problema + supuesto. Tami: hipótesis + experimento. Cris: herramientas + proto del tramo crítico. Vale: evidencia (simulada) + decisión + ask. Una cadena de aprendizaje, no monólogos sueltos.",
+        "Erick pone el problema y el supuesto. Tami arma la hipótesis y el experimento. Cris muestra herramientas y el prototipo del tramo crítico. Vale cierra con evidencia, decisión y el pedido. Es una sola historia de aprendizaje, no cuatro monólogos.",
     },
     {
       id: "coh-honestidad",
@@ -253,7 +253,7 @@ window.WEBFLIX_QA = {
       who: "Erick / Vale",
       q: "¿No se contradicen al mostrar resultados y decir que no probaron Day-7?",
       pista:
-        "No: KPIs primarios = activación/relevancia/fricción. Day-7 solo exploratorio y etiquetado. La honestidad metodológica va desde el inicio, no es un disclaimer al final.",
+        "No. Los KPI principales son activación, relevancia y fricción. Day-7 solo lo miramos de reojo y lo etiquetamos como exploratorio. Esa honestidad está desde el inicio, no es un disclaimer al final.",
     },
     {
       id: "coh-confirmar",
@@ -262,7 +262,7 @@ window.WEBFLIX_QA = {
       who: "Vale",
       q: "¿Cómo “confirman” con datos simulados?",
       pista:
-        "Confirmamos la lógica de decisión sobre umbrales predefinidos. Con datos reales usaríamos la misma matriz. El claim de negocio queda condicionado al piloto.",
+        "Confirmamos la regla de decisión: si se cumplen los umbrales que fijamos antes, avanzamos. Con datos reales usaríamos la misma matriz. El claim de negocio grande queda sujeto al piloto de verdad.",
     },
     {
       id: "coh-proto",
@@ -271,7 +271,7 @@ window.WEBFLIX_QA = {
       who: "Cris",
       q: "¿Por qué el prototipo no es el producto completo?",
       pista:
-        "Solo el tramo de la hipótesis: perfil vacío → 3 señales → home → play. No tocamos motor ni catálogo. Barato de probar, fácil de refutar.",
+        "Porque solo necesitamos el tramo de la hipótesis: perfil vacío, tres señales, home y primer play. No tocamos motor ni catálogo. Así es barato de probar y fácil de refutar.",
     },
 
     // ── Decisiones ──────────────────────────────────
@@ -282,7 +282,7 @@ window.WEBFLIX_QA = {
       who: "Vale",
       q: "¿Por qué perseverar y no pivotar?",
       pista:
-        "Reglas antes de mirar datos: valor ↑ y fricción baja → avanzar. Cumplimos activación y relevancia vs control sin subir abandono. Ajuste: no seguir curado a mano.",
+        "Porque las reglas las escribimos antes de ver números: si sube el valor y no sube la fricción, seguimos. Cumplimos activación y relevancia frente al control sin subir el abandono. El ajuste es dejar de curar a mano y conectar el motor real.",
     },
     {
       id: "dec-refuta",
@@ -291,7 +291,7 @@ window.WEBFLIX_QA = {
       who: "Tami / Vale",
       q: "¿Qué harían si se refuta?",
       pista:
-        "Si no se cumplen umbrales o sube abandono → volver al tablero. No insistir en el motor. Revisar H·A/H·B o el momento de captura de preferencias (ver Plan B).",
+        "Si no se cumplen las metas o sube el abandono, volvemos al tablero. No insistimos en el motor. Revisamos otras hipótesis o si el momento de pedir preferencias está mal (eso es el Plan B).",
     },
     {
       id: "dec-ask",
@@ -300,7 +300,7 @@ window.WEBFLIX_QA = {
       who: "Vale",
       q: "¿Qué piden exactamente hoy?",
       pista:
-        "Apoyo para pasar de 30–50 a un piloto real con Ingeniería y Data. No pedimos rebuild del motor: pedimos que consuma señales tempranas y un checkpoint de decisión.",
+        "Apoyo para pasar de un test de 30 a 50 personas a un piloto real con Ingeniería y Data. No pedimos rehacer el motor: pedimos que use las señales tempranas y un checkpoint de decisión.",
     },
     {
       id: "dec-next",
@@ -309,7 +309,7 @@ window.WEBFLIX_QA = {
       who: "Vale",
       q: "¿Cuáles son los próximos pasos concretos?",
       pista:
-        "1) Muestra representativa por región (Day-7 con solidez). 2) Motor real consume señales (sin curación manual). 3) Prueba en perfiles familiares nuevos. 4) Sesión cero en paralelo (dispositivo, hora, clics).",
+        "Uno: muestra más grande y representativa por región, para mirar Day-7 con más solidez. Dos: que el motor real consuma las señales, sin curación manual. Tres: prueba en perfiles familiares nuevos. Cuatro: en paralelo, la sesión cero (dispositivo, hora, clics).",
     },
 
     // ── Plan B · pensamiento divergente ─────────────
@@ -320,7 +320,7 @@ window.WEBFLIX_QA = {
       who: "Tami / Vale",
       q: "¿Y si el experimento 1 no valida la hipótesis?",
       pista:
-        "Pensamiento divergente (no es el claim de hoy): puede que el selector de gustos sí aporte valor, pero el onboarding no sea el momento —agrega fricción antes de explorar. Entonces no matamos la palanca: movemos el momento.",
+        "Puede que el selector de gustos sí sirva, pero no en el onboarding: ahí agrega fricción antes de explorar. Entonces no matamos la idea; movemos el momento en que pedimos preferencias. Eso no es el claim de hoy: es el plan B.",
     },
     {
       id: "planb-rescate",
@@ -329,7 +329,7 @@ window.WEBFLIX_QA = {
       who: "Tami",
       q: "¿Cómo se vería un experimento de rescate?",
       pista:
-        "Segundo experimento: activar el selector en los primeros 7 días solo para quienes aún no reprodujeron contenido. Comparamos captura de preferencias al inicio vs después de una primera exploración.",
+        "Un segundo experimento: en la primera semana, solo a quienes aún no vieron nada les ofrecemos el selector. Comparamos pedir gustos al inicio versus después de una primera exploración.",
     },
     {
       id: "planb-kpis",
@@ -338,7 +338,7 @@ window.WEBFLIX_QA = {
       who: "Vale / Tami",
       q: "¿Cómo medirían ese segundo experimento?",
       pista:
-        "Separar KPI: (1) Registro y pago = conversión. (2) Finalización y abandono = onboarding. (3) 1ª play válida, tiempo a 1ª play y retención D7 = activación. Así no mezclamos fricción de registro con valor de descubrimiento.",
+        "Separando bien: registro y pago es conversión; terminar o abandonar el onboarding es fricción de setup; primera play, tiempo a esa play y Day-7 es activación. Así no mezclamos “costó registrarse” con “descubrió algo bueno”.",
     },
     {
       id: "planb-coherencia",
@@ -347,7 +347,7 @@ window.WEBFLIX_QA = {
       who: "Cualquiera",
       q: "¿No contradice eso la apuesta de “onboarding liviano”?",
       pista:
-        "No: es contingencia si el momento falla. Hoy apostamos a rediseñar el paso existente. Si se refuta por fricción de timing (no por la señal en sí), el Plan B preserva la palanca y cambia cuándo se pide. Es ciencia, no terquedad.",
+        "No: es el plan si el momento falla. Hoy apostamos a rediseñar el paso que ya está. Si se cae por timing y no por la señal en sí, el Plan B guarda la palanca y cambia cuándo se pide. Es ciencia, no terquedad.",
     },
   ],
 };
