@@ -232,6 +232,36 @@ document.addEventListener("DOMContentLoaded", () => {
     return v ? v.closest(".demo-level") : null;
   }
 
+  function getDemoStage() {
+    return document.getElementById("stage-demo");
+  }
+
+  let demoCinema = false;
+
+  function setDemoCinema(on) {
+    demoCinema = !!on;
+    const stage = getDemoStage();
+    const exitBtn = document.getElementById("demo-exit-btn");
+    const slide = DEMO_INDEX >= 0 ? slides[DEMO_INDEX] : null;
+    if (stage) stage.classList.toggle("is-cinema", demoCinema);
+    if (slide) slide.classList.toggle("is-demo-cinema", demoCinema);
+    if (exitBtn) exitBtn.hidden = !demoCinema;
+    if (!demoCinema) {
+      // Al salir del foco, pausar para no seguir oyendo en segundo plano
+      const v = getDemoVideo();
+      if (v && !v.paused) {
+        try {
+          v.pause();
+        } catch (_) { /* ignore */ }
+      }
+      setDemoPlayingUI(false);
+    }
+  }
+
+  function exitDemoCinema() {
+    setDemoCinema(false);
+  }
+
   function setDemoPlayingUI(playing) {
     const level = getDemoLevelEl();
     const btn = document.getElementById("demo-play-btn");
@@ -257,6 +287,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function playDemoVideo({ restart } = {}) {
     const v = getDemoVideo();
     if (!v) return;
+    // Ampliar al centro y ocultar el texto del slide
+    setDemoCinema(true);
     try {
       if (restart) v.currentTime = 0;
       const p = v.play();
@@ -274,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const v = getDemoVideo();
     if (!v) return;
     if (v.paused) playDemoVideo();
-    else pauseDemoVideo();
+    else pauseDemoVideo(); // queda en modo cine pausado
   }
 
   function setDemoLevel(level) {
@@ -288,6 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Video solo en nivel 1 — play siempre manual (botón / Space / P)
     if (demoLevel !== 1) {
+      exitDemoCinema();
       pauseDemoVideo();
     } else {
       const v = getDemoVideo();
@@ -339,8 +372,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateSpeaker(slide);
 
-    // Demo video: solo pausa al salir; play es manual (Space / P)
+    // Demo video: al salir de la slide, cerrar modo cine y pausar
     if (DEMO_INDEX >= 0 && current !== DEMO_INDEX) {
+      exitDemoCinema();
       pauseDemoVideo();
     }
 
@@ -421,10 +455,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("deck").addEventListener("click", (e) => {
     if (
       e.target.closest(
-        "button, a, kbd, .dot, .timer, .speaker-tag, .hud, #timer, .present-btn, .deck-top-right"
+        "button, a, kbd, .dot, .timer, .speaker-tag, .hud, #timer, .present-btn, .deck-top-right, .demo-exit-btn, .demo-play-btn, .demo-video, .phone"
       )
     )
       return;
+    // En modo cine, un clic fuera no avanza slides
+    if (demoCinema) return;
     const x = e.clientX / window.innerWidth;
     if (x < 0.22) prev();
     else next();
@@ -439,6 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Play manual del video de Cris (botón + clic). Flechas = solo slides.
   const demoPlayBtn = document.getElementById("demo-play-btn");
+  const demoExitBtn = document.getElementById("demo-exit-btn");
   const demoVideo = getDemoVideo();
 
   function blurDemoFocus() {
@@ -449,6 +486,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.activeElement.blur();
       }
     } catch (_) { /* ignore */ }
+  }
+
+  if (demoExitBtn) {
+    demoExitBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      exitDemoCinema();
+      blurDemoFocus();
+    });
   }
 
   if (demoPlayBtn) {
@@ -471,13 +516,17 @@ document.addEventListener("DOMContentLoaded", () => {
       toggleDemoVideo();
       blurDemoFocus();
     });
-    demoVideo.addEventListener("play", () => setDemoPlayingUI(true));
+    demoVideo.addEventListener("play", () => {
+      setDemoCinema(true);
+      setDemoPlayingUI(true);
+    });
     demoVideo.addEventListener("pause", () => setDemoPlayingUI(false));
     demoVideo.addEventListener("ended", () => {
       setDemoPlayingUI(false);
       try {
         demoVideo.currentTime = 0;
       } catch (_) { /* ignore */ }
+      // Se queda en modo cine con Play para repetir o Salir
     });
     demoVideo.addEventListener("error", () => {
       console.warn("[webflix] No se pudo cargar el video del experimento");
@@ -534,6 +583,10 @@ document.addEventListener("DOMContentLoaded", () => {
       case "ArrowRight":
       case "ArrowDown":
       case "PageDown":
+        if (demoCinema) {
+          e.preventDefault();
+          break;
+        }
         e.preventDefault();
         next();
         break;
@@ -544,6 +597,10 @@ document.addEventListener("DOMContentLoaded", () => {
           toggleDemoVideo();
           break;
         }
+        if (demoCinema) {
+          e.preventDefault();
+          break;
+        }
         e.preventDefault();
         next();
         break;
@@ -551,6 +608,14 @@ document.addEventListener("DOMContentLoaded", () => {
       case "ArrowUp":
       case "PageUp":
       case "Backspace":
+        if (demoCinema) {
+          e.preventDefault();
+          // ← o Esc-like: salir del cine
+          if (e.key === "Backspace" || e.key === "ArrowLeft") {
+            exitDemoCinema();
+          }
+          break;
+        }
         e.preventDefault();
         prev();
         break;
@@ -605,8 +670,20 @@ document.addEventListener("DOMContentLoaded", () => {
           toggleDemoVideo();
         }
         break;
+      case "Escape":
+        if (demoCinema) {
+          e.preventDefault();
+          exitDemoCinema();
+        }
+        break;
       case "e":
       case "E":
+        // En modo cine, E no cambia emitir (evita confusión)
+        if (demoCinema) {
+          e.preventDefault();
+          exitDemoCinema();
+          break;
+        }
         e.preventDefault();
         togglePresenter();
         break;
