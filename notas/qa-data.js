@@ -1,74 +1,10 @@
-/* Q&A · pistas en lenguaje natural + métricas */
+/* Q&A · pistas en lenguaje natural · métricas como tarjetas */
 window.WEBFLIX_QA = {
   intro:
-    "Respuestas listas para decir en voz alta. No leas todo: elige la idea, suéltala con calma y cierra. Quién responde va en cada tarjeta.",
-  /** Referencia rápida en el panel Q&A */
-  metricas: {
-    negocio: {
-      title: "Negocio",
-      subtitle: "Lo que le importa a la compañía — no es el KPI principal de este test",
-      items: [
-        {
-          name: "Day-7 Retention",
-          meta: "42% → 29%",
-          note: "Bajó trece puntos. Eso es lo que queremos recuperar a nivel negocio. Este experimento no lo mueve directo: le apunta.",
-        },
-        {
-          name: "Escala",
-          meta: "~310M MAU",
-          note: "Es el tamaño del barco: con tantos usuarios, cada punto de retención pesa mucho.",
-        },
-        {
-          name: "Problema de negocio",
-          meta: "Cold start / descubrimiento",
-          note: "El usuario nuevo no logra su primer momento de valor, el sistema no lo conoce y se va antes de que la app aprenda.",
-        },
-        {
-          name: "Day-7 en cohorte (exploratorio)",
-          meta: "29% → 33%",
-          note: "Con poca gente es solo una luz verde para seguir mirando, no una victoria estadística.",
-        },
-      ],
-    },
-    experimento: {
-      title: "Experimento",
-      subtitle: "Lo que medimos en el test · metas que fijamos antes · 30–50 usuarios · WoZ",
-      items: [
-        {
-          name: "Completa selección",
-          meta: "≥80% en <30 s",
-          note: "¿El swipe es liviano de verdad? En la simulación: 84% lo completó en unos 22 segundos.",
-        },
-        {
-          name: "Play válido (s1)",
-          meta: "≥65%",
-          note: "¿Se activan en la primera sesión? Meta 65%; en simulación 69%. Queremos la primera play en menos de 3 minutos.",
-        },
-        {
-          name: "Watch Time (s1)",
-          meta: "+10% vs control",
-          note: "¿Miran más que con el onboarding de hoy? Meta +10%; en simulación +12%.",
-        },
-        {
-          name: "Relevancia percibida",
-          meta: "≥75% notas 4–5",
-          note: "¿Sienten que “esto es para mí”? Meta 75%; en simulación 78%.",
-        },
-        {
-          name: "Intención de volver",
-          meta: "+15% (cualitativa)",
-          note: "Es lo que dicen, no lo que hacen. Sirve como señal, no como prueba de retención. Simulación +17%.",
-        },
-        {
-          name: "Guardrail / refutación",
-          meta: "Abandono no sube",
-          note: "Si el swipe molesta o no cumplimos las metas, la hipótesis cae y volvemos al tablero.",
-        },
-      ],
-    },
-  },
+    "Respuestas listas para decir en voz alta. No leas todo: elige la idea, suéltala con calma y cierra. Las métricas también están en tarjetas (filtro Métricas).",
   filters: [
     { id: "all", label: "Todos" },
+    { id: "metricas", label: "Métricas" },
     { id: "obvia", label: "Obvias" },
     { id: "profunda", label: "No tan obvias" },
     { id: "falacia", label: "Falacias / lógica" },
@@ -77,6 +13,98 @@ window.WEBFLIX_QA = {
     { id: "planb", label: "Plan B · Exp. 2" },
   ],
   pistas: [
+    // ── Métricas (misma pila que el resto) ───────────
+    {
+      id: "kpi-d7",
+      cat: "metricas",
+      tag: "Negocio",
+      who: "Erick / Vale",
+      q: "Day-7 Retention — 42% → 29%",
+      pista:
+        "Bajó trece puntos. Eso es lo que queremos recuperar a nivel negocio. Este experimento no lo mueve directo: le apunta.",
+    },
+    {
+      id: "kpi-mau",
+      cat: "metricas",
+      tag: "Negocio",
+      who: "Erick",
+      q: "Escala — ~310M MAU",
+      pista:
+        "Es el tamaño del barco: con tantos usuarios, cada punto de retención pesa mucho.",
+    },
+    {
+      id: "kpi-problema",
+      cat: "metricas",
+      tag: "Negocio",
+      who: "Erick",
+      q: "Problema de negocio — cold start / descubrimiento",
+      pista:
+        "El usuario nuevo no logra su primer momento de valor, el sistema no lo conoce y se va antes de que la app aprenda.",
+    },
+    {
+      id: "kpi-d7-cohorte",
+      cat: "metricas",
+      tag: "Negocio",
+      who: "Vale",
+      q: "Day-7 en cohorte (exploratorio) — 29% → 33%",
+      pista:
+        "Con poca gente es solo una luz verde para seguir mirando, no una victoria estadística.",
+    },
+    {
+      id: "kpi-completa",
+      cat: "metricas",
+      tag: "Experimento",
+      who: "Tami / Vale",
+      q: "Completa selección — ≥80% en <30 s",
+      pista:
+        "¿El swipe es liviano de verdad? En la simulación: 84% lo completó en unos 22 segundos.",
+    },
+    {
+      id: "kpi-play",
+      cat: "metricas",
+      tag: "Experimento",
+      who: "Vale",
+      q: "Play válido (sesión 1) — ≥65%",
+      pista:
+        "¿Se activan en la primera sesión? Meta 65%; en simulación 69%. Queremos la primera play en menos de 3 minutos.",
+    },
+    {
+      id: "kpi-wt",
+      cat: "metricas",
+      tag: "Experimento",
+      who: "Vale",
+      q: "Watch Time (sesión 1) — +10% vs control",
+      pista:
+        "¿Miran más que con el onboarding de hoy? Meta +10%; en simulación +12%.",
+    },
+    {
+      id: "kpi-rel",
+      cat: "metricas",
+      tag: "Experimento",
+      who: "Vale",
+      q: "Relevancia percibida — ≥75% notas 4–5",
+      pista:
+        "¿Sienten que “esto es para mí”? Meta 75%; en simulación 78%.",
+    },
+    {
+      id: "kpi-intencion",
+      cat: "metricas",
+      tag: "Experimento",
+      who: "Vale",
+      q: "Intención de volver — +15% (cualitativa)",
+      pista:
+        "Es lo que dicen, no lo que hacen. Sirve como señal, no como prueba de retención. Simulación +17%.",
+    },
+    {
+      id: "kpi-guardrail",
+      cat: "metricas",
+      tag: "Experimento",
+      who: "Tami / Vale",
+      q: "Guardrail / refutación — abandono no sube",
+      pista:
+        "Si el swipe molesta o no cumplimos las metas, la hipótesis cae y volvemos al tablero.",
+    },
+
     // ── Obvias ──────────────────────────────────────
     {
       id: "d7-directo",

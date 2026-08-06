@@ -74,7 +74,6 @@
   const btnQaClose = $("btn-qa-close");
   const btnFocus = $("btn-focus");
   const qaPanel = $("qa-panel");
-  const qaMetrics = $("qa-metrics");
   const qaFilters = $("qa-filters");
   const qaBubbles = $("qa-bubbles");
   const qaIntro = $("qa-intro");
@@ -428,42 +427,6 @@
       .join("");
   }
 
-  function renderMetricGroup(key, group) {
-    if (!group || !group.items || !group.items.length) return "";
-    const items = group.items
-      .map(
-        (m) => `<article class="qa-metric-item">
-          <div class="qa-metric-top">
-            <span class="qa-metric-name">${m.name}</span>
-            <span class="qa-metric-meta">${m.meta || ""}</span>
-          </div>
-          <p class="qa-metric-note">${m.note || ""}</p>
-        </article>`
-      )
-      .join("");
-    return `<section class="qa-metric-col qa-metric-col--${key}">
-      <header class="qa-metric-head">
-        <h3>${group.title || key}</h3>
-        <p>${group.subtitle || ""}</p>
-      </header>
-      <div class="qa-metric-list">${items}</div>
-    </section>`;
-  }
-
-  function renderQaMetrics() {
-    if (!qaMetrics) return;
-    const m = QA.metricas;
-    if (!m) {
-      qaMetrics.innerHTML = "";
-      qaMetrics.hidden = true;
-      return;
-    }
-    qaMetrics.hidden = false;
-    qaMetrics.innerHTML =
-      renderMetricGroup("negocio", m.negocio) +
-      renderMetricGroup("experimento", m.experimento);
-  }
-
   function renderQaBubbles() {
     if (!qaBubbles) return;
     const list = (QA.pistas || QA.torpedos || []).filter(
@@ -495,7 +458,6 @@
       // Q&A y foco no conviven bien: salir de foco al abrir pistas
       if (focusMode) setFocusMode(false);
       if (qaIntro) qaIntro.textContent = QA.intro || "";
-      renderQaMetrics();
       renderQaFilters();
       renderQaBubbles();
     }
