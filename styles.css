@@ -1925,6 +1925,7 @@ body {
 
 /* Hypothesis */
 .hypo {
+  margin-top: 0.15rem;
   padding: 1.2rem 1.35rem;
   border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.14), rgba(34, 211, 238, 0.05));
@@ -3519,7 +3520,7 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.65rem;
-  margin-top: 0.35rem;
+  margin-top: 0.15rem;
 }
 
 .prio-card {
