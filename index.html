@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=v3thanks1">
+  <link rel="stylesheet" href="styles.css?v=v3timer1">
 </head>
 <body>
   <div id="deck" class="deck">
@@ -787,20 +787,29 @@
         <span class="present-dot" aria-hidden="true"></span>
         <span class="present-label" id="present-label">Revisar</span>
       </button>
-      <div class="timer" id="timer" data-state="ok" title="T pause · R reset · Meta ~8 min">
+      <div class="timer" id="timer" data-state="ok" data-running="false" title="Play/pausa del cronómetro · T · R reinicia">
+        <button
+          type="button"
+          class="timer-play"
+          id="timer-play"
+          aria-label="Iniciar cronómetro"
+          title="Play / pausa (T)"
+        >
+          <span class="timer-play-icon" id="timer-play-icon" aria-hidden="true">▶</span>
+        </button>
         <span class="timer-time" id="timer-time">00:00</span>
       </div>
     </div>
 
     <div class="hud" id="hud" hidden>
       <div class="counter" id="counter">01 / 10</div>
-      <div class="nav-hint">H HUD · E emitir · T pause · R reset · D demo · F fullscreen</div>
+      <div class="nav-hint">H HUD · E emitir · T cronómetro · R reset · D demo · F fullscreen</div>
     </div>
 
     <div class="progress"><div class="progress-fill" id="progress"></div></div>
   </div>
 
   <script src="sync.js?v=v3present1"></script>
-  <script src="script.js?v=v3cinema2"></script>
+  <script src="script.js?v=v3timer1"></script>
 </body>
 </html>

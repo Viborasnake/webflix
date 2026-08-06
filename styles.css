@@ -2933,14 +2933,57 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 76px;
-  padding: 0.45rem 0.9rem;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 0.28rem 0.7rem 0.28rem 0.28rem;
   border-radius: 999px;
   background: rgba(18, 18, 26, 0.92);
   border: 1px solid var(--border);
   backdrop-filter: blur(10px);
   font-variant-numeric: tabular-nums;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.timer-play {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(34, 211, 238, 0.75));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease, filter 0.12s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.timer-play:hover {
+  filter: brightness(1.08);
+  transform: scale(1.06);
+}
+
+.timer-play-icon {
+  font-size: 0.62rem;
+  line-height: 1;
+  margin-left: 0.08rem;
+  pointer-events: none;
+}
+
+.timer[data-running="true"] .timer-play {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: none;
+}
+
+.timer[data-running="true"] .timer-play-icon {
+  margin-left: 0;
+  font-size: 0.55rem;
+  letter-spacing: -0.05em;
 }
 
 .timer-time {
@@ -2950,6 +2993,7 @@ body {
   letter-spacing: 0.03em;
   color: var(--text);
   line-height: 1;
+  min-width: 3.1rem;
 }
 
 .timer[data-state="warn"] {

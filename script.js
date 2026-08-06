@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const hudEl = document.getElementById("hud");
   const timerEl = document.getElementById("timer");
   const timerTime = document.getElementById("timer-time");
+  const timerPlayBtn = document.getElementById("timer-play");
+  const timerPlayIcon = document.getElementById("timer-play-icon");
   const btnPresent = document.getElementById("btn-present");
   const presentLabel = document.getElementById("present-label");
 
@@ -161,10 +163,23 @@ document.addEventListener("DOMContentLoaded", () => {
     bus.publish(getState());
   }
 
+  function updateTimerPlayUI() {
+    if (timerEl) timerEl.dataset.running = timerRunning ? "true" : "false";
+    if (timerPlayIcon) timerPlayIcon.textContent = timerRunning ? "❚❚" : "▶";
+    if (timerPlayBtn) {
+      timerPlayBtn.setAttribute(
+        "aria-label",
+        timerRunning ? "Pausar cronómetro" : "Iniciar cronómetro"
+      );
+      timerPlayBtn.title = timerRunning ? "Pausar (T)" : "Play (T)";
+    }
+  }
+
   function renderTimer() {
     const ms = elapsed();
     if (timerTime) timerTime.textContent = formatMs(ms);
     if (timerEl) timerEl.dataset.state = timerState(ms);
+    updateTimerPlayUI();
     if (timerRunning) {
       // heartbeat para que las notas mantengan el reloj alineado
       if (Date.now() - lastPublishAt > 2000) publish(true);
@@ -175,6 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function startTimer() {
     if (timerRunning) return;
     timerRunning = true;
+    timerArmed = true;
     timerStartedAt = Date.now();
     renderTimer();
     publish(true);
@@ -205,11 +221,9 @@ document.addEventListener("DOMContentLoaded", () => {
     publish(true);
   }
 
-  function maybeArmTimer(index) {
-    if (index >= 1 && !timerArmed) {
-      timerArmed = true;
-      startTimer();
-    }
+  /** Antes armaba solo al salir de portada; ahora el cronómetro es 100% manual */
+  function maybeArmTimer(_index) {
+    /* no-op: play solo con botón / T / control remoto */
   }
 
   function setHud(visible) {
@@ -395,6 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (timerTime) timerTime.textContent = "00:00";
     if (timerEl) timerEl.dataset.state = "ok";
+    updateTimerPlayUI();
 
     demoLevel = 1;
     document.querySelectorAll(".demo-level").forEach((el) => {
@@ -434,11 +449,8 @@ document.addEventListener("DOMContentLoaded", () => {
           toggleTimer();
           break;
         case "timer-reset":
+          // Solo a cero; no arranca solo (play manual)
           resetTimer();
-          if (current >= 1) {
-            timerArmed = true;
-            startTimer();
-          }
           break;
         case "session-reset":
           resetSession();
@@ -641,11 +653,9 @@ document.addEventListener("DOMContentLoaded", () => {
           e.preventDefault();
           resetSession();
         } else {
+          // Solo reinicia a 00:00; hay que dar play de nuevo
+          e.preventDefault();
           resetTimer();
-          if (current >= 1) {
-            timerArmed = true;
-            startTimer();
-          }
         }
         break;
       case "0":
@@ -733,6 +743,20 @@ document.addEventListener("DOMContentLoaded", () => {
     btnPresent.addEventListener("click", (e) => {
       e.stopPropagation();
       togglePresenter();
+    });
+  }
+  if (timerPlayBtn) {
+    timerPlayBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleTimer();
+    });
+  }
+  if (timerEl) {
+    // Clic en el reloj también play/pausa (no solo el botón)
+    timerEl.addEventListener("click", (e) => {
+      if (e.target.closest(".timer-play")) return;
+      e.stopPropagation();
+      toggleTimer();
     });
   }
 
