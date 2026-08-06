@@ -160,7 +160,7 @@ window.WEBFLIX_NOTES = [
     say: [
       {
         text: "Para llegar hasta acá también armamos la identidad y el design system de WebFlix, la base visual del producto y del prototipo.",
-        hint: "DS · 2 capturas: marca + patrones de onboarding",
+        hint: "DS · 2 capturas: marca + carta de color",
       },
       {
         text: "Usamos Figma AI para maquetar rápido, y Claude y ChatGPT para todo el trabajo de oportunidad: problema, mapa de supuestos, hipótesis falsable.",
