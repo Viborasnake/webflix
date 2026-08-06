@@ -858,7 +858,7 @@ body {
 }
 
 .stage-demo.is-cinema .demo-device {
-  gap: 1rem;
+  gap: 0.7rem;
   z-index: 4;
 }
 
@@ -878,29 +878,32 @@ body {
   margin: 0;
 }
 
+/* Pegado al teléfono (arriba, centrado) — no al borde del slide */
 .demo-exit-btn {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
+  top: auto;
+  left: auto;
   z-index: 12;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
   margin: 0;
-  padding: 0.55rem 1rem 0.55rem 0.75rem;
+  padding: 0.5rem 0.95rem 0.5rem 0.7rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(18, 18, 26, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(18, 18, 26, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
   font-family: var(--display);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 650;
   letter-spacing: 0.03em;
   cursor: pointer;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
   transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  flex-shrink: 0;
 }
 
 .demo-exit-btn[hidden] {
