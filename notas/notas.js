@@ -72,11 +72,13 @@
   const btnNext = $("btn-next");
   const btnQa = $("btn-qa");
   const btnQaClose = $("btn-qa-close");
+  const btnFocus = $("btn-focus");
   const qaPanel = $("qa-panel");
   const qaMetrics = $("qa-metrics");
   const qaFilters = $("qa-filters");
   const qaBubbles = $("qa-bubbles");
   const qaIntro = $("qa-intro");
+  let focusMode = false;
   const controlBar = $("control-bar");
   const controlBarTitle = $("control-bar-title");
   const controlBarHint = $("control-bar-hint");
@@ -490,6 +492,8 @@
       btnQa.setAttribute("aria-pressed", qaOpen ? "true" : "false");
     }
     if (qaOpen) {
+      // Q&A y foco no conviven bien: salir de foco al abrir pistas
+      if (focusMode) setFocusMode(false);
       if (qaIntro) qaIntro.textContent = QA.intro || "";
       renderQaMetrics();
       renderQaFilters();
@@ -498,6 +502,19 @@
     if (manual && !qaOpen) {
       // si el usuario cierra en el cierre, no re-autoabrir en este slide
       qaAutoOpenedForClose = true;
+    }
+  }
+
+  function setFocusMode(on) {
+    focusMode = !!on;
+    if (app) app.classList.toggle("is-focus", focusMode);
+    if (btnFocus) {
+      btnFocus.classList.toggle("is-on", focusMode);
+      btnFocus.setAttribute("aria-pressed", focusMode ? "true" : "false");
+      btnFocus.textContent = focusMode ? "Salir foco" : "Modo foco";
+      btnFocus.title = focusMode
+        ? "F o Esc · volver a la vista completa"
+        : "F · solo las notas, resto oscurecido";
     }
   }
 
@@ -911,6 +928,9 @@
   }
   if (btnQa) btnQa.addEventListener("click", () => setQaOpen(!qaOpen, { manual: true }));
   if (btnQaClose) btnQaClose.addEventListener("click", () => setQaOpen(false, { manual: true }));
+  if (btnFocus) {
+    btnFocus.addEventListener("click", () => setFocusMode(!focusMode));
+  }
 
   if (qaFilters) {
     qaFilters.addEventListener("click", (e) => {
@@ -972,6 +992,11 @@
         e.preventDefault();
         setQaOpen(!qaOpen, { manual: true });
         break;
+      case "f":
+      case "F":
+        e.preventDefault();
+        setFocusMode(!focusMode);
+        break;
       case "c":
       case "C":
         e.preventDefault();
@@ -988,6 +1013,9 @@
         if (qaOpen) {
           e.preventDefault();
           setQaOpen(false, { manual: true });
+        } else if (focusMode) {
+          e.preventDefault();
+          setFocusMode(false);
         } else if (controlMode) {
           e.preventDefault();
           // Suelta control y queda en libre (no salta al vivo)

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="notas.css?v=v3metrics1">
+  <link rel="stylesheet" href="notas.css?v=v3focus1">
 </head>
 <body>
   <div class="notes-app" id="app">
@@ -30,6 +30,9 @@
 
       <div class="top-actions">
         <a class="btn ghost" href="../" target="_blank" rel="noopener">Abrir deck</a>
+        <button type="button" class="btn focus-toggle" id="btn-focus" aria-pressed="false" title="F · solo las notas, resto oscurecido">
+          Modo foco
+        </button>
         <button type="button" class="btn qa-toggle" id="btn-qa" aria-pressed="false" title="Tecla Q · pistas para el Q&A">
           Q&A
         </button>
@@ -152,9 +155,9 @@
     </section>
 
     <footer class="foot">
-      <span><kbd>Q</kbd> Q&A · <kbd>C</kbd> control · <kbd>0</kbd> reiniciar sesión</span>
-      <span>← → tus notas · <kbd>L</kbd> seguir presentación · <kbd>Esc</kbd> soltar control</span>
-      <span>Cada pestaña es libre hasta que pulses «Seguir presentación»</span>
+      <span><kbd>Q</kbd> Q&A · <kbd>F</kbd> foco · <kbd>C</kbd> control · <kbd>0</kbd> reiniciar</span>
+      <span>← → tus notas · <kbd>L</kbd> seguir · <kbd>Esc</kbd> salir foco / control</span>
+      <span>Cada pestaña es libre hasta «Seguir presentación»</span>
     </footer>
   </div>
 
@@ -162,6 +165,6 @@
   <script src="notes-data.js"></script>
   <script src="glossary-data.js"></script>
   <script src="qa-data.js?v=v3metrics1"></script>
-  <script src="notas.js?v=v3metrics1"></script>
+  <script src="notas.js?v=v3focus1"></script>
 </body>
 </html>
